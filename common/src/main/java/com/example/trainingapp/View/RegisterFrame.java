@@ -55,6 +55,7 @@ public class RegisterFrame {
                     });
                     loginForm.show();
                 });
+        rButton.addActionListener(l -> {controller.registration();});
         registerForm.add(rButton);
     }
 
