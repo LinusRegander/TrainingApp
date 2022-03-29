@@ -32,6 +32,7 @@ public class Controller {
                 if(userManager.existingUser(loginFrame.getFieldContent())) {
                     user = userManager.getCurrUser();
                     login = true;
+                    System.out.println("Login complete");
                 }
                 else {
                     System.out.println("Error failed");

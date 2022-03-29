@@ -27,7 +27,7 @@ public class LoginFrame {
     }
 
     public void loginFrame() {
-        loginForm = new Form("Test", BoxLayout.y());
+        loginForm = new Form(null, BoxLayout.y());
         userForm();
         loginForm.show();
     }

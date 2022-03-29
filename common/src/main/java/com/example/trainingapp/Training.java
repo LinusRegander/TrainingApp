@@ -20,6 +20,5 @@ public class Training extends Lifecycle {
     @Override
     public void runApp() {
         controller = new Controller();
-        System.out.println("Test");
     }
 }
