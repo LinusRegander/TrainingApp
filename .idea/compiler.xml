@@ -9,18 +9,6 @@
         <module name="training-javase" />
         <module name="training-common" />
       </profile>
-      <profile name="Annotation profile for Unknown" enabled="true">
-        <sourceOutputDir name="../../target/generated-sources/annotations" />
-        <sourceTestOutputDir name="../../target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name="wrapper" />
-      </profile>
-      <profile name="Annotation profile for .mvn" enabled="true">
-        <sourceOutputDir name="../target/generated-sources/annotations" />
-        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <module name=".mvn" />
-      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name=".mvn" target="1.5" />
