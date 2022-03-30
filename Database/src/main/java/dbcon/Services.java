@@ -76,6 +76,40 @@ public class Services {
         con.close();
     }
 
+    //creatorEmail == email som man är inloggad på
+    public void insertNewProgram(String name, String creatorEmail, String description, String tag1, String tag2, String tag3) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Call training.insertNewProgram(?,?,?,?,?,?,?)");
+        pstmt.setString(1, name);
+        pstmt.setString(2, creatorEmail);
+        pstmt.setString(3, description);
+        pstmt.setString(4, tag1);
+        pstmt.setString(5, tag2);
+        pstmt.setString(6, tag3);
+
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+
+    //TODO: lägg till en check så att dessa PK redan finns.
+    //TODO: Lägg till check på program så och kolla med inloggade creatorEmail och se så att de matchar. Annars får de inte ändra
+    public void insertWorkoutInToProgram(int programId, int workoutId) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Call training.insertWorkoutInToProgram(?,?)");
+        pstmt.setInt(1, programId);
+        pstmt.setInt(1, workoutId);
+
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+    
+
+
+
+
+
     
 
 
