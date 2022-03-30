@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.*;
 
 public class Services {
     public Connection getDatabaseConnection(){
@@ -105,8 +106,50 @@ public class Services {
         pstmt.close();
         con.close();
     }
-    
 
+    //email == inloggade email
+    //TODO: lägg till check på PK så att de finns.
+    public void logExerciseSet(int exerciseId, int set, int reps, double weight, String email) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Call training,logExerciseSet(?,?,?,?,?)");
+        pstmt.setInt(1, exerciseId);
+        pstmt.setInt(2, set);
+        pstmt.setInt(3, reps);
+        pstmt.setDouble(4, weight);
+        pstmt.setString(5, email);
+
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+
+    //Ska denna köras automatiskt efter logExerciseSet har exekverats?
+    public void logSession(int logExerciseId, int logWorkoutId, int set) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Call training.logSession(?,?,?)");
+        pstmt.setInt(1, logExerciseId);
+        pstmt.setInt(2, logWorkoutId);
+        pstmt.setInt(3, set);
+
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+
+    public void insertNewLogworkout(String email, int workoutid, Date date) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Call training.insertNewLogWorkout(?,?,?)");
+        pstmt.setString(1, email);
+        pstmt.setInt(2, workoutid);
+        pstmt.setDate(3, date);
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+
+
+    
+// ovanför är alla inserts, sedan remove sedan update
 
 
 
