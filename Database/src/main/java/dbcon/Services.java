@@ -151,11 +151,44 @@ public class Services {
     
 // ovanför är alla inserts, sedan remove sedan update
 
+    public void removeLoggedExerciseSet(String logExerciseId) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Delete from training.logexerciseset where logexerciseid = ?");
+        pstmt.setString(1, logExerciseId);
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+
+    public void removeLoggedWorkout(String logWorkoutId) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Delete from training.logworkout where logworkoutid = ?");
+        pstmt.setString(1, logWorkoutId);
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+
+    public void removeLoggedProgram(String logProgramId) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Delete from training.logprogram where logprogramid = ?");
+        pstmt.setString(1, logProgramId);
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+
+    public void removeUser(String userId) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Delete from training.users where email = ?");
+        pstmt.setString(1, userId);
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
 
 
-
-    
-
+// ovanför är alla removes, sedan update 
 
 
 
