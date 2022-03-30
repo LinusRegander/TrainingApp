@@ -7,8 +7,13 @@ import java.security.NoSuchAlgorithmException;
 //Hashes a string.
 public class Encrypter {
 
-    public static String encrypt(String plainText) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    public static String encrypt(String plainText){
+        MessageDigest digest = null;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         byte[] encodedhash = digest.digest(
                 plainText.getBytes(StandardCharsets.UTF_8));
 

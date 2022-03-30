@@ -1,5 +1,6 @@
 package dbcon;
 
+import HelperClasses.Encrypter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -27,7 +28,7 @@ public class Services {
         PreparedStatement pstmt = con.prepareStatement("call training.insertNewUser(?,?,?)");
         pstmt.setString(1, email);
         pstmt.setString(2, name);
-        pstmt.setString(3, password);
+        pstmt.setString(3, Encrypter.encrypt(password));
 
         pstmt.execute();
         pstmt.close();
