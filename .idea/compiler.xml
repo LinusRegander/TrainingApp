@@ -8,10 +8,12 @@
         <outputRelativeToContentRoot value="true" />
         <module name="training-javase" />
         <module name="training-common" />
+        <module name="JDBC" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name=".mvn" target="1.5" />
+      <module name="JDBC" target="1.8" />
       <module name="training" target="1.8" />
       <module name="training-common" target="1.8" />
       <module name="training-javase" target="1.8" />
