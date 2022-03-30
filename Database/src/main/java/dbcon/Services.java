@@ -147,7 +147,18 @@ public class Services {
         con.close();
     }
 
+    public void insertNewLogProgram(String email, int programId, Date date, String evaluation) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Call training.insertNewLogProgram(?,?,?,?)");
+        pstmt.setString(1, email);
+        pstmt.setInt(2, programId);
+        pstmt.setDate(3, date);
+        pstmt.setString(4, evaluation);
 
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
     
 // ovanför är alla inserts, sedan remove sedan update
 
