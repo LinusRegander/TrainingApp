@@ -12,7 +12,6 @@ public class Controller {
     private MainFrame mainFrame;
     private RegisterFrame registerFrame;
     private LoginFrame loginFrame;
-    private Form mainForm;
     private UserManager userManager;
     private User user;
 
@@ -21,7 +20,8 @@ public class Controller {
     }
 
     public void Setup() {
-        loginFrame = new LoginFrame(this);
+        mainFrame = new MainFrame(this);
+        //loginFrame = new LoginFrame(this);
         user = new User();
         userManager = new UserManager(user);
     }
@@ -34,6 +34,7 @@ public class Controller {
                 user = userManager.getCurrUser();
                 mainFrame = new MainFrame(this);
                 login = true;
+                openMainFrame();
                 System.out.println("Login complete");
             } else {
                 System.err.println("Login failed");
@@ -60,16 +61,12 @@ public class Controller {
         }
     }
 
+    public void openMainFrame() {
+        mainFrame = new MainFrame(this);
+    }
+
     public void openRegFrame() {
         registerFrame = new RegisterFrame(this);
-    }
-
-    public LoginFrame getLoginFrame() {
-        return loginFrame;
-    }
-
-    public Form getMainForm() {
-        return mainFrame.getMainForm();
     }
 
     public Form getLoginForm() {

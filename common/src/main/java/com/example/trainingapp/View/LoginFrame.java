@@ -36,6 +36,7 @@ public class LoginFrame {
 
     public void userForm() {
         testLabel = new Label();
+        testLabel.setText("FitHub");
         loginForm.add(testLabel);
 
         uLabel = new Label("Username/Email:");
@@ -63,9 +64,5 @@ public class LoginFrame {
 
     public Form getLoginForm() {
         return loginForm;
-    }
-
-    private void welcome() {
-        Dialog.show("Hello Codename One", "Welcome to Codename One", "OK", null);
     }
 }

@@ -22,7 +22,7 @@ public class RegisterFrame {
     }
 
     public void registerFrame() {
-        registerForm = new Form("Test", BoxLayout.y());
+        registerForm = new Form(null, BoxLayout.y());
         registerForm();
         registerForm.show();
     }
