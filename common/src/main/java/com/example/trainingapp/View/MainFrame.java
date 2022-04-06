@@ -42,17 +42,42 @@ public class MainFrame {
     }
 
     public void mainForm() {
+        testToolbar();
         createToolbar();
     }
 
-
     public void createToolbar() {
         try {
-            Image ach = Image.createImage("/achievements16x16.png");
+            ach = Image.createImage("/achievements16x16.png");
+            home = Image.createImage("/home16x16.png");
+            plus = Image.createImage("/plusSign16x16.png");
+            sear = Image.createImage("/search16x16.png");
+            sett = Image.createImage("/settings16x16.png");
+            stat = Image.createImage("/stats16x16.png");
+            user = Image.createImage("/user16x16.png");
             lAch.setIcon(ach);
-            ct = new Container(BoxLayout.y());
-            ct.add(lAch);
-            mainForm.add(ct);
+            lHome.setIcon(home);
+            lPlus.setIcon(plus);
+            lSear.setIcon(sear);
+            lSett.setIcon(sett);
+            lStat.setIcon(stat);
+            lUser.setIcon(user);
+
+            mainForm.add(lAch);
+            mainForm.add(lHome);
+            mainForm.add(lPlus);
+            mainForm.add(lSear);
+            mainForm.add(lSett);
+            mainForm.add(lStat);
+            mainForm.add(lUser);
         } catch (Exception e) {}
+    }
+
+    public void testToolbar() {
+        Toolbar.setGlobalToolbar(true);
+        Style s = UIManager.getInstance().getComponentStyle("TitleCommand");
+        FontImage icon = FontImage.createMaterial(FontImage.MATERIAL_WARNING, s);
+        mainForm.getToolbar().addCommandToOverflowMenu("Overflow", icon, (e) -> Log.p("Clicked"));
+        mainForm.getToolbar().addCommandToSideMenu("Sidemenu", icon, (e) -> Log.p("Clicked"));
     }
 }

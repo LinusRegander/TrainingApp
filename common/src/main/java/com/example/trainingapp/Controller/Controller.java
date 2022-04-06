@@ -20,8 +20,7 @@ public class Controller {
     }
 
     public void Setup() {
-        mainFrame = new MainFrame(this);
-        //loginFrame = new LoginFrame(this);
+        loginFrame = new LoginFrame(this);
         user = new User();
         userManager = new UserManager(user);
     }

@@ -6,10 +6,14 @@ import com.codename1.ui.Dialog;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.*;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.plaf.Style;
 import com.example.trainingapp.Controller.*;
 import jdk.tools.jmod.Main;
+
+import java.awt.*;
 
 public class LoginFrame {
     private Controller controller;
@@ -37,6 +41,9 @@ public class LoginFrame {
     public void userForm() {
         testLabel = new Label();
         testLabel.setText("FitHub");
+        Style tl = testLabel.getStyle();
+        tl.setMarginLeft(450);
+        tl.setFgColor(10);
         loginForm.add(testLabel);
 
         uLabel = new Label("Username/Email:");
