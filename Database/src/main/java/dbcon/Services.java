@@ -1,11 +1,16 @@
 package dbcon;
 
 import HelperClasses.Encrypter;
+import HelperClasses.Exercise;
+import HelperClasses.ProgramInfo;
+import HelperClasses.WorkoutInfo;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Services {
     public Connection getDatabaseConnection(){
@@ -71,6 +76,24 @@ public class Services {
         }
 
         return exists;
+    }
+
+    //todo: lägg till så att isAdmin är en column på databas tabellen users istället för username admin
+    public boolean checkIfLoggedInMailIsAdmin(String loggedInEmail) throws SQLException{
+        boolean isAdmin = false;
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select name from training.users where email = ?");
+        pstmt.setString(1, loggedInEmail);
+
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()){
+            String name = rs.getString("name");
+            if (name.equals("admin")){
+                isAdmin = true;
+            }
+        }
+
+        return isAdmin;
     }
 
 
@@ -293,14 +316,74 @@ public class Services {
     }
 
     //Antingen så ska man kunna se alla sina saker genom select statements innan metoden anropas eller längst upp i metoden
-    //TODO: Ska man kunna göra "egna exercises? Cause isåfall behöver vi lägga till i db creator
-    public void updateExercise(int exerciseId, String loggedInMail) throws SQLException{
+    //TODO: Ändra så att det blir med objekt istället...
+    public String updateExercise(int exerciseId, String loggedInMail, String name, String description, String primaryMuscleGroup, String secondaryMuscleGroup, int choice) throws SQLException{
 
+        if(this.checkIfLoggedInMailIsAdmin(loggedInMail)){
+            Connection con = this.getDatabaseConnection();
+            switch (choice){
+                case 1:
+                    PreparedStatement updateName = con.prepareStatement("update training.exercise set name = ? where exerciseid = ?");
+                    updateName.setString(1, name);
+                    updateName.setInt(2, exerciseId);
+                    updateName.executeUpdate();
+
+                    updateName.close();
+                    con.close();
+                    return "Exercise name has been changed";
+                case 2:
+                    PreparedStatement updateDescription = con.prepareStatement("update training.exercise set description = ? where exerciseid = ?");
+                    updateDescription.setString(1, description);
+                    updateDescription.setInt(2, exerciseId);
+                    updateDescription.executeUpdate();
+
+                    updateDescription.close();
+                    con.close();
+                    return "Exercise description has been changed";
+                case 3:
+                    PreparedStatement updatePrimary = con.prepareStatement("update training.exercise set primarymusclegroup = ? where exerciseid = ?");
+                    updatePrimary.setString(1, primaryMuscleGroup);
+                    updatePrimary.setInt(2, exerciseId);
+                    updatePrimary.executeUpdate();
+
+                    updatePrimary.close();
+                    con.close();
+                    return "Exercise primaryMuscleGroup has been changed";
+                case 4:
+                    PreparedStatement updateSecondary = con.prepareStatement("update training.exercise set secondarymusclegroup = ? where exerciseid = ?");
+                    updateSecondary.setString(1, secondaryMuscleGroup);
+                    updateSecondary.setInt(2, exerciseId);
+                    updateSecondary.executeUpdate();
+
+                    updateSecondary.close();
+                    con.close();
+                    return "Exercise secondaryMuscleGroup has been changed";
+                default:
+                    return "choice is out of bounds";
+            }
+        } else {
+            return "You do not have access";
+        }
     }
 
 
-    public void updateWorkout(int workoutId, String loggedInMail) throws SQLException{
-
+    public String updateWorkout(String loggedInMail, WorkoutInfo workoutInfo) throws SQLException{
+        if(workoutInfo.getCreatorEmail().equals(loggedInMail)){
+            Connection con = this.getDatabaseConnection();
+            PreparedStatement pstmt = con.prepareStatement("update training.workoutinfo set name = ?, description = ?, tag_1 = ?, tag_2 = ?, tag_3 = ? where workoutid = ?");
+            pstmt.setString(1, workoutInfo.getName());
+            pstmt.setString(2, workoutInfo.getDescription());
+            pstmt.setString(3, workoutInfo.getTag1());
+            pstmt.setString(4, workoutInfo.getTag2());
+            pstmt.setString(5, workoutInfo.getTag3());
+            pstmt.setInt(6, workoutInfo.getId());
+            pstmt.executeUpdate();
+            pstmt.close();
+            con.close();
+            return "WorkoutInfo has been changed";
+        } else {
+            return "You do not have access";
+        }
     }
 
     public void updateProgram(int programId, String loggedInMail) throws SQLException{
@@ -321,7 +404,72 @@ public class Services {
 
 
 // nedan är alla select statements
+    public ArrayList<Exercise> selectExercises() throws SQLException {
+        ArrayList<Exercise> exercises = new ArrayList<>();
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.exercise");
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()){
+            int id = rs.getInt("exerciseid");
+            String name = rs.getString("name");
+            String des = rs.getString("description");
+            String pri = rs.getString("primarymusclegroup");
+            String sec = rs.getString("secondarymusclegroup");
 
+            exercises.add(new Exercise(id, name, des, pri, sec));
+        }
+        pstmt.close();
+        rs.close();
+        con.close();
+
+        return exercises;
+    }
+
+    public ArrayList<WorkoutInfo> selectWorkoutInfo() throws SQLException {
+        ArrayList<WorkoutInfo> workoutInfos = new ArrayList<>();
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.workoutinfo");
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()){
+            int id = rs.getInt("workoutid");
+            String name = rs.getString("name");
+            String creatorEmail = rs.getString("creatoremail");
+            String description = rs.getString("description");
+            String tag1 = rs.getString("tag_1");
+            String tag2 = rs.getString("tag_2");
+            String tag3 = rs.getString("tag_3");
+
+            workoutInfos.add(new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3));
+        }
+        pstmt.close();
+        rs.close();
+        con.close();
+
+        return workoutInfos;
+    }
+
+    public ArrayList<ProgramInfo> selectProgramInfo() throws SQLException {
+        ArrayList<ProgramInfo> programInfos = new ArrayList<>();
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.programinfo");
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()){
+            int id = rs.getInt("programid");
+            String name = rs.getString("name");
+            String creator = rs.getString("creator");
+            String description = rs.getString("description");
+            String tag1 = rs.getString("tag1");
+            String tag2 = rs.getString("tag2");
+            String tag3 = rs.getString("tag3");
+
+            programInfos.add(new ProgramInfo(id, name, creator, description, tag1, tag2, tag3));
+        }
+        pstmt.close();
+        rs.close();
+        con.close();
+
+        return programInfos;
+    }
 
 
 
