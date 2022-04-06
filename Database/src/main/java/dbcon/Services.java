@@ -23,7 +23,58 @@ public class Services {
             return null;
         }
     }
+    public String login(String email, String password) throws SQLException{
+        String loginMail = "";
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.users where email = ? and password = ?");
+        pstmt.setString(1, email);
+        pstmt.setString(2, Encrypter.encrypt(password));
+        ResultSet rs = pstmt.executeQuery();
 
+        while (rs.next()){
+            loginMail = rs.getString("email");
+        }
+        pstmt.close();
+        rs.close();
+        con.close();
+
+        return loginMail;
+    }
+
+    public boolean checkIfEmailExists(String email) throws SQLException{
+        boolean exists = false;
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.users where email = ?");
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()){
+            String userMail = rs.getString("email");
+            if(userMail!=null){
+                exists = true;
+            }
+        }
+
+        return exists;
+    }
+
+    public boolean checkIfUsernameExists(String username) throws SQLException{
+        boolean exists = false;
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.users where name = ?");
+        ResultSet rs = pstmt.executeQuery();
+
+        while (rs.next()){
+            String userMail = rs.getString("name");
+            if(userMail!=null){
+                exists = true;
+            }
+        }
+
+        return exists;
+    }
+
+
+//nedan är alla inserts
     public void insertNewUser(String email, String name, String password) throws SQLException {
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("call training.insertNewUser(?,?,?)");
@@ -191,7 +242,85 @@ public class Services {
 
 // ovanför är alla removes, sedan update 
 
+    //loggedInMail är mail från GUI/Controller? som den ska ha fått efter anrop till login metoden. Det år så vi kan se om de är inloggade eller ej
+    //denna metoden kan endast köras när man är inloggad, det är inte en forget password metod. Utan det är en när man är inloggad så kan man byta.
+    public String updateLogin(String loggedInMail, String email, String username, String password, int choice) throws SQLException{
+        Connection con = this.getDatabaseConnection();
 
+        switch (choice){
+            case 1:
+                if(!this.checkIfEmailExists(email)){
+                    PreparedStatement updateEmail = con.prepareStatement("update training.users set email = ? where email = ?");
+                    updateEmail.setString(1, email);
+                    updateEmail.setString(2, loggedInMail);
+                    updateEmail.executeUpdate();
+
+                    updateEmail.close();
+                    con.close();
+                    return "email has been changed";
+                } else {
+                    return "invalid mail";
+                }
+
+            case 2:
+                if(!this.checkIfUsernameExists(username)){
+                    PreparedStatement updateName = con.prepareStatement("update training.users set name = ? where email = ?");
+                    updateName.setString(1, username);
+                    updateName.setString(2, loggedInMail);
+                    updateName.executeUpdate();
+
+                    updateName.close();
+                    con.close();
+                    return "username has been changed";
+                } else {
+                    return "invalid username";
+                }
+
+            case 3:
+                PreparedStatement updatePassword = con.prepareStatement("update training.users set password = ? where email = ?");
+                updatePassword.setString(1, Encrypter.encrypt(password));
+                updatePassword.setString(2, loggedInMail);
+                updatePassword.executeUpdate();
+
+                updatePassword.close();
+                con.close();
+                return "password has been changed";
+            default:
+                con.close();
+                return "choice is out of bounds";
+
+        }
+    }
+
+    //Antingen så ska man kunna se alla sina saker genom select statements innan metoden anropas eller längst upp i metoden
+    //TODO: Ska man kunna göra "egna exercises? Cause isåfall behöver vi lägga till i db creator
+    public void updateExercise(int exerciseId, String loggedInMail) throws SQLException{
+
+    }
+
+
+    public void updateWorkout(int workoutId, String loggedInMail) throws SQLException{
+
+    }
+
+    public void updateProgram(int programId, String loggedInMail) throws SQLException{
+
+    }
+
+    public void updateLogExerciseSet(int logExerciseId, String loggedInMail) throws SQLException{
+
+    }
+
+    public void updateLogWorkout(int logWorkoutId, String loggedInMail) throws SQLException{
+
+    }
+
+    public void updateLogProgram(int logProgramId, String loggedInMail) throws SQLException{
+
+    }
+
+
+// nedan är alla select statements
 
 
 
