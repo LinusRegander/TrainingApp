@@ -9,8 +9,10 @@ import javax.swing.*;
 import javax.swing.plaf.OptionPaneUI;
 
 public class Controller {
+    private MainFrame mainFrame;
     private RegisterFrame registerFrame;
     private LoginFrame loginFrame;
+    private Form mainForm;
     private UserManager userManager;
     private User user;
 
@@ -27,32 +29,16 @@ public class Controller {
     public void loginVerification() {
         boolean login = false;
 
-        try {
-            do {
-                if(userManager.existingUser(loginFrame.getFieldContent())) {
-                    user = userManager.getCurrUser();
-                    login = true;
-                    System.out.println("Login complete");
-                }
-                else {
-                    System.out.println("Error failed");
-                }
-            } while (!login);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void openRegFrame() {
-        registerFrame = new RegisterFrame(this);
-    }
-
-    public LoginFrame getLoginFrame() {
-        return loginFrame;
-    }
-
-    public Form getLoginForm() {
-        return loginFrame.getLoginForm();
+        do {
+            if (userManager.existingUser(loginFrame.getFieldContent())) {
+                user = userManager.getCurrUser();
+                mainFrame = new MainFrame(this);
+                login = true;
+                System.out.println("Login complete");
+            } else {
+                System.err.println("Login failed");
+            }
+        } while (!login);
     }
 
     public void registration() {
@@ -72,5 +58,21 @@ public class Controller {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void openRegFrame() {
+        registerFrame = new RegisterFrame(this);
+    }
+
+    public LoginFrame getLoginFrame() {
+        return loginFrame;
+    }
+
+    public Form getMainForm() {
+        return mainFrame.getMainForm();
+    }
+
+    public Form getLoginForm() {
+        return loginFrame.getLoginForm();
     }
 }
