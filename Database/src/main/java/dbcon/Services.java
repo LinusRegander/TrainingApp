@@ -1,9 +1,6 @@
 package dbcon;
 
-import HelperClasses.Encrypter;
-import HelperClasses.Exercise;
-import HelperClasses.ProgramInfo;
-import HelperClasses.WorkoutInfo;
+import HelperClasses.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -223,7 +220,7 @@ public class Services {
         pstmt.close();
         con.close();
     }
-    
+
 // ovanför är alla inserts, sedan remove sedan update
 
     public void removeLoggedExerciseSet(String logExerciseId) throws SQLException{
@@ -263,9 +260,9 @@ public class Services {
     }
 
 
-// ovanför är alla removes, sedan update 
+// ovanför är alla removes, sedan update
 
-    //loggedInMail är mail från GUI/Controller? som den ska ha fått efter anrop till login metoden. Det år så vi kan se om de är inloggade eller ej
+    //loggedInMail är mail från GUI/Controller? som den ska ha fått efter anrop till login metoden. Det är så vi kan se om de är inloggade eller ej
     //denna metoden kan endast köras när man är inloggad, det är inte en forget password metod. Utan det är en när man är inloggad så kan man byta.
     public String updateLogin(String loggedInMail, String email, String username, String password, int choice) throws SQLException{
         Connection con = this.getDatabaseConnection();
@@ -442,6 +439,27 @@ public class Services {
         return exercises;
     }
 
+    public ArrayList<Exercise> selectExercises() throws SQLException {
+        ArrayList<Exercise> exercises = new ArrayList<>();
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.exercise");
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()){
+            int id = rs.getInt("exerciseid");
+            String name = rs.getString("name");
+            String des = rs.getString("description");
+            String pri = rs.getString("primarymusclegroup");
+            String sec = rs.getString("secondarymusclegroup");
+
+            exercises.add(new Exercise(id, name, des, pri, sec));
+        }
+        pstmt.close();
+        rs.close();
+        con.close();
+
+        return exercises;
+    }
+
     public ArrayList<WorkoutInfo> selectWorkoutInfo() throws SQLException {
         ArrayList<WorkoutInfo> workoutInfos = new ArrayList<>();
         Connection con = this.getDatabaseConnection();
@@ -488,7 +506,50 @@ public class Services {
         return programInfos;
     }
 
+    public ArrayList<ExerciseSet> selectExerciseSet(String userEmail) throws SQLException{
+        ArrayList<ExerciseSet> exerciseSets = new ArrayList<>();
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.logexerciseset where email = ?");
+        pstmt.setString(1, userEmail);
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()){
+            int setId = rs.getInt("exercisesetid");
+            int exerciseId = rs.getInt("exerciseid");
+            int workoutId = rs.getInt("logworkoutid");
+            String email = rs.getString("email");
+            int set = rs.getInt("set");
+            int rep = rs.getInt("rep");
+            double weight = rs.getDouble("weight");
 
+            exerciseSets.add(new ExerciseSet(setId, exerciseId, workoutId, email, set, rep, weight));
+        }
+        pstmt.close();
+        rs.close();
+        con.close();
+
+        return exerciseSets;
+    }
+
+    public ArrayList<LogWorkout> selecetLogWorkout(String userEmail) throws SQLException{
+        ArrayList<LogWorkout> logWorkouts = new ArrayList<>();
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.logworkout where email = ?");
+        pstmt.setString(1, userEmail);
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()){
+            int logId = rs.getInt("logworkoutid");
+            int workoutId = rs.getInt("workoutid");
+            String email = rs.getString("email");
+            Date date = rs.getDate("date");
+
+            logWorkouts.add(new LogWorkout(logId, workoutId, email, date));
+        }
+        pstmt.close();
+        rs.close();
+        con.close();
+
+        return logWorkouts;
+    }
 
 
 }
