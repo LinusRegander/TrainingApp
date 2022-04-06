@@ -386,7 +386,24 @@ public class Services {
         }
     }
 
-    public void updateProgram(int programId, String loggedInMail) throws SQLException{
+    public String updateProgram(String loggedInMail, ProgramInfo programInfo) throws SQLException{
+        if(programInfo.getCreator().equals(loggedInMail)){
+            Connection con = this.getDatabaseConnection();
+            PreparedStatement pstmt = con.prepareStatement("update training.programinfo set name = ?, description = ?, tag1 = ?, tag2 = ?, tag3 = ? where programid = ?");
+            pstmt.setString(1, programInfo.getName());
+            pstmt.setString(2, programInfo.getDescription());
+            pstmt.setString(3, programInfo.getTag1());
+            pstmt.setString(4, programInfo.getTag2());
+            pstmt.setString(5, programInfo.getTag3());
+            pstmt.setInt(6, programInfo.getId());
+            pstmt.executeUpdate();
+
+            pstmt.close();
+            con.close();
+            return "ProgramInfo has been changed";
+        } else {
+            return "You do not have access";
+        }
 
     }
 
