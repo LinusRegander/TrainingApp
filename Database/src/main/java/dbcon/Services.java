@@ -404,40 +404,64 @@ public class Services {
 
     }
 
-    public void updateLogExerciseSet(int logExerciseId, String loggedInMail) throws SQLException{
+    //behöver man kunna ändra logworkoutid?
+    public String updateLogExerciseSet(String loggedInMail, LogExerciseSet logExerciseSet) throws SQLException{
+        if(logExerciseSet.getEmail().equals(loggedInMail)){
+            Connection con = this.getDatabaseConnection();
+            PreparedStatement pstmt = con.prepareStatement("update training.logexerciseset set reps = ?, set = ?, weight = ?, logworkoutid = ? where logexerciseid = ?");
+            pstmt.setInt(1, logExerciseSet.getReps());
+            pstmt.setInt(2, logExerciseSet.getSet());
+            pstmt.setDouble(3, logExerciseSet.getWeight());
+            pstmt.setInt(4, logExerciseSet.getLogWorkoutId());
+            pstmt.setInt(5, logExerciseSet.getLogWorkoutId());
+            pstmt.executeUpdate();
+
+            pstmt.close();
+            con.close();
+            return "LogExerciseSet has been changed";
+        } else {
+            return "You do not have access";
+        }
 
     }
 
-    public void updateLogWorkout(int logWorkoutId, String loggedInMail) throws SQLException{
+    //SKA MAN ENDAST KUNNA ÄNDRA DATE OCH EVALUATION? ISÅFALL HADE VI KUNNAT TA BORT GETTERS OCH SETTERS I KLASSERNA
+    public String updateLogWorkout(String loggedInMail, LogWorkout logWorkout) throws SQLException{
+        if(logWorkout.getCreator().equals(loggedInMail)){
+            Connection con = this.getDatabaseConnection();
+            PreparedStatement pstmt = con.prepareStatement("update training.logworkout set date = ?, evaluation = ? where logworkoutid = ?");
+            pstmt.setDate(1, logWorkout.getDate());
+            pstmt.setString(2, logWorkout.getEvaluation());
+            pstmt.setInt(3, logWorkout.getLogWorkoutId());
+            pstmt.executeUpdate();
 
+            pstmt.close();
+            con.close();
+            return "LogWorkout has been changed";
+        } else {
+            return "You do not have access";
+        }
     }
 
-    public void updateLogProgram(int logProgramId, String loggedInMail) throws SQLException{
+    public String updateLogProgram(String loggedInMail, LogProgram logProgram) throws SQLException{
+        if(logProgram.getEmail().equals(loggedInMail)){
+            Connection con = this.getDatabaseConnection();
+            PreparedStatement pstmt = con.prepareStatement("update training.logprogram set date = ?, evaluation = ? where logprogramid = ?");
+            pstmt.setDate(1, logProgram.getDate());
+            pstmt.setString(2, logProgram.getEvaluation());
+            pstmt.setInt(3, logProgram.getLogProgramId());
+            pstmt.executeUpdate();
 
+            pstmt.close();
+            con.close();
+            return "logProgram has been changed";
+        } else {
+            return "You do not have access";
+        }
     }
 
 
 // nedan är alla select statements
-    public ArrayList<Exercise> selectExercises() throws SQLException {
-        ArrayList<Exercise> exercises = new ArrayList<>();
-        Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("Select * from training.exercise");
-        ResultSet rs = pstmt.executeQuery();
-        while(rs.next()){
-            int id = rs.getInt("exerciseid");
-            String name = rs.getString("name");
-            String des = rs.getString("description");
-            String pri = rs.getString("primarymusclegroup");
-            String sec = rs.getString("secondarymusclegroup");
-
-            exercises.add(new Exercise(id, name, des, pri, sec));
-        }
-        pstmt.close();
-        rs.close();
-        con.close();
-
-        return exercises;
-    }
 
     public ArrayList<Exercise> selectExercises() throws SQLException {
         ArrayList<Exercise> exercises = new ArrayList<>();
@@ -541,8 +565,9 @@ public class Services {
             int workoutId = rs.getInt("workoutid");
             String email = rs.getString("email");
             Date date = rs.getDate("date");
+            String evaluation = rs.getString("evaluation");
 
-            logWorkouts.add(new LogWorkout(logId, workoutId, email, date));
+            logWorkouts.add(new LogWorkout(logId, workoutId, email, date, evaluation));
         }
         pstmt.close();
         rs.close();

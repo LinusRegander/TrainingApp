@@ -5,14 +5,16 @@ import java.sql.Date;
 public class LogWorkout {
     private int logWorkoutId;
     private int workoutId;
-    private String name;
+    private String creator;
     private Date date;
+    private String evaluation;
 
-    public LogWorkout(int logWorkoutId, int workoutId, String name, Date date){
+    public LogWorkout(int logWorkoutId, int workoutId, String name, Date date, String evaluation){
         this.logWorkoutId = logWorkoutId;
         this.workoutId = workoutId;
-        this.name = name;
+        this.creator = name;
         this.date = date;
+        this.evaluation = evaluation;
     }
 
     public int getLogWorkoutId() {
@@ -27,16 +29,23 @@ public class LogWorkout {
     public void setWorkoutId(int workoutId) {
         this.workoutId = workoutId;
     }
-    public String getName() {
-        return name;
+    public String getCreator() {
+        return creator;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
     public Date getDate() {
         return date;
     }
     public void setDate(Date date) {
         this.date = date;
+    }
+    public String getEvaluation() {
+        return evaluation;
+    }
+
+    public void setEvaluation(String evaluation) {
+        this.evaluation = evaluation;
     }
 }
