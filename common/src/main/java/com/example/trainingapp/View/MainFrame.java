@@ -11,6 +11,8 @@ import com.example.trainingapp.Controller.Controller;
 
 import java.io.IOException;
 
+import static com.codename1.ui.Image.createImage;
+
 public class MainFrame {
     private Controller controller;
     private Form mainForm;
@@ -48,29 +50,12 @@ public class MainFrame {
 
     public void createToolbar() {
         try {
-            ach = Image.createImage("/achievements16x16.png");
-            home = Image.createImage("/home16x16.png");
-            plus = Image.createImage("/plusSign16x16.png");
-            sear = Image.createImage("/search16x16.png");
-            sett = Image.createImage("/settings16x16.png");
-            stat = Image.createImage("/stats16x16.png");
-            user = Image.createImage("/user16x16.png");
-            lAch.setIcon(ach);
-            lHome.setIcon(home);
-            lPlus.setIcon(plus);
-            lSear.setIcon(sear);
-            lSett.setIcon(sett);
-            lStat.setIcon(stat);
-            lUser.setIcon(user);
-
-            mainForm.add(lAch);
-            mainForm.add(lHome);
-            mainForm.add(lPlus);
-            mainForm.add(lSear);
-            mainForm.add(lSett);
-            mainForm.add(lStat);
-            mainForm.add(lUser);
-        } catch (Exception e) {}
+            Label i = new Label();
+            Image img = Image.createImage("achievements16x16.png");
+            i.setIcon(img);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void testToolbar() {
