@@ -165,29 +165,31 @@ public class Services {
         con.close();
     }
 
-    //TODO: lägg till en check så att dessa PK redan finns.
-    //TODO: Lägg till check på program så och kolla med inloggade creatorEmail och se så att de matchar. Annars får de inte ändra
-    public void insertWorkoutInToProgram(int programId, int workoutId) throws SQLException{
-        Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("Call training.insertWorkoutInToProgram(?,?)");
-        pstmt.setInt(1, programId);
-        pstmt.setInt(1, workoutId);
+    public String insertWorkoutInToProgram(String loggedInMail,ProgramInfo programInfo, WorkoutInfo workoutInfo) throws SQLException{
+        if(programInfo.getCreator().equals(loggedInMail)){
+            Connection con = this.getDatabaseConnection();
+            PreparedStatement pstmt = con.prepareStatement("Call training.insertWorkoutInToProgram(?,?)");
+            pstmt.setInt(1, programInfo.getId());
+            pstmt.setInt(1, workoutInfo.getId());
 
-        pstmt.execute();
-        pstmt.close();
-        con.close();
+            pstmt.execute();
+            pstmt.close();
+            con.close();
+            return "Workout has been added to " + programInfo.getName();
+        } else {
+            return "You do not have access";
+        }
     }
 
     //email == inloggade email
-    //TODO: lägg till check på PK så att de finns.
-    public void logExerciseSet(int exerciseId, int set, int reps, double weight, String email, int logWorkoutId) throws SQLException{
+    public void logExerciseSet(Exercise exercise, int set, int reps, double weight, String loggedInMmail, int logWorkoutId) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training,logExerciseSet(?,?,?,?,?,?)");
-        pstmt.setInt(1, exerciseId);
+        pstmt.setInt(1, exercise.getId());
         pstmt.setInt(2, set);
         pstmt.setInt(3, reps);
         pstmt.setDouble(4, weight);
-        pstmt.setString(5, email);
+        pstmt.setString(5, loggedInMmail);
         pstmt.setInt(6, logWorkoutId);
 
         pstmt.execute();
