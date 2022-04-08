@@ -530,8 +530,8 @@ public class Services {
         return programInfos;
     }
 
-    public ArrayList<ExerciseSet> selectExerciseSet(String userEmail) throws SQLException{
-        ArrayList<ExerciseSet> exerciseSets = new ArrayList<>();
+    public ArrayList<LogExerciseSet> selectExerciseSet(String userEmail) throws SQLException{
+        ArrayList<LogExerciseSet> logExerciseSets = new ArrayList<>();
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.logexerciseset where email = ?");
         pstmt.setString(1, userEmail);
@@ -545,16 +545,16 @@ public class Services {
             int rep = rs.getInt("rep");
             double weight = rs.getDouble("weight");
 
-            exerciseSets.add(new ExerciseSet(setId, exerciseId, workoutId, email, set, rep, weight));
+            logExerciseSets.add(new LogExerciseSet(setId, exerciseId,  set, rep, weight, email, workoutId));
         }
         pstmt.close();
         rs.close();
         con.close();
 
-        return exerciseSets;
+        return logExerciseSets;
     }
 
-    public ArrayList<LogWorkout> selecetLogWorkout(String userEmail) throws SQLException{
+    public ArrayList<LogWorkout> selectLogWorkout(String userEmail) throws SQLException{
         ArrayList<LogWorkout> logWorkouts = new ArrayList<>();
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.logworkout where email = ?");
@@ -574,6 +574,28 @@ public class Services {
         con.close();
 
         return logWorkouts;
+    }
+
+    public ArrayList<LogProgram> selectLogProgram(String userEmail) throws SQLException{
+        ArrayList<LogProgram> logPrograms = new ArrayList<>();
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.logprogram where email = ?");
+        pstmt.setString(1, userEmail);
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()){
+            int logId = rs.getInt("logprogramid");
+            String email = rs.getString("email");
+            int programId = rs.getInt("programid");
+            Date date = rs.getDate("date");
+            String evaluation = rs.getString("evaluation");
+
+            logPrograms.add(new LogProgram(logId, email, programId, date, evaluation));
+        }
+        pstmt.close();
+        rs.close();
+        con.close();
+
+        return logPrograms;
     }
 
 
