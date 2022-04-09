@@ -18,6 +18,11 @@
             <artifactId>codenameone-core</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.codenameone</groupId>
+            <artifactId>codenameone-core</artifactId>
+            <version>7.0.61</version>
+        </dependency>
 
         <!-- INJECT DEPENDENCIES -->
     </dependencies>

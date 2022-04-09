@@ -4,11 +4,21 @@
     defaultSourceDPIInt: "0";
 }
 
+LogForm {
+    color: red;
+    background-color: red;
+}
+
+PlanForm {
+    color: green;
+    background-color: green;
+}
+
 /** Style for Button class */
 Button {
     font-family: "native:MainLight";
     font-size: 3mm;
-    color: red;
+    color: black;
 }
 
 /** Style for App Title Bar Text */

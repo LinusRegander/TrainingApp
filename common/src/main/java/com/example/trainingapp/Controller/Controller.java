@@ -3,15 +3,17 @@ package com.example.trainingapp.Controller;
 import com.codename1.ui.Form;
 import com.example.trainingapp.Model.User;
 import com.example.trainingapp.View.*;
-import com.sun.org.apache.xml.internal.utils.NSInfo;
 
 import javax.swing.*;
 import javax.swing.plaf.OptionPaneUI;
+import java.text.Normalizer;
 
 public class Controller {
     private MainFrame mainFrame;
     private RegisterFrame registerFrame;
     private LoginFrame loginFrame;
+    private LogFrame logFrame;
+    private PlanFrame planFrame;
     private UserManager userManager;
     private User user;
 
@@ -66,6 +68,14 @@ public class Controller {
 
     public void openRegFrame() {
         registerFrame = new RegisterFrame(this);
+    }
+
+    public void openPlanFrame() {
+        planFrame = new PlanFrame(this);
+    }
+
+    public void openLogFrame() {
+        logFrame = new LogFrame(this);
     }
 
     public Form getLoginForm() {
