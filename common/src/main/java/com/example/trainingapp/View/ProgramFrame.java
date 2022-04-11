@@ -31,6 +31,7 @@ public class ProgramFrame {
         form.show();
     }
 
+
     public void programNavbar() {
         container = new Container(BoxLayout.y());
         container.setUIID("Navbar");
@@ -52,7 +53,7 @@ public class ProgramFrame {
         container.add(program);
 
         settings = new Button ("Settings");
-        program.addActionListener(l -> controller.openSettingsFrame());
+        settings.addActionListener(l -> controller.openSettingsFrame());
         container.add(settings);
 
         form.add(SOUTH, container);
