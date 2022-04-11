@@ -3,6 +3,7 @@ package com.example.trainingapp.Controller;
 import com.codename1.ui.Form;
 import com.example.trainingapp.Model.User;
 import com.example.trainingapp.View.*;
+import jdk.tools.jmod.Main;
 
 import javax.swing.*;
 import javax.swing.plaf.OptionPaneUI;
@@ -24,9 +25,10 @@ public class Controller {
     }
 
     public void Setup() {
-        loginFrame = new LoginFrame(this);
-        user = new User();
-        userManager = new UserManager(user);
+        MainFrame mainFrame = new MainFrame(this);
+        //loginFrame = new LoginFrame(this);
+        //user = new User();
+        //userManager = new UserManager(user);
     }
 
     public void loginVerification() {
