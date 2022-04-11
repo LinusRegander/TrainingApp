@@ -4,14 +4,24 @@
     defaultSourceDPIInt: "0";
 }
 
-LogForm {
-    color: red;
-    background-color: red;
+Navbar {
+    background-color: #7092be;
 }
 
-PlanForm {
-    color: green;
+ProgramForm {
+    background-color: yellow;
+}
+
+AchievementForm {
+    background-color: blue;
+}
+
+CreateForm {
     background-color: green;
+}
+
+SettingsForm {
+    background-color: red;
 }
 
 /** Style for Button class */

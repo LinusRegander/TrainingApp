@@ -1,30 +1,17 @@
 package com.example.trainingapp.View;
 
-import com.codename1.capture.Capture;
-import com.codename1.components.ImageViewer;
-import com.codename1.io.FileSystemStorage;
-import com.codename1.io.Log;
-import com.codename1.io.Storage;
-import com.codename1.ui.*;
+import com.codename1.ui.Button;
+import com.codename1.ui.Container;
+import com.codename1.ui.Form;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.plaf.Style;
-import com.codename1.ui.plaf.UIManager;
-import com.codename1.ui.util.ImageIO;
-import com.codename1.ui.util.Resources;
 import com.example.trainingapp.Controller.Controller;
 
-import javax.swing.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import static com.codename1.ui.Image.createImage;
 import static com.codename1.ui.layouts.BorderLayout.SOUTH;
 
-public class MainFrame {
+public class AchievementFrame {
     private Controller controller;
-    private Form mainForm;
+    private Form form;
     private Container container;
     private Button home;
     private Button achievement;
@@ -32,18 +19,19 @@ public class MainFrame {
     private Button program;
     private Button settings;
 
-    public MainFrame(Controller controller) {
+    public AchievementFrame(Controller controller) {
         this.controller = controller;
-        mainFrame();
+        achievementForm();
     }
 
-    public void mainFrame() {
-        mainForm = new Form(null, new BorderLayout());
-        mainForm();
-        mainForm.show();
+    public void achievementForm() {
+        form = new Form(null, new BorderLayout());
+        form.setUIID("AchievementForm");
+        achievementNavbar();
+        form.show();
     }
 
-    public void mainForm() {
+    public void achievementNavbar() {
         container = new Container(BoxLayout.y());
         container.setUIID("Navbar");
 
@@ -67,6 +55,6 @@ public class MainFrame {
         program.addActionListener(l -> controller.openSettingsFrame());
         container.add(settings);
 
-        mainForm.add(SOUTH, container);
+        form.add(SOUTH, container);
     }
 }

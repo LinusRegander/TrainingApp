@@ -12,8 +12,10 @@ public class Controller {
     private MainFrame mainFrame;
     private RegisterFrame registerFrame;
     private LoginFrame loginFrame;
-    private LogFrame logFrame;
-    private PlanFrame planFrame;
+    private ProgramFrame programFrame;
+    private SettingsFrame settingsFrame;
+    private CreateFrame createFrame;
+    private AchievementFrame achievementFrame;
     private UserManager userManager;
     private User user;
 
@@ -70,12 +72,19 @@ public class Controller {
         registerFrame = new RegisterFrame(this);
     }
 
-    public void openPlanFrame() {
-        planFrame = new PlanFrame(this);
+    public void openAchievementFrame() {
+        achievementFrame = new AchievementFrame(this);
     }
 
-    public void openLogFrame() {
-        logFrame = new LogFrame(this);
+    public void openCreateFrame() {
+        createFrame = new CreateFrame(this);
+    }
+    public void openProgramFrame() {
+        programFrame = new ProgramFrame(this);
+    }
+
+    public void openSettingsFrame() {
+        settingsFrame = new SettingsFrame(this);
     }
 
     public Form getLoginForm() {
