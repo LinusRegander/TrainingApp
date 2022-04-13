@@ -1,11 +1,6 @@
 package dbcon;
 
 import HelperClasses.*;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -182,14 +177,14 @@ public class Services {
     }
 
     //email == inloggade email
-    public void logExerciseSet(Exercise exercise, int set, int reps, double weight, String loggedInMmail, int logWorkoutId) throws SQLException{
+    public void logExerciseSet(Exercise exercise, int set, int reps, double weight, String loggedInMail, int logWorkoutId) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training,logExerciseSet(?,?,?,?,?,?)");
         pstmt.setInt(1, exercise.getId());
         pstmt.setInt(2, set);
         pstmt.setInt(3, reps);
         pstmt.setDouble(4, weight);
-        pstmt.setString(5, loggedInMmail);
+        pstmt.setString(5, loggedInMail);
         pstmt.setInt(6, logWorkoutId);
 
         pstmt.execute();
@@ -598,6 +593,22 @@ public class Services {
         con.close();
 
         return logPrograms;
+    }
+
+    public String getUsername(String email) throws SQLException{
+        String username = null;
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("select name from training.users where email = ?");
+        pstmt.setString(1, email);
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()){
+            username = rs.getString("name");
+        }
+
+        rs.close();
+        pstmt.close();
+        con.close();
+        return username;
     }
 
 
