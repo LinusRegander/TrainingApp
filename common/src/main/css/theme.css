@@ -4,8 +4,6 @@
     defaultSourceDPIInt: "0";
 }
 
-
-
 Navbar {
     background-color: #7092be;
 }
@@ -19,7 +17,7 @@ AchievementForm {
 }
 
 CreateForm {
-    background-color: green;
+    background-color: white;
 }
 
 SettingsForm {
