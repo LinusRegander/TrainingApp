@@ -66,6 +66,10 @@ public class Controller {
         }
     }
 
+    public Form getMainForm() {
+        return mainFrame.getMainForm();
+    }
+
     public void openMainFrame() {
         mainFrame = new MainFrame(this);
     }

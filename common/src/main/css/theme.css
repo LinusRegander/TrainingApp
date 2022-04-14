@@ -4,16 +4,41 @@
     defaultSourceDPIInt: "0";
 }
 
+WorkoutContainer {
+    border-style: solid;
+}
+
+a {
+    border-style: solid;
+}
+
+b {
+    border-style: solid;
+}
+
+
+c {
+    border-style: solid;
+}
+
+d {
+    border-style: solid;
+}
+
+e {
+    border-style: solid;
+}
+
 Navbar {
     background-color: #7092be;
 }
 
 ProgramForm {
-    background-color: yellow;
+    background-color: white;
 }
 
 AchievementForm {
-    background-color: blue;
+    background-color: white;
 }
 
 CreateForm {
@@ -21,7 +46,7 @@ CreateForm {
 }
 
 SettingsForm {
-    background-color: red;
+    background-color: white;
 }
 
 /** Style for Button class */

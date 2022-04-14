@@ -1,19 +1,19 @@
 package com.example.trainingapp.View;
 
-import com.codename1.ui.Button;
-import com.codename1.ui.Container;
-import com.codename1.ui.FontImage;
-import com.codename1.ui.Form;
+import com.codename1.ui.*;
+import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.Controller;
 
+import static com.codename1.ui.layouts.BorderLayout.NORTH;
 import static com.codename1.ui.layouts.BorderLayout.SOUTH;
 
 public class SettingsFrame {
     private Controller controller;
     private Form form;
     private Container container;
+    private Container topbar;
     private Button home;
     private Button achievement;
     private Button create;
@@ -28,11 +28,50 @@ public class SettingsFrame {
     public void settingsForm() {
         form = new Form(null, new BorderLayout());
         form.setUIID("SettingsForm");
-        settingsNavbar();
+        topbar();
+        navbar();
         form.show();
     }
 
-    public void settingsNavbar() {
+    public void topbar() {
+        topbar = new Container(BoxLayout.y());
+        topbar.setUIID("Topbar");
+
+        Container top = new Container(BoxLayout.xCenter());
+        topbar.add(top);
+
+        Button back = new Button();
+        back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
+        back.addActionListener((e) -> {
+            Form mainForm = controller.getMainForm();
+            mainForm.setToolbar(new Toolbar());
+            mainForm.setBackCommand(new Command("Back") {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    form.showBack();
+                }
+            });
+            mainForm.show();
+        });
+        top.add(back);
+
+        Label title = new Label("FitHub");
+        top.add(title);
+
+        Button accept = new Button();
+        accept.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DONE, accept.getUnselectedStyle()));
+        top.add(accept);
+
+        Container bottom = new Container(BoxLayout.xCenter());
+        topbar.add(bottom);
+
+        Label time = new Label("PlaceHolder Time");
+        bottom.add(time);
+
+        form.add(NORTH, topbar);
+    }
+
+    public void navbar() {
         container = new Container(BoxLayout.xCenter());
         container.setUIID("Navbar");
 

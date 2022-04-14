@@ -6,6 +6,7 @@ import com.codename1.io.FileSystemStorage;
 import com.codename1.io.Log;
 import com.codename1.io.Storage;
 import com.codename1.ui.*;
+import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Style;
@@ -20,12 +21,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import static com.codename1.ui.Image.createImage;
+import static com.codename1.ui.layouts.BorderLayout.NORTH;
 import static com.codename1.ui.layouts.BorderLayout.SOUTH;
 
 public class MainFrame {
     private Controller controller;
     private Form mainForm;
     private Container container;
+    private Container topbar;
     private Button home;
     private Button achievement;
     private Button create;
@@ -34,16 +37,16 @@ public class MainFrame {
 
     public MainFrame(Controller controller) {
         this.controller = controller;
-        mainFrame();
-    }
-
-    public void mainFrame() {
-        mainForm = new Form(null, new BorderLayout());
         mainForm();
-        mainForm.show();
     }
 
     public void mainForm() {
+        mainForm = new Form(null, new BorderLayout());
+        navbar();
+        mainForm.show();
+    }
+
+    public void navbar() {
         container = new Container(BoxLayout.xCenter());
         container.setUIID("Navbar");
 
@@ -73,5 +76,9 @@ public class MainFrame {
         container.add(settings);
 
         mainForm.add(SOUTH, container);
+    }
+
+    public Form getMainForm() {
+        return mainForm;
     }
 }
