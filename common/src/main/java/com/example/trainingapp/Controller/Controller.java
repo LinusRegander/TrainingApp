@@ -114,14 +114,12 @@ public class Controller {
 
     public void register(String username, String email, String password) {
         try {
-
-
             if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {
                 services.insertNewUser(email, username, password);
             }
         }
         catch(Exception e){
-
+            e.printStackTrace();
         }
     }
 
@@ -133,7 +131,7 @@ public class Controller {
             }
         }
         catch(Exception e){
-
+            e.printStackTrace();
         }
     }
 
@@ -145,7 +143,7 @@ public class Controller {
             }
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
     }
 
@@ -215,8 +213,5 @@ public class Controller {
             }
         }
     }
-
-
-
-
+    
 }
