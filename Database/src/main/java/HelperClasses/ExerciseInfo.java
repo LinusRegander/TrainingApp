@@ -1,13 +1,13 @@
 package HelperClasses;
 
-public class Exercise {
+public class ExerciseInfo {
     private int id;
     private String name;
     private String description;
     private String primary;
     private String secondary;
 
-    public Exercise(int id, String name, String description, String primary, String secondary){
+    public ExerciseInfo(int id, String name, String description, String primary, String secondary){
         this.id = id;
         this.name = name;
         this.description = description;

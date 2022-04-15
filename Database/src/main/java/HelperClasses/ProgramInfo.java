@@ -3,20 +3,22 @@ package HelperClasses;
 public class ProgramInfo {
     private int id;
     private String name;
-    private String creator;
+    private String creatorEmail;
     private String description;
     private String tag1;
     private String tag2;
     private String tag3;
+    private String creatorUsername;
 
-    public ProgramInfo(int id, String name, String creator, String description, String tag1, String tag2, String tag3){
+    public ProgramInfo(int id, String name, String creatorEmail, String description, String tag1, String tag2, String tag3, String creatorUsername){
         this.id = id;
         this.name = name;
-        this.creator = creator;
+        this.creatorEmail = creatorEmail;
         this.description = description;
         this.tag1 = tag1;
         this.tag2 = tag2;
         this.tag3 = tag3;
+        this.creatorUsername=creatorUsername;
     }
 
 
@@ -32,11 +34,11 @@ public class ProgramInfo {
     public void setName(String name) {
         this.name = name;
     }
-    public String getCreator() {
-        return creator;
+    public String getCreatorEmail() {
+        return creatorEmail;
     }
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setCreatorEmail(String creatorEmail) {
+        this.creatorEmail = creatorEmail;
     }
     public String getDescription() {
         return description;
@@ -61,5 +63,13 @@ public class ProgramInfo {
     }
     public void setTag3(String tag3) {
         this.tag3 = tag3;
+    }
+
+    public String getCreatorUsername() {
+        return creatorUsername;
+    }
+
+    public void setCreatorUsername(String creatorUsername) {
+        this.creatorUsername = creatorUsername;
     }
 }

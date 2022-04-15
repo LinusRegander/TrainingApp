@@ -8,14 +8,16 @@ public class WorkoutInfo {
     private String tag1;
     private String tag2;
     private String tag3;
+    private String creatorUsername;
 
-    public WorkoutInfo(int id, String name, String creatorEmail, String description, String tag1, String tag2, String tag3){
+    public WorkoutInfo(int id, String name, String creatorEmail, String description, String tag1, String tag2, String tag3, String creatorUsername){
         this.name = name;
         this.creatorEmail = creatorEmail;
         this.description = description;
         this.tag1 = tag1;
         this.tag2 = tag2;
         this.tag3 = tag3;
+        this.creatorUsername = creatorUsername;
     }
 
     public int getId(){return id;}
@@ -55,5 +57,11 @@ public class WorkoutInfo {
     }
     public void setTag3(String tag3) {
         this.tag3 = tag3;
+    }
+    public String getCreatorUsername() {
+        return creatorUsername;
+    }
+    public void setCreatorUsername(String creatorUsername) {
+        this.creatorUsername = creatorUsername;
     }
 }

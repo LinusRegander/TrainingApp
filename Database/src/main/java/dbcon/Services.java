@@ -57,7 +57,7 @@ public class Services {
     public boolean checkIfUsernameExists(String username) throws SQLException{
         boolean exists = false;
         Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("Select * from training.users where name = ?");
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.users where username = ?");
         ResultSet rs = pstmt.executeQuery();
 
         while (rs.next()){
@@ -90,11 +90,11 @@ public class Services {
 
 
 //nedan är alla inserts
-    public void insertNewUser(String email, String name, String password) throws SQLException {
+    public void insertNewUser(String email, String username, String password) throws SQLException {
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("call training.insertNewUser(?,?,?)");
         pstmt.setString(1, email);
-        pstmt.setString(2, name);
+        pstmt.setString(2, username);
         pstmt.setString(3, Encrypter.encrypt(password));
 
         pstmt.execute();
@@ -161,7 +161,7 @@ public class Services {
     }
 
     public String insertWorkoutInToProgram(String loggedInMail,ProgramInfo programInfo, WorkoutInfo workoutInfo) throws SQLException{
-        if(programInfo.getCreator().equals(loggedInMail)){
+        if(programInfo.getCreatorEmail().equals(loggedInMail)){
             Connection con = this.getDatabaseConnection();
             PreparedStatement pstmt = con.prepareStatement("Call training.insertWorkoutInToProgram(?,?)");
             pstmt.setInt(1, programInfo.getId());
@@ -177,7 +177,7 @@ public class Services {
     }
 
     //email == inloggade email
-    public void logExerciseSet(Exercise exercise, int set, int reps, double weight, String loggedInMail, int logWorkoutId) throws SQLException{
+    public void logExerciseSet(ExerciseInfo exercise, int set, int reps, double weight, String loggedInMail, int logWorkoutId) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training,logExerciseSet(?,?,?,?,?,?)");
         pstmt.setInt(1, exercise.getId());
@@ -194,12 +194,13 @@ public class Services {
 
     //Ska denna köras automatiskt efter logExerciseSet har exekverats?
 
-    public void insertNewLogworkout(String email, int workoutid, Date date) throws SQLException{
+    public void insertNewLogworkout(String email, int workoutid, Date date, String evaluation) throws SQLException{
         Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("Call training.insertNewLogWorkout(?,?,?)");
+        PreparedStatement pstmt = con.prepareStatement("Call training.insertNewLogWorkout(?,?,?,?)");
         pstmt.setString(1, email);
         pstmt.setInt(2, workoutid);
         pstmt.setDate(3, date);
+        pstmt.setString(4, evaluation);
         pstmt.execute();
         pstmt.close();
         con.close();
@@ -381,7 +382,7 @@ public class Services {
     }
 
     public String updateProgram(String loggedInMail, ProgramInfo programInfo) throws SQLException{
-        if(programInfo.getCreator().equals(loggedInMail)){
+        if(programInfo.getCreatorEmail().equals(loggedInMail)){
             Connection con = this.getDatabaseConnection();
             PreparedStatement pstmt = con.prepareStatement("update training.programinfo set name = ?, description = ?, tag1 = ?, tag2 = ?, tag3 = ? where programid = ?");
             pstmt.setString(1, programInfo.getName());
@@ -460,8 +461,8 @@ public class Services {
 
 // nedan är alla select statements
 
-    public ArrayList<Exercise> selectExercises() throws SQLException {
-        ArrayList<Exercise> exercises = new ArrayList<>();
+    public ArrayList<ExerciseInfo> selectExercises() throws SQLException {
+        ArrayList<ExerciseInfo> exercises = new ArrayList<>();
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.exercise");
         ResultSet rs = pstmt.executeQuery();
@@ -472,7 +473,7 @@ public class Services {
             String pri = rs.getString("primarymusclegroup");
             String sec = rs.getString("secondarymusclegroup");
 
-            exercises.add(new Exercise(id, name, des, pri, sec));
+            exercises.add(new ExerciseInfo(id, name, des, pri, sec));
         }
         pstmt.close();
         rs.close();
@@ -484,7 +485,9 @@ public class Services {
     public ArrayList<WorkoutInfo> selectWorkoutInfo() throws SQLException {
         ArrayList<WorkoutInfo> workoutInfos = new ArrayList<>();
         Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("Select * from training.workoutinfo");
+        PreparedStatement pstmt = con.prepareStatement("Select name, workoutid, description, tag_1, tag_2, tag_3, creatoremail, " +
+                "username from training.workoutinfo " +
+                "join training.users on workoutinfo.creatoremail = users.email");
         ResultSet rs = pstmt.executeQuery();
         while(rs.next()){
             int id = rs.getInt("workoutid");
@@ -494,8 +497,9 @@ public class Services {
             String tag1 = rs.getString("tag_1");
             String tag2 = rs.getString("tag_2");
             String tag3 = rs.getString("tag_3");
+            String username = rs.getString("username");
 
-            workoutInfos.add(new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3));
+            workoutInfos.add(new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, username));
         }
         pstmt.close();
         rs.close();
@@ -507,7 +511,9 @@ public class Services {
     public ArrayList<ProgramInfo> selectProgramInfo() throws SQLException {
         ArrayList<ProgramInfo> programInfos = new ArrayList<>();
         Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("Select * from training.programinfo");
+        PreparedStatement pstmt = con.prepareStatement("Select name, programid, description, tag1, tag2, tag3, creatoremail, " +
+                "username from training.programinfo " +
+                "join training.users on programinfo.creatoremail = users.email");
         ResultSet rs = pstmt.executeQuery();
         while(rs.next()){
             int id = rs.getInt("programid");
@@ -517,8 +523,9 @@ public class Services {
             String tag1 = rs.getString("tag1");
             String tag2 = rs.getString("tag2");
             String tag3 = rs.getString("tag3");
+            String username = rs.getString("username");
 
-            programInfos.add(new ProgramInfo(id, name, creator, description, tag1, tag2, tag3));
+            programInfos.add(new ProgramInfo(id, name, creator, description, tag1, tag2, tag3, username));
         }
         pstmt.close();
         rs.close();

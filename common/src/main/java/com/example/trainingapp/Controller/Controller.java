@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.plaf.OptionPaneUI;
 import java.text.Normalizer;
 
+
 public class Controller {
     private MainFrame mainFrame;
     private RegisterFrame registerFrame;
