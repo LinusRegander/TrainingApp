@@ -8,11 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="training-javase" />
         <module name="training-common" />
-      </profile>
-      <profile name="Annotation profile for training" enabled="true">
-        <sourceOutputDir name="../target/generated-sources/annotations" />
-        <sourceTestOutputDir name="../target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
         <module name="JDBC" />
       </profile>
     </annotationProcessing>

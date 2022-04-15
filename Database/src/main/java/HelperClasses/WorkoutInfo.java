@@ -11,6 +11,7 @@ public class WorkoutInfo {
     private String creatorUsername;
 
     public WorkoutInfo(int id, String name, String creatorEmail, String description, String tag1, String tag2, String tag3, String creatorUsername){
+        this.id = id;
         this.name = name;
         this.creatorEmail = creatorEmail;
         this.description = description;

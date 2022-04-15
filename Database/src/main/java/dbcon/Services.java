@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Services {
+
     public Connection getDatabaseConnection(){
         String url = "jdbc:postgresql://pgserver.mau.se:5432/am2578";
         String user = "am2578";
@@ -117,19 +118,27 @@ public class Services {
     }
 
     //TODO: lägg till en privat metod som checkar om exerciseId samt workoutId redan finns. genom select XX where YY + if() sats
-    public void insertExerciseInToWorkout(int exerciseId, int workoutId) throws SQLException{
-        Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("call training.insertExerciseInToWorkout(?,?)");
-        pstmt.setInt(1, exerciseId);
-        pstmt.setInt(2, workoutId);
+    public String insertExerciseInToWorkout(String loggedInMail, ExerciseInfo exercise, WorkoutInfo workout) throws SQLException{
+        if(workout.getCreatorEmail().equals(loggedInMail)) {
+            Connection con = this.getDatabaseConnection();
+            PreparedStatement pstmt = con.prepareStatement("call training.insertExerciseInToWorkout(?,?)");
+            pstmt.setInt(1, exercise.getId());
+            pstmt.setInt(2, workout.getId());
 
-        pstmt.execute();
-        pstmt.close();
-        con.close();
+            pstmt.execute();
+            pstmt.close();
+            con.close();
+
+            return "Exercise has been added to " + workout.getName();
+        }
+        else {
+            return "You do not have access";
+        }
+
     }
 
     //creatorEmail == email som man är inloggad på
-    public void insertNewWorkout(String name, String creatorEmail, String description, String tag1, String tag2, String tag3) throws SQLException{
+    public WorkoutInfo insertNewWorkout(String name, String creatorEmail, String description, String tag1, String tag2, String tag3) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training.insertNewWorkout(?,?,?,?,?,?)");
         pstmt.setString(1, name);
@@ -142,10 +151,12 @@ public class Services {
         pstmt.execute();
         pstmt.close();
         con.close();
+        int id = getWorkoutId(creatorEmail);
+        return new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, getUsername(creatorEmail));
     }
 
     //creatorEmail == email som man är inloggad på
-    public void insertNewProgram(String name, String creatorEmail, String description, String tag1, String tag2, String tag3) throws SQLException{
+    public ProgramInfo insertNewProgram(String name, String creatorEmail, String description, String tag1, String tag2, String tag3) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training.insertNewProgram(?,?,?,?,?,?,?)");
         pstmt.setString(1, name);
@@ -158,6 +169,8 @@ public class Services {
         pstmt.execute();
         pstmt.close();
         con.close();
+        int id = getProgramId(creatorEmail);
+        return  new ProgramInfo(id, name, creatorEmail, description, tag1, tag2, tag3, getUsername(creatorEmail));
     }
 
     public String insertWorkoutInToProgram(String loggedInMail,ProgramInfo programInfo, WorkoutInfo workoutInfo) throws SQLException{
@@ -179,7 +192,7 @@ public class Services {
     //email == inloggade email
     public void logExerciseSet(ExerciseInfo exercise, int set, int reps, double weight, String loggedInMail, int logWorkoutId) throws SQLException{
         Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("Call training,logExerciseSet(?,?,?,?,?,?)");
+        PreparedStatement pstmt = con.prepareStatement("Call training.logExerciseSet(?,?,?,?,?,?)");
         pstmt.setInt(1, exercise.getId());
         pstmt.setInt(2, set);
         pstmt.setInt(3, reps);
@@ -616,6 +629,36 @@ public class Services {
         pstmt.close();
         con.close();
         return username;
+    }
+
+    public int getWorkoutId(String email) throws SQLException {
+        int id = 0;
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("select MAX(workoutid) from training.workoutinfo where email = ?");
+        pstmt.setString(1, email);
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()) {
+            id = rs.getInt("workoutid");
+        }
+        rs.close();
+        pstmt.close();
+        con.close();
+        return id;
+    }
+
+    public int getProgramId(String email) throws SQLException {
+        int id = 0;
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("select MAX(programid) from training.programinfo where email = ?");
+        pstmt.setString(1, email);
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()) {
+            id = rs.getInt("programid");
+        }
+        rs.close();
+        pstmt.close();
+        con.close();
+        return id;
     }
 
 

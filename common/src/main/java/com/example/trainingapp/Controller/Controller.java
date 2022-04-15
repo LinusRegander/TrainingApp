@@ -1,13 +1,18 @@
 package com.example.trainingapp.Controller;
 
+import HelperClasses.*;
 import com.codename1.ui.Form;
 import com.example.trainingapp.Model.User;
 import com.example.trainingapp.View.*;
+import dbcon.Services;
 import jdk.tools.jmod.Main;
 
 import javax.swing.*;
 import javax.swing.plaf.OptionPaneUI;
+import java.security.Provider;
+import java.sql.SQLException;
 import java.text.Normalizer;
+import java.util.ArrayList;
 
 
 public class Controller {
@@ -20,6 +25,14 @@ public class Controller {
     private AchievementFrame achievementFrame;
     private UserManager userManager;
     private User user;
+    private Services services;
+    private String loggedInEmail;
+    private ArrayList<ExerciseInfo> exerciseList = new ArrayList<>();
+    private ArrayList<WorkoutInfo> workoutList = new ArrayList<>();
+    private ArrayList<ProgramInfo> programList = new ArrayList<>();
+    private ArrayList<LogExerciseSet> logExerciseSetList = new ArrayList<>();
+    private ArrayList<LogWorkout> logWorkoutList = new ArrayList<>();
+    private ArrayList<LogProgram> logProgramList = new ArrayList<>();
 
     public Controller() {
         Setup();
@@ -27,6 +40,7 @@ public class Controller {
 
     public void Setup() {
         mainFrame = new MainFrame(this);
+        services = new Services();
         //loginFrame = new LoginFrame(this);
         //user = new User();
         //userManager = new UserManager(user);
@@ -97,4 +111,112 @@ public class Controller {
     public Form getLoginForm() {
         return loginFrame.getLoginForm();
     }
+
+    public void register(String username, String email, String password) {
+        try {
+
+
+            if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {
+                services.insertNewUser(email, username, password);
+            }
+        }
+        catch(Exception e){
+
+        }
+    }
+
+    public void addWorkoutInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<ExerciseInfo> exerciseInfos){
+        try {
+            WorkoutInfo workout =  services.insertNewWorkout(name, creatorEmail, description, tag1, tag2, tag3);
+            for(ExerciseInfo e : exerciseInfos){
+                services.insertExerciseInToWorkout(loggedInEmail, e, workout);
+            }
+        }
+        catch(Exception e){
+
+        }
+    }
+
+    public void addProgramInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<WorkoutInfo> workoutInfos){
+        try{
+            ProgramInfo program = services.insertNewProgram(name, creatorEmail, description, tag1, tag2, tag3);
+            for(WorkoutInfo e : workoutInfos){
+                services.insertWorkoutInToProgram(loggedInEmail, program, e);
+            }
+        }
+        catch (Exception e){
+
+        }
+    }
+
+    public void login(String email, String password){
+        try {
+            loggedInEmail = services.login(email,password);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void logout(){
+        loggedInEmail = "";
+        logExerciseSetList = new ArrayList<>();
+        logWorkoutList = new ArrayList<>();
+        logProgramList = new ArrayList<>();
+    }
+
+    //todo: refresh knapp på gui som updaterar specifika listor.
+    public void updateExerciseList(){
+        try{
+            exerciseList = services.selectExercises();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void updateWorkoutList(){
+        try{
+            workoutList = services.selectWorkoutInfo();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void updateProgramList(){
+        try{
+            programList = services.selectProgramInfo();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+    public void updateLogExerciseSetList(){
+        if(!loggedInEmail.isEmpty()){
+            try {
+                logExerciseSetList = services.selectExerciseSet(loggedInEmail);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void updateLogWorkoutList(){
+        if(!loggedInEmail.isEmpty()){
+            try {
+                logWorkoutList = services.selectLogWorkout(loggedInEmail);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+    public void updateLogProgramList(){
+        if(!loggedInEmail.isEmpty()){
+            try{
+                logProgramList = services.selectLogProgram(loggedInEmail);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
 }
