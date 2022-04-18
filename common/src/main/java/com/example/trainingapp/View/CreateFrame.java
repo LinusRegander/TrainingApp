@@ -14,23 +14,25 @@ import java.util.Date;
 import static com.codename1.ui.layouts.BorderLayout.*;
 
 public class CreateFrame {
-    private Controller controller;
-    private Form form;
-    private Container navbar;
-    private Container topbar;
-    private Container titleContainer;
-    private Container prepareContainer;
-    private Container workContainer;
-    private Container restContainer;
-    private Container cyclesContainer;
-    private Container setsContainer;
-    private Container workoutContainer;
-    private Container topBar;
-    private Button home;
     private Button achievement;
+    private Button addExercise;
+    private Button addSet;
     private Button create;
+    private Button home;
     private Button program;
     private Button settings;
+    private Container navbar;
+    private Container topbar;
+    private Container workoutContainer;
+    private Controller controller;
+    private Form form;
+    private Label averageWeight;
+    private Label repAmount;
+    private Label setAmount;
+    private Label totalWeight;
+    private Label weightAmount;
+    private String textFromArea;
+    private TextArea textArea;
     private TextField workout;
 
     public CreateFrame(Controller controller) {
@@ -96,44 +98,44 @@ public class CreateFrame {
         workout = new TextField();
         a.add(workout);
 
-        TextArea textArea = new TextArea();
+        textArea = new TextArea();
         a.add(textArea);
 
         Container b = new Container(BoxLayout.yCenter());
         b.setUIID("b");
         workoutContainer.add(b);
 
-        Button addSet = new Button("+ Add Set");
+        addSet = new Button("+ Add Set");
         b.add(addSet);
 
         Container c = new Container(BoxLayout.xCenter());
         c.setUIID("c");
         workoutContainer.add(c);
 
-        Label totalWeight = new Label("Total Weight");
+        totalWeight = new Label("Total Weight");
         c.add(totalWeight);
 
-        Label averageWeight = new Label("Average Weight");
+        averageWeight = new Label("Average Weight");
         c.add(averageWeight);
 
         Container d = new Container(BoxLayout.yCenter());
         d.setUIID("d");
         workoutContainer.add(d);
 
-        Button addExercise = new Button("+ Add Exercise");
+        addExercise = new Button("+ Add Exercise");
         d.add(addExercise);
 
         Container e = new Container(BoxLayout.xCenter());
         e.setUIID("e");
         workoutContainer.add(e);
 
-        Label weightAmount = new Label("Total Weight");
+        weightAmount = new Label("Total Weight");
         e.add(weightAmount);
 
-        Label setAmount = new Label("Total Sets");
+        setAmount = new Label("Total Sets");
         e.add(setAmount);
 
-        Label repAmount = new Label("Total Reps");
+        repAmount = new Label("Total Reps");
         e.add(repAmount);
 
         form.add(CENTER, workoutContainer);
@@ -158,16 +160,24 @@ public class CreateFrame {
         create.addActionListener(l -> controller.openCreateFrame());
         navbar.add(create);
 
-        program = new Button ();
+        program = new Button();
         program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
         program.addActionListener(l -> controller.openProgramFrame());
         navbar.add(program);
 
-        settings = new Button ();
+        settings = new Button();
         settings.setIcon(FontImage.createMaterial(FontImage.MATERIAL_SETTINGS, settings.getUnselectedStyle()));
         settings.addActionListener(l -> controller.openSettingsFrame());
         navbar.add(settings);
 
         form.add(SOUTH, navbar);
+    }
+
+    public void setTextArea(TextArea textArea) {
+        this.textArea = textArea;
+    }
+
+    public TextArea getTextArea() {
+        return textArea;
     }
 }

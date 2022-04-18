@@ -1,6 +1,7 @@
 package com.example.trainingapp.Controller;
 
 import HelperClasses.*;
+import com.codename1.db.Database;
 import com.codename1.ui.Form;
 import com.example.trainingapp.Model.User;
 import com.example.trainingapp.View.*;
@@ -23,6 +24,7 @@ public class Controller {
     private SettingsFrame settingsFrame;
     private CreateFrame createFrame;
     private AchievementFrame achievementFrame;
+    private Database database;
     private UserManager userManager;
     private User user;
     private Services services;

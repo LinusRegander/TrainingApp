@@ -21,19 +21,25 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import static com.codename1.ui.Image.createImage;
-import static com.codename1.ui.layouts.BorderLayout.NORTH;
-import static com.codename1.ui.layouts.BorderLayout.SOUTH;
+import static com.codename1.ui.layouts.BorderLayout.*;
 
 public class MainFrame {
-    private Controller controller;
-    private Form mainForm;
-    private Container container;
-    private Container topbar;
     private Button home;
     private Button achievement;
     private Button create;
     private Button program;
     private Button settings;
+    private Button statistics;
+    private Button trainingLog;
+    private Controller controller;
+    private Container container;
+    private Container mainContainer;
+    private Container topbar;
+    private Form mainForm;
+    private Label sets;
+    private Label something;
+    private Label totalWeight;
+    private Label workouts;
 
     public MainFrame(Controller controller) {
         this.controller = controller;
@@ -42,8 +48,54 @@ public class MainFrame {
 
     public void mainForm() {
         mainForm = new Form(null, new BorderLayout());
+        topbar();
+        homeArea();
         navbar();
         mainForm.show();
+    }
+
+    public void topbar() {
+        topbar = new Container(BoxLayout.y());
+        topbar.setUIID("Topbar");
+
+        Container top = new Container(BoxLayout.xCenter());
+        topbar.add(top);
+
+        Label title = new Label("FitHub");
+        top.add(title);
+
+        mainForm.add(NORTH, topbar);
+    }
+
+    public void homeArea() {
+        mainContainer = new Container(BoxLayout.yCenter());
+        mainForm.add(CENTER, mainContainer);
+
+        statistics = new Button("Statistics");
+        mainContainer.add(statistics);
+
+        Container b = new Container(BoxLayout.xCenter());
+        b.setUIID("b");
+        mainContainer.add(b);
+
+        workouts = new Label("Workouts");
+        b.add(workouts);
+
+        sets = new Label("Sets");
+        b.add(sets);
+
+        Container c = new Container(BoxLayout.xCenter());
+        c.setUIID("c");
+        mainContainer.add(c);
+
+        totalWeight = new Label("Total Weight");
+        c.add(totalWeight);
+
+        something = new Label("Something");
+        c.add(something);
+
+        trainingLog = new Button("Training Log >");
+        mainContainer.add(trainingLog);
     }
 
     public void navbar() {

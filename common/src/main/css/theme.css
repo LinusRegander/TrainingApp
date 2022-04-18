@@ -16,7 +16,6 @@ b {
     border-style: solid;
 }
 
-
 c {
     border-style: solid;
 }
@@ -26,6 +25,10 @@ d {
 }
 
 e {
+    border-style: solid;
+}
+
+Topbar {
     border-style: solid;
 }
 
