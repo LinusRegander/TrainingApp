@@ -4,32 +4,86 @@
     defaultSourceDPIInt: "0";
 }
 
-WorkoutContainer {
+LoginForm {
+    background-color: white;
+}
+
+RegisterForm {
+    background-color: white;
+}
+
+StatisticsContainer {
+    border-radius: 25px;
     border-style: solid;
+    border-color: black;
+}
+
+SettingsContainer {
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+}
+
+Settings1 {
+    background-color: #7092be;
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+}
+
+SettingsProfile {
+    border-style: solid;
+    border-color: black;
+}
+
+SettingsDark {
+    border-style: solid;
+    border-color: black;
+}
+
+SettingsLight {
+    border-style: solid;
+    border-color: black;
+}
+
+mainSC {
+    background-color: #7092be;
+}
+
+mainTS {
+    border-radius: 25px;
+}
+
+mainWS {
+    border-radius: 25px;
 }
 
 a {
+    border-radius: 25px;
+    background-color: #7092be;
     border-style: solid;
+    border-color: black;
 }
 
 b {
+    border-radius: 25px;
+    background-color: #7092be;
     border-style: solid;
+    border-color: black;
 }
 
 c {
+    border-radius: 25px;
+    background-color: #7092be;
     border-style: solid;
-}
-
-d {
-    border-style: solid;
+    border-color: black;
 }
 
 e {
+    border-radius: 25px;
+    background-color: #7092be;
     border-style: solid;
-}
-
-Topbar {
-    border-style: solid;
+    border-color: black;
 }
 
 Navbar {
@@ -48,8 +102,37 @@ CreateForm {
     background-color: white;
 }
 
+MainForm {
+    background-color: white;
+}
+
 SettingsForm {
     background-color: white;
+}
+
+Label {
+    color: black;
+}
+
+LoginButton {
+    background-color: #7092be;
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+}
+
+RegisterButton {
+    background-color: #7092be;
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+}
+
+RegisterB {
+    background-color: #7092be;
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
 }
 
 /** Style for Button class */
@@ -57,6 +140,12 @@ Button {
     font-family: "native:MainLight";
     font-size: 3mm;
     color: black;
+}
+
+TrainingLog {
+    border-radius: 25px;
+    background-color: #7092be;
+    text-align: center;
 }
 
 /** Style for App Title Bar Text */

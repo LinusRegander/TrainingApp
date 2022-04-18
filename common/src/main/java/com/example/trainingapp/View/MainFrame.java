@@ -29,7 +29,6 @@ public class MainFrame {
     private Button create;
     private Button program;
     private Button settings;
-    private Button statistics;
     private Button trainingLog;
     private Controller controller;
     private Container container;
@@ -38,6 +37,7 @@ public class MainFrame {
     private Form mainForm;
     private Label sets;
     private Label something;
+    private Label statistics;
     private Label totalWeight;
     private Label workouts;
 
@@ -48,6 +48,7 @@ public class MainFrame {
 
     public void mainForm() {
         mainForm = new Form(null, new BorderLayout());
+        mainForm.setUIID("MainForm");
         topbar();
         homeArea();
         navbar();
@@ -68,15 +69,23 @@ public class MainFrame {
     }
 
     public void homeArea() {
-        mainContainer = new Container(BoxLayout.yCenter());
+        mainContainer = new Container(BoxLayout.y());
         mainForm.add(CENTER, mainContainer);
 
-        statistics = new Button("Statistics");
-        mainContainer.add(statistics);
+        Container statisticsContainer = new Container(BoxLayout.y());
+        statisticsContainer.setUIID("StatisticsContainer");
+        mainContainer.add(statisticsContainer);
+
+        Container a = new Container(BoxLayout.y());
+        a.setUIID("mainSC");
+        statisticsContainer.add(a);
+
+        statistics = new Label("Statistics from last 7 days:");
+        a.add(statistics);
 
         Container b = new Container(BoxLayout.xCenter());
-        b.setUIID("b");
-        mainContainer.add(b);
+        b.setUIID("mainWS");
+        statisticsContainer.add(b);
 
         workouts = new Label("Workouts");
         b.add(workouts);
@@ -85,8 +94,8 @@ public class MainFrame {
         b.add(sets);
 
         Container c = new Container(BoxLayout.xCenter());
-        c.setUIID("c");
-        mainContainer.add(c);
+        c.setUIID("mainTS");
+        statisticsContainer.add(c);
 
         totalWeight = new Label("Total Weight");
         c.add(totalWeight);
@@ -95,6 +104,7 @@ public class MainFrame {
         c.add(something);
 
         trainingLog = new Button("Training Log >");
+        trainingLog.setUIID("TrainingLog");
         mainContainer.add(trainingLog);
     }
 

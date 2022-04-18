@@ -6,19 +6,22 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.Controller;
 
-import static com.codename1.ui.layouts.BorderLayout.NORTH;
-import static com.codename1.ui.layouts.BorderLayout.SOUTH;
+import static com.codename1.ui.layouts.BorderLayout.*;
 
 public class SettingsFrame {
-    private Controller controller;
-    private Form form;
-    private Container container;
-    private Container topbar;
     private Button home;
     private Button achievement;
     private Button create;
+    private Button darkMode;
+    private Button lightMode;
+    private Button profile;
     private Button program;
     private Button settings;
+    private Container container;
+    private Container settingsContainer;
+    private Container topbar;
+    private Controller controller;
+    private Form form;
 
     public SettingsFrame(Controller controller) {
         this.controller = controller;
@@ -29,6 +32,7 @@ public class SettingsFrame {
         form = new Form(null, new BorderLayout());
         form.setUIID("SettingsForm");
         topbar();
+        settingsFrame();
         navbar();
         form.show();
     }
@@ -40,35 +44,33 @@ public class SettingsFrame {
         Container top = new Container(BoxLayout.xCenter());
         topbar.add(top);
 
-        Button back = new Button();
-        back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
-        back.addActionListener((e) -> {
-            Form mainForm = controller.getMainForm();
-            mainForm.setToolbar(new Toolbar());
-            mainForm.setBackCommand(new Command("Back") {
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    form.showBack();
-                }
-            });
-            mainForm.show();
-        });
-        top.add(back);
-
         Label title = new Label("FitHub");
         top.add(title);
 
-        Button accept = new Button();
-        accept.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DONE, accept.getUnselectedStyle()));
-        top.add(accept);
-
-        Container bottom = new Container(BoxLayout.xCenter());
-        topbar.add(bottom);
-
-        Label time = new Label("PlaceHolder Time");
-        bottom.add(time);
-
         form.add(NORTH, topbar);
+    }
+
+    public void settingsFrame() {
+        settingsContainer = new Container(BoxLayout.y());
+        settingsContainer.setUIID("SettingsContainer");
+
+        Container a = new Container(BoxLayout.y());
+        a.setUIID("Settings1");
+        settingsContainer.add(a);
+
+        profile = new Button("Profile");
+        profile.setUIID("SettingsProfile");
+        a.add(profile);
+
+        darkMode = new Button("Dark Mode");
+        darkMode.setUIID("SettingsDark");
+        a.add(darkMode);
+
+        lightMode = new Button("Light Mode");
+        lightMode.setUIID("SettingsLight");
+        a.add(lightMode);
+
+        form.add(CENTER, settingsContainer);
     }
 
     public void navbar() {

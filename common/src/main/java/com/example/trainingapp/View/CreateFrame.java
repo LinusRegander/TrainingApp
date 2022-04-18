@@ -103,14 +103,14 @@ public class CreateFrame {
 
         Container b = new Container(BoxLayout.yCenter());
         b.setUIID("b");
-        workoutContainer.add(b);
+        a.add(b);
 
         addSet = new Button("+ Add Set");
         b.add(addSet);
 
         Container c = new Container(BoxLayout.xCenter());
         c.setUIID("c");
-        workoutContainer.add(c);
+        a.add(c);
 
         totalWeight = new Label("Total Weight");
         c.add(totalWeight);

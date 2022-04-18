@@ -6,15 +6,16 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.Controller;
 
 public class RegisterFrame {
+    private Button rButton;
+    private Container registerContainer;
     private Controller controller;
     private Form registerForm;
-    private Label uLabel;
-    private TextField uTextField;
-    private Label pLabel;
-    private TextField pTextField;
     private Label eLabel;
+    private Label pLabel;
+    private Label uLabel;
     private TextField eTextField;
-    private Button rButton;
+    private TextField pTextField;
+    private TextField uTextField;
 
     public RegisterFrame(Controller controller) {
         this.controller = controller;
@@ -23,27 +24,32 @@ public class RegisterFrame {
 
     public void registerFrame() {
         registerForm = new Form(null, BoxLayout.y());
+        registerForm.setUIID("RegisterForm");
         registerForm();
         registerForm.show();
     }
 
     public void registerForm() {
+        registerContainer = new Container(BoxLayout.y());
+        registerForm.add(registerContainer);
+
         uLabel = new Label("Choose Username:");
-        registerForm.add(uLabel);
+        registerContainer .add(uLabel);
         uTextField = new TextField();
-        registerForm.add(uTextField);
+        registerContainer .add(uTextField);
 
         pLabel = new Label("Choose Password:");
-        registerForm.add(pLabel);
+        registerContainer .add(pLabel);
         pTextField = new TextField();
-        registerForm.add(pTextField);
+        registerContainer .add(pTextField);
 
         eLabel = new Label("Choose Email:");
-        registerForm.add(eLabel);
+        registerContainer .add(eLabel);
         eTextField = new TextField();
-        registerForm.add(eTextField);
+        registerContainer .add(eTextField);
 
         rButton = new Button("Register");
+        rButton.setUIID("RegisterB");
         rButton.addActionListener((e) -> {
                     Form loginForm = controller.getLoginForm();
                         loginForm.setToolbar(new Toolbar());
@@ -56,7 +62,7 @@ public class RegisterFrame {
                     loginForm.show();
                 });
         rButton.addActionListener(l -> {controller.registration();});
-        registerForm.add(rButton);
+        registerContainer .add(rButton);
     }
 
     public String getUserName() {

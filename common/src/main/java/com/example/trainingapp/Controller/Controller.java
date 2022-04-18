@@ -41,11 +41,10 @@ public class Controller {
     }
 
     public void Setup() {
-        mainFrame = new MainFrame(this);
         services = new Services();
-        //loginFrame = new LoginFrame(this);
-        //user = new User();
-        //userManager = new UserManager(user);
+        loginFrame = new LoginFrame(this);
+        user = new User();
+        userManager = new UserManager(user);
     }
 
     public void loginVerification() {
