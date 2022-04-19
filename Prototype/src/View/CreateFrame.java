@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CreateFrame {
+    /*
     private JButton achievement;
     private JButton addExercise;
     private JButton addSet;
@@ -167,4 +168,6 @@ public class CreateFrame {
     public TextArea getTextArea() {
         return textArea;
     }
+
+     */
 }
