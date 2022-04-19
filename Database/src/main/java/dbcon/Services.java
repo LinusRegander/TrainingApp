@@ -64,7 +64,7 @@ public class Services {
         ResultSet rs = pstmt.executeQuery();
 
         while (rs.next()){
-            String userMail = rs.getString("name");
+            String userMail = rs.getString("username");
             if(userMail!=null){
                 exists = true;
             }

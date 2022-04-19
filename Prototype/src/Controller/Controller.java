@@ -4,6 +4,7 @@ import HelperClasses.*;
 import View.*;
 import dbcon.Services;
 
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -105,6 +106,7 @@ public class Controller {
             System.out.println(loggedInEmail);
             if(!loggedInEmail.isEmpty()){
                 openMainFrame();
+                loginFrame.getLoginForm().dispatchEvent(new WindowEvent(loginFrame.getLoginForm(), WindowEvent.WINDOW_CLOSING));
             }
         } catch (SQLException e){
             e.printStackTrace();
@@ -168,6 +170,10 @@ public class Controller {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setLoginFrame(LoginFrame loginFrame){
+        this.loginFrame = loginFrame;
     }
     
 }

@@ -4,6 +4,8 @@ import Controller.Controller;
 
 public class MainTest {
     public static void main(String[] args) {
-        LoginFrame loginFrame = new LoginFrame(new Controller());
+        Controller controller = new Controller();
+        LoginFrame loginFrame = new LoginFrame(controller);
+        controller.setLoginFrame(loginFrame);
     }
 }
