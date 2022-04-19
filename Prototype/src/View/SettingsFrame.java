@@ -1,25 +1,24 @@
 package View;
 
 import Controller.Controller;
-import com.codename1.ui.layouts.BorderLayout;
-import com.codename1.ui.layouts.BoxLayout;
 
-import static com.codename1.ui.layouts.BorderLayout.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class SettingsFrame {
-    private Button home;
-    private Button achievement;
-    private Button create;
-    private Button darkMode;
-    private Button lightMode;
-    private Button profile;
-    private Button program;
-    private Button settings;
-    private Container container;
-    private Container settingsContainer;
-    private Container topbar;
+    private JButton home;
+    private JButton achievement;
+    private JButton create;
+    private JButton darkMode;
+    private JButton lightMode;
+    private JButton profile;
+    private JButton program;
+    private JButton settings;
+    private JPanel container;
+    private JPanel settingsContainer;
+    private JPanel topbar;
     private Controller controller;
-    private Form form;
+    private JFrame form;
 
     public SettingsFrame(Controller controller) {
         this.controller = controller;
@@ -27,8 +26,8 @@ public class SettingsFrame {
     }
 
     public void settingsForm() {
-        form = new Form(null, new BorderLayout());
-        form.setUIID("SettingsForm");
+        form = new JFrame(); //(SettingsFrame, new BoxLayout(form.set));
+        form.setLayout(new BoxLayout(form, BoxLayout.X_AXIS));
         topbar();
         settingsFrame();
         navbar();
@@ -36,70 +35,68 @@ public class SettingsFrame {
     }
 
     public void topbar() {
-        topbar = new Container(BoxLayout.y());
-        topbar.setUIID("Topbar");
+        JPanel topbar = new JPanel();
+        topbar.setLayout(new BoxLayout(topbar, BoxLayout.X_AXIS));
 
-        Container top = new Container(BoxLayout.xCenter());
+        JPanel top = new JPanel();   //(BoxLayout.xCenter());
+        top.setLayout(new BoxLayout(top, BoxLayout.X_AXIS));
         topbar.add(top);
 
         Label title = new Label("FitHub");
         top.add(title);
 
-        form.add(NORTH, topbar);
+        form.add(topbar, BorderLayout.NORTH); //NORTH
     }
 
     public void settingsFrame() {
-        settingsContainer = new Container(BoxLayout.y());
-        settingsContainer.setUIID("SettingsContainer");
+        settingsContainer = new JPanel(); //(BoxLayout.y());
+        settingsContainer.setLayout(new BoxLayout(settingsContainer, BoxLayout.Y_AXIS));
 
-        Container a = new Container(BoxLayout.y());
-        a.setUIID("Settings1");
+        JPanel a = new JPanel(); //(BoxLayout.y());
+        a.setLayout(new BoxLayout(a, BoxLayout.Y_AXIS));
+
+
         settingsContainer.add(a);
 
-        profile = new Button("Profile");
-        profile.setUIID("SettingsProfile");
+        profile = new JButton("Profile");
+
         a.add(profile);
 
-        darkMode = new Button("Dark Mode");
-        darkMode.setUIID("SettingsDark");
+        darkMode = new JButton("Dark Mode");
+
         a.add(darkMode);
 
-        lightMode = new Button("Light Mode");
-        lightMode.setUIID("SettingsLight");
+        lightMode = new JButton("Light Mode");
+
         a.add(lightMode);
 
-        form.add(CENTER, settingsContainer);
+        form.add(settingsContainer, BorderLayout.CENTER); //CENTER
     }
 
     public void navbar() {
-        container = new Container(BoxLayout.xCenter());
-        container.setUIID("Navbar");
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        home = new Button();
-        home.setIcon(FontImage.createMaterial(FontImage.MATERIAL_HOME, home.getUnselectedStyle()));
+        home = new JButton();
         home.addActionListener(l -> controller.openMainFrame());
-        container.add(home);
+        panel.add(home);
 
-        achievement = new Button();
-        achievement.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_RATE, achievement.getUnselectedStyle()));
+        achievement = new JButton();
         achievement.addActionListener(l -> controller.openAchievementFrame());
-        container.add(achievement);
+        panel.add(achievement);
 
-        create = new Button();
-        create.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, create.getUnselectedStyle()));
+        create = new JButton();
         create.addActionListener(l -> controller.openCreateFrame());
-        container.add(create);
+        panel.add(create);
 
-        program = new Button ();
-        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
+        program = new JButton ();
         program.addActionListener(l -> controller.openProgramFrame());
-        container.add(program);
+        panel.add(program);
 
-        settings = new Button ();
-        settings.setIcon(FontImage.createMaterial(FontImage.MATERIAL_SETTINGS, settings.getUnselectedStyle()));
+        settings = new JButton ();
         settings.addActionListener(l -> controller.openSettingsFrame());
         container.add(settings);
 
-        form.add(SOUTH, container);
+        form.add(panel);
     }
 }
