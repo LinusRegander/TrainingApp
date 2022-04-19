@@ -1,22 +1,22 @@
 package View;
 
 import Controller.Controller;
-import com.codename1.ui.events.ActionEvent;
-import com.codename1.ui.events.ActionListener;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RegisterFrame implements ActionListener {
-    private Button rButton;
-    private Container registerContainer;
+    private JButton rButton;
+    private JPanel registerContainer;
     private Controller controller;
-    private Form registerForm;
-    private Label eLabel;
-    private Label pLabel;
-    private Label uLabel;
-    private TextField eTextField;
-    private TextField pTextField;
-    private TextField uTextField;
+    private JFrame registerForm;
+    private JLabel eLabel;
+    private JLabel pLabel;
+    private JLabel uLabel;
+    private JTextField eTextField;
+    private JTextField pTextField;
+    private JTextField uTextField;
 
     public RegisterFrame(Controller controller) {
         this.controller = controller;
@@ -24,33 +24,34 @@ public class RegisterFrame implements ActionListener {
     }
 
     public void registerFrame() {
-        registerForm = new Form(null, BoxLayout.y());
-        registerForm.setUIID("RegisterForm");
+        registerForm = new JFrame(); //(null, BoxLayout.y());
+        registerForm.setLayout(new BoxLayout(registerForm, BoxLayout.Y_AXIS));
+
         registerForm();
         registerForm.show();
     }
 
     public void registerForm() {
-        registerContainer = new Container(BoxLayout.y());
+        registerContainer = new JPanel(); //(BoxLayout.y());
+        registerContainer.setLayout(new BoxLayout(registerContainer, BoxLayout.Y_AXIS));
         registerForm.add(registerContainer);
 
-        uLabel = new Label("Choose Username:");
+        uLabel = new JLabel("Choose Username:");
         registerContainer .add(uLabel);
-        uTextField = new TextField();
+        uTextField = new JTextField();
         registerContainer .add(uTextField);
 
-        pLabel = new Label("Choose Password:");
+        pLabel = new JLabel("Choose Password:");
         registerContainer .add(pLabel);
-        pTextField = new TextField();
+        pTextField = new JTextField();
         registerContainer .add(pTextField);
 
-        eLabel = new Label("Choose Email:");
+        eLabel = new JLabel("Choose Email:");
         registerContainer .add(eLabel);
-        eTextField = new TextField();
+        eTextField = new JTextField();
         registerContainer .add(eTextField);
 
-        rButton = new Button("Register");
-        rButton.setUIID("RegisterB");
+        rButton = new JButton("Register");
         rButton.addActionListener(this);
         registerContainer .add(rButton);
     }
