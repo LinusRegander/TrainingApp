@@ -53,7 +53,6 @@ public class Controller {
         do {
             if (userManager.existingUser(loginFrame.getFieldContent())) {
                 user = userManager.getCurrUser();
-                mainFrame = new MainFrame(this);
                 login = true;
                 openMainFrame();
                 System.out.println("Login complete");

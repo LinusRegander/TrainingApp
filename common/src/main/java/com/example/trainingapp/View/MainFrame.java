@@ -105,6 +105,7 @@ public class MainFrame {
 
         trainingLog = new Button("Training Log >");
         trainingLog.setUIID("TrainingLog");
+        trainingLog.addActionListener(l -> controller.openProgramFrame());
         mainContainer.add(trainingLog);
     }
 
