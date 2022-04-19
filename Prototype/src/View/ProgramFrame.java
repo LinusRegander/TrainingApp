@@ -1,106 +1,100 @@
 package View;
 
 import Controller.Controller;
-import com.codename1.ui.events.ActionEvent;
-import com.codename1.ui.layouts.BorderLayout;
-import com.codename1.ui.layouts.BoxLayout;
 
-import static com.codename1.ui.layouts.BorderLayout.NORTH;
-import static com.codename1.ui.layouts.BorderLayout.SOUTH;
+import javax.swing.*;
+import java.awt.*;
+
 
 public class ProgramFrame {
     private Controller controller;
-    private Form form;
-    private Container container;
-    private Container topbar;
-    private Button home;
-    private Button achievement;
-    private Button create;
-    private Button program;
-    private Button settings;
+    private JFrame frame;
+    private JPanel panel;
+    private JPanel topbar;
+    private JButton home;
+    private JButton achievement;
+    private JButton create;
+    private JButton program;
+    private JButton settings;
+    private JPanel programPanel;
 
     public ProgramFrame (Controller controller) {
         this.controller = controller;
-        programForm();
-    }
-
-    public void programForm() {
-        form = new Form(null, new BorderLayout());
-        form.setUIID("ProgramForm");
+        frame = new JFrame();
+        frame.setBounds(0,0,300,600);
+        frame.setLayout(new BoxLayout(frame, BoxLayout.PAGE_AXIS));
+        frame.setVisible(true);
         topbar();
         navbar();
-        form.show();
+        programPanel();
     }
 
     public void topbar() {
-        topbar = new Container(BoxLayout.y());
-        topbar.setUIID("Topbar");
-
-        Container top = new Container(BoxLayout.xCenter());
-        topbar.add(top);
-
-        Button back = new Button();
-        back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
-        back.addActionListener((e) -> {
-            Form mainForm = controller.getMainForm();
-            mainForm.setToolbar(new Toolbar());
-            mainForm.setBackCommand(new Command("Back") {
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    form.showBack();
-                }
-            });
-            mainForm.show();
-        });
-        top.add(back);
+        topbar = new JPanel();
+        topbar.setLayout(new BoxLayout(topbar, BoxLayout.PAGE_AXIS));
 
         Label title = new Label("FitHub");
-        top.add(title);
+        topbar.add(title);
 
-        Button accept = new Button();
-        accept.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DONE, accept.getUnselectedStyle()));
-        top.add(accept);
+        frame.add(topbar);
+    }
 
-        Container bottom = new Container(BoxLayout.xCenter());
-        topbar.add(bottom);
+    public void programPanel(){
+        programPanel = new JPanel();
+        programPanel.setLayout(new BoxLayout(programPanel, BoxLayout.PAGE_AXIS));
 
-        Label time = new Label("PlaceHolder Time");
-        bottom.add(time);
+        JRadioButton workout = new JRadioButton("Workout");
+        JRadioButton program = new JRadioButton("Program");
+        workout.setSelected(true);
+        ButtonGroup workoutProgram = new ButtonGroup();
 
-        form.add(NORTH, topbar);
+        workoutProgram.add(workout);
+        workoutProgram.add(program);
+
+        JRadioButton community = new JRadioButton("Community");
+        JRadioButton mine = new JRadioButton("Mine");
+        mine.setSelected(true);
+        ButtonGroup communityMine = new ButtonGroup();
+
+        communityMine.add(community);
+        communityMine.add(mine);
+
+        String[] data = {"Workout 1, Workout 2, Workout 3, Workout 4, Workout 5"};
+        JList<String> resultList= new JList<>(data);
+
+        programPanel.add(workout);
+        programPanel.add(program);
+        programPanel.add(community);
+        programPanel.add(mine);
+        programPanel.add(resultList);
+
     }
 
 
     public void navbar() {
-        container = new Container(BoxLayout.xCenter());
-        container.setUIID("Navbar");
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        home = new Button();
-        home.setIcon(FontImage.createMaterial(FontImage.MATERIAL_HOME, home.getUnselectedStyle()));
+        home = new JButton();
         home.addActionListener(l -> controller.openMainFrame());
-        container.add(home);
+        panel.add(home);
 
-        achievement = new Button();
-        achievement.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_RATE, achievement.getUnselectedStyle()));
+        achievement = new JButton();
         achievement.addActionListener(l -> controller.openAchievementFrame());
-        container.add(achievement);
+        panel.add(achievement);
 
-        create = new Button();
-        create.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, create.getUnselectedStyle()));
+        create = new JButton();
         create.addActionListener(l -> controller.openCreateFrame());
-        container.add(create);
+        panel.add(create);
 
-        program = new Button ();
-        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
+        program = new JButton ();
         program.addActionListener(l -> controller.openProgramFrame());
-        container.add(program);
+        panel.add(program);
 
-        settings = new Button ();
-        settings.setIcon(FontImage.createMaterial(FontImage.MATERIAL_SETTINGS, settings.getUnselectedStyle()));
+        settings = new JButton ();
         settings.addActionListener(l -> controller.openSettingsFrame());
-        container.add(settings);
+        panel.add(settings);
 
-        form.add(SOUTH, container);
-
+        frame.add(panel);
     }
 }
