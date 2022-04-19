@@ -33,7 +33,6 @@ public class Controller {
 
     public void Setup() {
         services = new Services();
-        loginFrame = new LoginFrame(this);
     }
 
     public void openLoginFrame() {

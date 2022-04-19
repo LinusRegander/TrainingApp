@@ -1,131 +1,109 @@
 package View;
 
 import Controller.Controller;
-import com.codename1.ui.layouts.BorderLayout;
 
 import javax.swing.*;
+import java.awt.*;
 
-import static com.codename1.ui.layouts.BorderLayout.*;
 
 public class MainFrame {
-    private Button home;
-    private Button achievement;
-    private Button create;
-    private Button program;
-    private Button settings;
-    private Button trainingLog;
     private Controller controller;
-    private Container container;
-    private Container mainContainer;
-    private Container topbar;
-    private Form mainForm;
-    private Label sets;
-    private Label something;
-    private Label statistics;
-    private Label totalWeight;
-    private Label workouts;
+    private JButton home;
+    private JButton achievement;
+    private JButton create;
+    private JButton program;
+    private JButton settings;
+    private JButton trainingLog;
+    private JLabel sets;
+    private JLabel something;
+    private JLabel statistics;
+    private JLabel totalWeight;
+    private JLabel workouts;
+    private JPanel panel;
+    private JPanel mainPanel;
+    private JPanel navbar;
+    private JPanel topbar;
 
     public MainFrame(Controller controller) {
         this.controller = controller;
-        mainForm();
+        mainFrame();
     }
 
-    public void mainForm() {
-        mainForm = new Form(null, new BorderLayout());
-        mainForm.setUIID("MainForm");
+    public void mainFrame() {
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         topbar();
         homeArea();
         navbar();
-        mainForm.show();
     }
 
     public void topbar() {
-        topbar = new Container(BoxLayout.y());
-        topbar.setUIID("Topbar");
-
-        Container top = new Container(BoxLayout.xCenter());
-        topbar.add(top);
+        topbar = new JPanel();
+        topbar.setLayout(new BoxLayout(topbar, BoxLayout.X_AXIS));
 
         Label title = new Label("FitHub");
-        top.add(title);
+        topbar.add(title);
 
-        mainForm.add(NORTH, topbar);
+        panel.add(topbar);
     }
 
     public void homeArea() {
-        mainContainer = new Container(BoxLayout.y());
-        mainForm.add(CENTER, mainContainer);
+        mainPanel = new JPanel();
+        panel.add(mainPanel);
 
-        Container statisticsContainer = new Container(BoxLayout.y());
-        statisticsContainer.setUIID("StatisticsContainer");
-        mainContainer.add(statisticsContainer);
+        JPanel a = new JPanel();
+        mainPanel.add(a);
 
-        Container a = new Container(BoxLayout.y());
-        a.setUIID("mainSC");
-        statisticsContainer.add(a);
-
-        statistics = new Label("Statistics from last 7 days:");
+        statistics = new JLabel("Statistics from last 7 days:");
         a.add(statistics);
 
-        Container b = new Container(BoxLayout.xCenter());
-        b.setUIID("mainWS");
-        statisticsContainer.add(b);
+        JPanel b = new JPanel();
+        mainPanel.add(b);
 
-        workouts = new Label("Workouts");
+        workouts = new JLabel("Workouts");
         b.add(workouts);
 
-        sets = new Label("Sets");
+        sets = new JLabel("Sets");
         b.add(sets);
 
-        Container c = new Container(BoxLayout.xCenter());
-        c.setUIID("mainTS");
-        statisticsContainer.add(c);
+        JPanel c = new JPanel();
+        mainPanel.add(c);
 
-        totalWeight = new Label("Total Weight");
+        totalWeight = new JLabel("Total Weight");
         c.add(totalWeight);
 
-        something = new Label("Something");
+        something = new JLabel("Something");
         c.add(something);
 
-        trainingLog = new Button("Training Log >");
-        trainingLog.setUIID("TrainingLog");
+        trainingLog = new JButton("Training Log >");
         trainingLog.addActionListener(l -> controller.openProgramFrame());
-        mainContainer.add(trainingLog);
+        mainPanel.add(trainingLog);
     }
 
     public void navbar() {
-        container = new Container(BoxLayout.xCenter());
-        container.setUIID("Navbar");
+        navbar = new JPanel();
+        navbar.setLayout(new BoxLayout(navbar, BoxLayout.Y_AXIS));
 
-        home = new Button();
-        home.setIcon(FontImage.createMaterial(FontImage.MATERIAL_HOME, home.getUnselectedStyle()));
+        home = new JButton();
         home.addActionListener(l -> controller.openMainFrame());
-        container.add(home);
+        navbar.add(home);
 
-        achievement = new Button();
-        achievement.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_RATE, achievement.getUnselectedStyle()));
+        achievement = new JButton();
         achievement.addActionListener(l -> controller.openAchievementFrame());
-        container.add(achievement);
+        navbar.add(achievement);
 
-        create = new Button();
-        create.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, create.getUnselectedStyle()));
+        create = new JButton();
         create.addActionListener(l -> controller.openCreateFrame());
-        container.add(create);
+        navbar.add(create);
 
-        program = new Button ();
-        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
+        program = new JButton ();
         program.addActionListener(l -> controller.openProgramFrame());
-        container.add(program);
+        navbar.add(program);
 
-        settings = new Button ();
-        settings.setIcon(FontImage.createMaterial(FontImage.MATERIAL_SETTINGS, settings.getUnselectedStyle()));
+        settings = new JButton ();
         settings.addActionListener(l -> controller.openSettingsFrame());
-        container.add(settings);
+        navbar.add(settings);
 
-        mainForm.add(SOUTH, container);
-    }
-
-    public Form getMainForm() {
-        return mainForm;
+        panel.add(navbar);
     }
 }

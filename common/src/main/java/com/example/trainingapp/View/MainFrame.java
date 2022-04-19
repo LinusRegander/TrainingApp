@@ -47,7 +47,7 @@ public class MainFrame {
     }
 
     public void mainForm() {
-        mainForm = new Form(null, new BorderLayout());
+
         mainForm.setUIID("MainForm");
         topbar();
         homeArea();
