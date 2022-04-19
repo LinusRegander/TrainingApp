@@ -1,33 +1,31 @@
 package View;
 
 import Controller.Controller;
-import com.codename1.ui.events.ActionEvent;
-import com.codename1.ui.layouts.BorderLayout;
-import com.codename1.ui.layouts.BoxLayout;
 
-import static com.codename1.ui.layouts.BorderLayout.*;
+import javax.swing.*;
+import java.awt.*;
 
 public class CreateFrame {
-    private Button achievement;
-    private Button addExercise;
-    private Button addSet;
-    private Button create;
-    private Button home;
-    private Button program;
-    private Button settings;
-    private Container navbar;
-    private Container topbar;
-    private Container workoutContainer;
+    private JButton achievement;
+    private JButton addExercise;
+    private JButton addSet;
+    private JButton create;
+    private JButton home;
+    private JButton program;
+    private JButton settings;
+    private JPanel navbar;
+    private JPanel topbar;
+    private JPanel workoutContainer;
     private Controller controller;
-    private Form form;
-    private Label averageWeight;
-    private Label repAmount;
-    private Label setAmount;
-    private Label totalWeight;
-    private Label weightAmount;
+    private JFrame form;
+    private JLabel averageWeight;
+    private JLabel repAmount;
+    private JLabel setAmount;
+    private JLabel totalWeight;
+    private JLabel weightAmount;
     private String textFromArea;
-    private TextArea textArea;
-    private TextField workout;
+    private JTextArea textArea;
+    private JTextField workout;
 
     public CreateFrame(Controller controller) {
         this.controller = controller;
@@ -35,7 +33,7 @@ public class CreateFrame {
     }
 
     public void createForm() {
-        form = new Form(null, new BorderLayout());
+        form = new JFrame();
         form.setUIID("CreateForm");
         topbar();
         workoutContainer();
@@ -136,35 +134,30 @@ public class CreateFrame {
     }
 
     public void navbar() {
-        navbar = new Container(BoxLayout.xCenter());
-        navbar.setUIID("Navbar");
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        home = new Button();
-        home.setIcon(FontImage.createMaterial(FontImage.MATERIAL_HOME, home.getUnselectedStyle()));
+        home = new JButton();
         home.addActionListener(l -> controller.openMainFrame());
-        navbar.add(home);
+        panel.add(home);
 
-        achievement = new Button();
-        achievement.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_RATE, achievement.getUnselectedStyle()));
+        achievement = new JButton();
         achievement.addActionListener(l -> controller.openAchievementFrame());
-        navbar.add(achievement);
+        panel.add(achievement);
 
-        create = new Button();
-        create.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, create.getUnselectedStyle()));
+        create = new JButton();
         create.addActionListener(l -> controller.openCreateFrame());
-        navbar.add(create);
+        panel.add(create);
 
-        program = new Button();
-        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
+        program = new JButton ();
         program.addActionListener(l -> controller.openProgramFrame());
-        navbar.add(program);
+        panel.add(program);
 
-        settings = new Button();
-        settings.setIcon(FontImage.createMaterial(FontImage.MATERIAL_SETTINGS, settings.getUnselectedStyle()));
+        settings = new JButton ();
         settings.addActionListener(l -> controller.openSettingsFrame());
-        navbar.add(settings);
+        container.add(settings);
 
-        form.add(SOUTH, navbar);
+        frame.add(panel);
     }
 
     public void setTextArea(TextArea textArea) {
