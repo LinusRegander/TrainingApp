@@ -1,24 +1,23 @@
 package View;
 
 import Controller.Controller;
-import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.plaf.Style;
-
+import javax.swing.*;
+import javax.swing.text.Style;
 import java.awt.*;
 
 public class LoginFrame {
-    private Button lButton;
-    private Button rButton;
-    private Container buttonContainer;
-    private Container loginContainer;
+    private JButton lButton;
+    private JButton rButton;
+    private JPanel buttonContainer;
+    private JPanel loginContainer;
     private Controller controller;
-    private Label pLabel;
-    private Label testLabel;
-    private Label uLabel;
-    private TextField eTextField;
-    private TextField pTextField;
-    private TextField uTextField;
-    private Form loginForm;
+    private JLabel pLabel;
+    private JLabel testLabel;
+    private JLabel uLabel;
+    private JTextField eTextField;
+    private JTextField pTextField;
+    private JTextField uTextField;
+    private JFrame loginForm;
 
     public LoginFrame(Controller controller) {
         this.controller = controller;
@@ -26,43 +25,40 @@ public class LoginFrame {
     }
 
     public void loginFrame() {
-        loginForm = new Form(null, BoxLayout.y());
-        loginForm.setUIID("LoginForm");
+        loginForm = new JFrame();
         userForm();
-        loginForm.show();
+        loginForm.setVisible(true);
     }
 
     public void userForm() {
-        loginContainer = new Container(BoxLayout.y());
+        loginContainer = new JPanel();
+        loginContainer.setLayout(new BoxLayout(loginContainer, BoxLayout.Y_AXIS));
         loginForm.add(loginContainer);
 
-        testLabel = new Label();
+        testLabel = new JLabel();
         testLabel.setText("FitHub");
-        Style tl = testLabel.getStyle();
-        tl.setMarginLeft(450);
-        tl.setFgColor(10);
+        testLabel.setLocation(450 , 0);
         loginContainer.add(testLabel);
 
-        uLabel = new Label("Username/Email:");
+        uLabel = new JLabel("Username/Email:");
         loginContainer.add(uLabel);
-        uTextField = new TextField();
+        uTextField = new JTextField();
         loginContainer.add(uTextField);
 
-        pLabel = new Label("Password:");
+        pLabel = new JLabel("Password:");
         loginContainer.add(pLabel);
-        pTextField = new TextField();
+        pTextField = new JTextField();
         loginContainer.add(pTextField);
 
-        buttonContainer = new Container(BoxLayout.xCenter());
+        buttonContainer = new JPanel();
+        buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.LINE_AXIS));
         loginForm.add(buttonContainer);
 
-        lButton = new Button("Login");
-        lButton.setUIID("LoginButton");
-        lButton.addActionListener(l -> controller.loginVerification());
+        lButton = new JButton("Login");
+        lButton.addActionListener(l -> controller.login(uTextField.getText(), pTextField.getText()));
         buttonContainer.add(lButton);
 
-        rButton = new Button("Register");
-        rButton.setUIID("RegisterButton");
+        rButton = new JButton("Register");
         rButton.addActionListener(l -> controller.openRegFrame());
         buttonContainer.add(rButton);
     }
@@ -71,7 +67,7 @@ public class LoginFrame {
         return uTextField.getText();
     }
 
-    public Form getLoginForm() {
+    public JFrame getLoginForm() {
         return loginForm;
     }
 }
