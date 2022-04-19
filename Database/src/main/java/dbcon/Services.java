@@ -43,6 +43,7 @@ public class Services {
         boolean exists = false;
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.users where email = ?");
+        pstmt.setString(1,email);
         ResultSet rs = pstmt.executeQuery();
 
         while (rs.next()){
@@ -59,6 +60,7 @@ public class Services {
         boolean exists = false;
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.users where username = ?");
+        pstmt.setString(1, username);
         ResultSet rs = pstmt.executeQuery();
 
         while (rs.next()){

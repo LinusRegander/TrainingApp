@@ -52,7 +52,7 @@ public class Controller {
     }
 
     public void openCreateFrame() {
-        createFrame = new CreateFrame(this);
+        createFrame = new CreateFrame(/*this*/);
     }
     public void openProgramFrame() {
         programFrame = new ProgramFrame(this);
@@ -102,6 +102,10 @@ public class Controller {
     public void login(String email, String password){
         try {
             loggedInEmail = services.login(email,password);
+            System.out.println(loggedInEmail);
+            if(!loggedInEmail.isEmpty()){
+                openMainFrame();
+            }
         } catch (SQLException e){
             e.printStackTrace();
         }

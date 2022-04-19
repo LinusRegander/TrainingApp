@@ -5,6 +5,7 @@ import Controller.Controller;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 public class RegisterFrame implements ActionListener {
     private JButton rButton;
@@ -25,7 +26,8 @@ public class RegisterFrame implements ActionListener {
 
     public void registerFrame() {
         registerForm = new JFrame(); //(null, BoxLayout.y());
-        registerForm.setLayout(new BoxLayout(registerForm, BoxLayout.Y_AXIS));
+        registerForm.setSize(300,600);
+        //registerForm.setLayout(new BoxLayout(registerForm, BoxLayout.Y_AXIS));
 
         registerForm();
         registerForm.show();
@@ -73,6 +75,8 @@ public class RegisterFrame implements ActionListener {
         if (e.getSource() == rButton) {
             controller.register(uTextField.getText(), eTextField.getText(), pTextField.getText());
             controller.openLoginFrame();
+            registerForm.dispatchEvent(new WindowEvent(registerForm, WindowEvent.WINDOW_CLOSING));
+            controller.openMainFrame();
         }
     }
 }

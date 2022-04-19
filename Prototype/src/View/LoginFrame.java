@@ -4,6 +4,7 @@ import Controller.Controller;
 import javax.swing.*;
 import javax.swing.text.Style;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class LoginFrame {
     private JButton lButton;
@@ -26,14 +27,17 @@ public class LoginFrame {
 
     public void loginFrame() {
         loginForm = new JFrame();
+        loginForm.setSize(300,600);
         userForm();
         loginForm.setVisible(true);
     }
-
+    public void exit(){
+        loginForm.dispatchEvent(new WindowEvent(loginForm, WindowEvent.WINDOW_CLOSING));
+    }
     public void userForm() {
         loginContainer = new JPanel();
-        loginContainer.setLayout(new BoxLayout(loginContainer, BoxLayout.Y_AXIS));
-        loginForm.add(loginContainer);
+        loginContainer.setBackground(Color.GREEN);
+
 
         testLabel = new JLabel();
         testLabel.setText("FitHub");
@@ -43,24 +47,31 @@ public class LoginFrame {
         uLabel = new JLabel("Username/Email:");
         loginContainer.add(uLabel);
         uTextField = new JTextField();
+        uTextField.setPreferredSize(new Dimension(50,20));
         loginContainer.add(uTextField);
 
         pLabel = new JLabel("Password:");
         loginContainer.add(pLabel);
         pTextField = new JTextField();
+        pTextField.setPreferredSize(new Dimension(50,20));
         loginContainer.add(pTextField);
 
-        buttonContainer = new JPanel();
-        buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.LINE_AXIS));
-        loginForm.add(buttonContainer);
+
+        //buttonContainer = new JPanel();
+        //buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.LINE_AXIS));
+
 
         lButton = new JButton("Login");
         lButton.addActionListener(l -> controller.login(uTextField.getText(), pTextField.getText()));
-        buttonContainer.add(lButton);
+        loginContainer.add(lButton);
 
         rButton = new JButton("Register");
         rButton.addActionListener(l -> controller.openRegFrame());
-        buttonContainer.add(rButton);
+        rButton.addActionListener(l -> loginForm.dispatchEvent(new WindowEvent(loginForm, WindowEvent.WINDOW_CLOSING)));
+        loginContainer.add(rButton);
+
+        //loginForm.add(buttonContainer);
+        loginForm.add(loginContainer);
     }
 
     public String getFieldContent() {
