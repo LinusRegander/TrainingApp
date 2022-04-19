@@ -1,10 +1,8 @@
-package com.example.trainingapp.View;
+package View;
 
-import com.codename1.ui.*;
+import Controller.Controller;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
-import com.codename1.ui.layouts.BoxLayout;
-import com.example.trainingapp.Controller.Controller;
 
 import javax.swing.*;
 

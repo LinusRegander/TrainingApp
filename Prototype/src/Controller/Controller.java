@@ -1,17 +1,10 @@
-package com.example.trainingapp.Controller;
+package Controller;
 
 import HelperClasses.*;
-import com.codename1.db.Database;
-import com.codename1.ui.Form;
-import com.example.trainingapp.Model.User;
-import com.example.trainingapp.View.*;
+import View.*;
 import dbcon.Services;
-import jdk.tools.jmod.Main;
 
-import javax.swing.*;
-import javax.swing.plaf.OptionPaneUI;
-import java.security.Provider;
-import java.sql.*;
+import java.sql.SQLException;
 import java.text.Normalizer;
 import java.util.ArrayList;
 
@@ -24,9 +17,7 @@ public class Controller {
     private SettingsFrame settingsFrame;
     private CreateFrame createFrame;
     private AchievementFrame achievementFrame;
-    private Database database;
     private UserManager userManager;
-    private User user;
     private Services services;
     private String loggedInEmail;
     private ArrayList<ExerciseInfo> exerciseList = new ArrayList<>();
@@ -43,42 +34,6 @@ public class Controller {
     public void Setup() {
         services = new Services();
         loginFrame = new LoginFrame(this);
-        user = new User();
-        userManager = new UserManager(user);
-    }
-
-    public void loginVerification() {
-        boolean login = false;
-
-        do {
-            if (userManager.existingUser(loginFrame.getFieldContent())) {
-                user = userManager.getCurrUser();
-                login = true;
-                openMainFrame();
-                System.out.println("Login complete");
-            } else {
-                System.err.println("Login failed");
-            }
-        } while (!login);
-    }
-
-    public void registration() {
-        boolean login = false;
-
-        try {
-            do {
-                user = new User();
-                user.setUserName(registerFrame.getUserName());
-                user.setPassword(registerFrame.getPassword());
-                user.setEmail(registerFrame.getEmail());
-                if (userManager.addUser(user)) {
-                    userManager.setCurrUser(user);
-                    login = true;
-                }
-            } while (!login);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void openLoginFrame() {
@@ -106,14 +61,6 @@ public class Controller {
 
     public void openSettingsFrame() {
         settingsFrame = new SettingsFrame(this);
-    }
-
-    public Form getLoginForm() {
-        return loginFrame.getLoginForm();
-    }
-
-    public Form getMainForm() {
-        return mainFrame.getMainForm();
     }
 
     public boolean register(String username, String email, String password) {
