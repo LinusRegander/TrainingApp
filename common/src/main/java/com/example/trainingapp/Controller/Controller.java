@@ -44,7 +44,6 @@ public class Controller {
     public void Setup() {
         services = new Services();
         mainFrame = new MainFrame(this);
-        services.getDatabaseConnectionTest();
         //loginFrame = new LoginFrame(this);
         //user = new User();
         //userManager = new UserManager(user);

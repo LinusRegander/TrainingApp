@@ -1,10 +1,18 @@
 package dbcon;
 
 import HelperClasses.*;
+import com.codename1.db.Database;
 import com.codename1.io.ConnectionRequest;
+import com.codename1.io.JSONParser;
+import com.codename1.io.NetworkManager;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Services {
 
@@ -23,6 +31,7 @@ public class Services {
             return null;
         }
     }
+
     public Connection getDatabaseConnection(){
         String url = "jdbc:postgresql://pgserver.mau.se:5432/am2578";
         String user = "am2578";
