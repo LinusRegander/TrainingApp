@@ -1,11 +1,28 @@
 package dbcon;
 
 import HelperClasses.*;
+import com.codename1.io.ConnectionRequest;
+
 import java.sql.*;
 import java.util.ArrayList;
 
 public class Services {
 
+    public ConnectionRequest getDatabaseConnectionTest() {
+        String url = "jdbc:postgresql://pgserver.mau.se:5432/am2578";
+        String user = "am2578";
+        String password = "29zptibk";
+        ConnectionRequest con = null;
+
+        try{
+            con = new ConnectionRequest(url);
+            System.out.println("Connection Established");
+            return con;
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
     public Connection getDatabaseConnection(){
         String url = "jdbc:postgresql://pgserver.mau.se:5432/am2578";
         String user = "am2578";
@@ -21,6 +38,7 @@ public class Services {
             return null;
         }
     }
+
     public String login(String email, String password) throws SQLException{
         String loginMail = "";
         Connection con = this.getDatabaseConnection();

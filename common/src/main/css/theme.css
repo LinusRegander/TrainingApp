@@ -24,6 +24,13 @@ SettingsContainer {
     border-color: black;
 }
 
+ProgramContainer2 {
+    background-color: #7092be;
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+}
+
 Settings1 {
     background-color: #7092be;
     border-radius: 25px;
@@ -122,6 +129,13 @@ LoginButton {
 }
 
 RegisterButton {
+    background-color: #7092be;
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+}
+
+AddProgram {
     background-color: #7092be;
     border-radius: 25px;
     border-style: solid;

@@ -9,19 +9,24 @@ import com.codename1.ui.plaf.UIManager;
 import com.example.trainingapp.Controller.Controller;
 
 import static com.codename1.ui.FontImage.setMaterialIcon;
-import static com.codename1.ui.layouts.BorderLayout.NORTH;
-import static com.codename1.ui.layouts.BorderLayout.SOUTH;
+import static com.codename1.ui.layouts.BorderLayout.*;
 
 public class ProgramFrame {
+    private Button achievement;
+    private Button addProgram;
+    private Button create;
+    private Button community;
+    private Button home;
+    private Button mine;
+    private Button program;
+    private Button programs;
+    private Button settings;
+    private Button workout;
+    private Container navbar;
+    private Container topbar;
+    private Container mainContainer;
     private Controller controller;
     private Form form;
-    private Container container;
-    private Container topbar;
-    private Button home;
-    private Button achievement;
-    private Button create;
-    private Button program;
-    private Button settings;
 
     public ProgramFrame (Controller controller) {
         this.controller = controller;
@@ -32,6 +37,8 @@ public class ProgramFrame {
         form = new Form(null, new BorderLayout());
         form.setUIID("ProgramForm");
         topbar();
+        searchBar();
+        mainContainer();
         navbar();
         form.show();
     }
@@ -43,68 +50,96 @@ public class ProgramFrame {
         Container top = new Container(BoxLayout.xCenter());
         topbar.add(top);
 
-        Button back = new Button();
-        back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
-        back.addActionListener((e) -> {
-            Form mainForm = controller.getMainForm();
-            mainForm.setToolbar(new Toolbar());
-            mainForm.setBackCommand(new Command("Back") {
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    form.showBack();
-                }
-            });
-            mainForm.show();
-        });
-        top.add(back);
-
         Label title = new Label("FitHub");
         top.add(title);
-
-        Button accept = new Button();
-        accept.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DONE, accept.getUnselectedStyle()));
-        top.add(accept);
-
-        Container bottom = new Container(BoxLayout.xCenter());
-        topbar.add(bottom);
-
-        Label time = new Label("PlaceHolder Time");
-        bottom.add(time);
 
         form.add(NORTH, topbar);
     }
 
+    public void mainContainer() {
+        mainContainer = new Container(BoxLayout.y());
+        mainContainer.setUIID("ProgramContainer1");
+
+        Container a = new Container(BoxLayout.y());
+        a.setUIID("ProgramContainer2");
+        mainContainer.add(a);
+
+        Container b = new Container(BoxLayout.xCenter());
+        a.add(b);
+
+        workout = new Button("Workout");
+        b.add(workout);
+
+        program = new Button("Program");
+        b.add(program);
+
+        Container c = new Container(BoxLayout.xCenter());
+        a.add(c);
+
+        community = new Button("Community");
+        c.add(community);
+
+        mine = new Button("Mine");
+        c.add(mine);
+
+        Container d = new Container(BoxLayout.y());
+        d.setUIID("ProgramContainer2");
+        mainContainer.add(d);
+
+        Label temporary = new Label("My Workout 1");
+        d.add(temporary);
+
+        addProgram = new Button();
+        addProgram.setUIID("AddProgram");
+        addProgram.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, addProgram.getUnselectedStyle()));
+        mainContainer.add(addProgram);
+
+        form.add(CENTER, mainContainer);
+    }
+
+    public void searchBar() {
+        Toolbar.setGlobalToolbar(true);
+        form.getToolbar().addSearchCommand(e -> {
+            String text = (String) e.getSource();
+            if (text == null || text.length() == 0) {
+                for (Component cmp : form.getContentPane()) {
+                    cmp.setHidden(false);
+                    cmp.setVisible(true);
+                }
+                form.getContentPane().animateLayout(150);
+            }
+        });
+    }
 
     public void navbar() {
-        container = new Container(BoxLayout.xCenter());
-        container.setUIID("Navbar");
+        navbar = new Container(BoxLayout.xCenter());
+        navbar.setUIID("Navbar");
 
         home = new Button();
         home.setIcon(FontImage.createMaterial(FontImage.MATERIAL_HOME, home.getUnselectedStyle()));
         home.addActionListener(l -> controller.openMainFrame());
-        container.add(home);
+        navbar.add(home);
 
         achievement = new Button();
         achievement.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_RATE, achievement.getUnselectedStyle()));
         achievement.addActionListener(l -> controller.openAchievementFrame());
-        container.add(achievement);
+        navbar.add(achievement);
 
         create = new Button();
         create.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, create.getUnselectedStyle()));
         create.addActionListener(l -> controller.openCreateFrame());
-        container.add(create);
+        navbar.add(create);
 
         program = new Button ();
         program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
         program.addActionListener(l -> controller.openProgramFrame());
-        container.add(program);
+        navbar.add(program);
 
         settings = new Button ();
         settings.setIcon(FontImage.createMaterial(FontImage.MATERIAL_SETTINGS, settings.getUnselectedStyle()));
         settings.addActionListener(l -> controller.openSettingsFrame());
-        container.add(settings);
+        navbar.add(settings);
 
-        form.add(SOUTH, container);
-
+        form.add(SOUTH, navbar);
     }
 }

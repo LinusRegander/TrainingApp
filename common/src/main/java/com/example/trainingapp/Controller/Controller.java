@@ -2,6 +2,7 @@ package com.example.trainingapp.Controller;
 
 import HelperClasses.*;
 import com.codename1.db.Database;
+import com.codename1.io.ConnectionRequest;
 import com.codename1.ui.Form;
 import com.example.trainingapp.Model.User;
 import com.example.trainingapp.View.*;
@@ -42,9 +43,11 @@ public class Controller {
 
     public void Setup() {
         services = new Services();
-        loginFrame = new LoginFrame(this);
-        user = new User();
-        userManager = new UserManager(user);
+        mainFrame = new MainFrame(this);
+        services.getDatabaseConnectionTest();
+        //loginFrame = new LoginFrame(this);
+        //user = new User();
+        //userManager = new UserManager(user);
     }
 
     public void loginVerification() {
