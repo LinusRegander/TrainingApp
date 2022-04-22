@@ -6,19 +6,27 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.Controller;
 
-import static com.codename1.ui.layouts.BorderLayout.NORTH;
-import static com.codename1.ui.layouts.BorderLayout.SOUTH;
+import static com.codename1.ui.layouts.BorderLayout.*;
 
 public class AchievementFrame {
-    private Controller controller;
-    private Form form;
-    private Container container;
-    private Container topbar;
-    private Button home;
     private Button achievement;
+    private Button bAchievement1;
+    private Button bAchievement2;
+    private Button bAchievement3;
+    private Button bAchievement4;
+    private Button bAchievement5;
     private Button create;
+    private Button home;
     private Button program;
     private Button settings;
+    private Container container;
+    private Container mainContainer;
+    private Container topbar;
+    private Controller controller;
+    private Form form;
+    private Label descriptionText;
+    private Label lAchievement;
+    private Label statusText;
 
     public AchievementFrame(Controller controller) {
         this.controller = controller;
@@ -29,6 +37,7 @@ public class AchievementFrame {
         form = new Form(null, new BorderLayout());
         form.setUIID("AchievementForm");
         topbar();
+        achievementFrame();
         navbar();
         form.show();
     }
@@ -40,35 +49,74 @@ public class AchievementFrame {
         Container top = new Container(BoxLayout.xCenter());
         topbar.add(top);
 
-        Button back = new Button();
-        back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
-        back.addActionListener((e) -> {
-            Form mainForm = controller.getMainForm();
-            mainForm.setToolbar(new Toolbar());
-            mainForm.setBackCommand(new Command("Back") {
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    form.showBack();
-                }
-            });
-            mainForm.show();
-        });
-        top.add(back);
-
         Label title = new Label("FitHub");
         top.add(title);
 
-        Button accept = new Button();
-        accept.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DONE, accept.getUnselectedStyle()));
-        top.add(accept);
-
-        Container bottom = new Container(BoxLayout.xCenter());
-        topbar.add(bottom);
-
-        Label time = new Label("PlaceHolder Time");
-        bottom.add(time);
-
         form.add(NORTH, topbar);
+    }
+
+    public void achievementFrame() {
+        mainContainer = new Container(BoxLayout.y());
+        mainContainer.setUIID("AchievementContainer");
+
+        Container a = new Container(BoxLayout.xCenter());
+        mainContainer.add(a);
+
+        lAchievement = new Label("Achievements");
+        a.add(lAchievement);
+
+        Container b = new Container(BoxLayout.yCenter());
+        mainContainer.add(b);
+
+        bAchievement1 = new Button();
+        bAchievement1.setUIID("AchievementButton");
+        bAchievement1.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, bAchievement1.getUnselectedStyle()));
+        bAchievement1.addActionListener(e -> statusText.setText("Unfinished"));
+        b.add(bAchievement1);
+
+        bAchievement2 = new Button();
+        bAchievement2.setUIID("CAchievementButton");
+        bAchievement2.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, bAchievement2.getUnselectedStyle()));
+        b.add(bAchievement2);
+
+        bAchievement3 = new Button();
+        bAchievement3.setUIID("AchievementButton");
+        bAchievement3.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, bAchievement3.getUnselectedStyle()));
+        b.add(bAchievement3);
+
+        bAchievement4 = new Button();
+        bAchievement4.setUIID("AchievementButton");
+        bAchievement4.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, bAchievement4.getUnselectedStyle()));
+        b.add(bAchievement4);
+
+        bAchievement5 = new Button();
+        bAchievement5.setUIID("CAchievementButton");
+        bAchievement5.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, bAchievement5.getUnselectedStyle()));
+        b.add(bAchievement5);
+
+        Container description = new Container(BoxLayout.y());
+        description.setUIID("DescriptionContainer");
+        mainContainer.add(description);
+
+        Container c = new Container(BoxLayout.x());
+        description.add(c);
+
+        Label lDescription = new Label("Description: ");
+        c.add(lDescription);
+
+        descriptionText = new Label();
+        c.add(descriptionText);
+
+        Container d = new Container(BoxLayout.x());
+        description.add(d);
+
+        Label status = new Label("Status: ");
+        d.add(status);
+
+        statusText = new Label();
+        d.add(statusText);
+
+        form.add(CENTER, mainContainer);
     }
 
     public void navbar() {

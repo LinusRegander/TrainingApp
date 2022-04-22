@@ -12,6 +12,12 @@ RegisterForm {
     background-color: white;
 }
 
+AchievementContainer {
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+}
+
 StatisticsContainer {
     border-radius: 25px;
     border-style: solid;
@@ -119,6 +125,19 @@ SettingsForm {
 
 Label {
     color: black;
+}
+
+AchievementButton {
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+}
+
+CAchievementButton {
+    background-color: #7092be;
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
 }
 
 LoginButton {
