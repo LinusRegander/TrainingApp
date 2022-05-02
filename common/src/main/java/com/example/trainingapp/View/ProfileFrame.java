@@ -1,40 +1,42 @@
 package com.example.trainingapp.View;
 
 import com.codename1.ui.*;
-import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.Controller;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
-public class SettingsFrame {
+public class ProfileFrame {
     private Button home;
     private Button achievement;
     private Button create;
-    private Button darkMode;
-    private Button lightMode;
-    private Button profile;
     private Button program;
     private Button settings;
-    private Container container;
-    private Container settingsContainer;
-    private Container topbar;
+    private Button trainingLog;
     private Controller controller;
-    private Form form;
+    private Container container;
+    private Container mainContainer;
+    private Container topbar;
+    private Form profileForm;
+    private Label sets;
+    private Label something;
+    private Label statistics;
+    private Label totalWeight;
+    private Label workouts;
 
-    public SettingsFrame(Controller controller) {
+    public ProfileFrame(Controller controller) {
         this.controller = controller;
-        settingsForm();
+        profileForm();
     }
 
-    public void settingsForm() {
-        form = new Form(null, new BorderLayout());
-        form.setUIID("SettingsForm");
+    public void profileForm() {
+        profileForm = new Form(new BorderLayout());
+        profileForm.setUIID("ProfileForm");
         topbar();
-        settingsFrame();
+        homeArea();
         navbar();
-        form.show();
+        profileForm.show();
     }
 
     public void topbar() {
@@ -47,31 +49,48 @@ public class SettingsFrame {
         Label title = new Label("FitHub");
         top.add(title);
 
-        form.add(NORTH, topbar);
+        profileForm.add(NORTH, topbar);
     }
 
-    public void settingsFrame() {
-        settingsContainer = new Container(BoxLayout.y());
-        settingsContainer.setUIID("SettingsContainer");
+    public void homeArea() {
+        mainContainer = new Container(BoxLayout.y());
+        profileForm.add(CENTER, mainContainer);
+
+        Container statisticsContainer = new Container(BoxLayout.y());
+        statisticsContainer.setUIID("StatisticsContainer");
+        mainContainer.add(statisticsContainer);
 
         Container a = new Container(BoxLayout.y());
-        a.setUIID("Settings1");
-        settingsContainer.add(a);
+        a.setUIID("mainSC");
+        statisticsContainer.add(a);
 
-        profile = new Button("Profile");
-        profile.setUIID("SettingsProfile");
-        profile.addActionListener(l -> controller.openProfileFrame());
-        a.add(profile);
+        statistics = new Label("Statistics from last 7 days:");
+        a.add(statistics);
 
-        darkMode = new Button("Dark Mode");
-        darkMode.setUIID("SettingsDark");
-        a.add(darkMode);
+        Container b = new Container(BoxLayout.xCenter());
+        b.setUIID("mainWS");
+        statisticsContainer.add(b);
 
-        lightMode = new Button("Light Mode");
-        lightMode.setUIID("SettingsLight");
-        a.add(lightMode);
+        workouts = new Label("Workouts");
+        b.add(workouts);
 
-        form.add(CENTER, settingsContainer);
+        sets = new Label("Sets");
+        b.add(sets);
+
+        Container c = new Container(BoxLayout.xCenter());
+        c.setUIID("mainTS");
+        statisticsContainer.add(c);
+
+        totalWeight = new Label("Total Weight");
+        c.add(totalWeight);
+
+        something = new Label("Something");
+        c.add(something);
+
+        trainingLog = new Button("Training Log >");
+        trainingLog.setUIID("TrainingLog");
+        trainingLog.addActionListener(l -> controller.openProgramFrame());
+        mainContainer.add(trainingLog);
     }
 
     public void navbar() {
@@ -93,16 +112,16 @@ public class SettingsFrame {
         create.addActionListener(l -> controller.openCreateFrame());
         container.add(create);
 
-        program = new Button ();
+        program = new Button();
         program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
         program.addActionListener(l -> controller.openProgramFrame());
         container.add(program);
 
-        settings = new Button ();
+        settings = new Button();
         settings.setIcon(FontImage.createMaterial(FontImage.MATERIAL_SETTINGS, settings.getUnselectedStyle()));
         settings.addActionListener(l -> controller.openSettingsFrame());
         container.add(settings);
 
-        form.add(SOUTH, container);
+        profileForm.add(SOUTH, container);
     }
 }

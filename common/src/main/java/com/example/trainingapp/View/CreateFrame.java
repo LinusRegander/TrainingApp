@@ -76,6 +76,7 @@ public class CreateFrame {
 
         Button accept = new Button();
         accept.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DONE, accept.getUnselectedStyle()));
+        accept.addActionListener(l -> controller.openProgramFrame());
         top.add(accept);
 
         Container bottom = new Container(BoxLayout.xCenter());

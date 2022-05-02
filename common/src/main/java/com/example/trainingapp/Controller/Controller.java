@@ -25,6 +25,7 @@ public class Controller {
     private SettingsFrame settingsFrame;
     private CreateFrame createFrame;
     private AchievementFrame achievementFrame;
+    private ProfileFrame profileFrame;
     private Database database;
     private UserManager userManager;
     private User user;
@@ -102,12 +103,17 @@ public class Controller {
     public void openCreateFrame() {
         createFrame = new CreateFrame(this);
     }
+
     public void openProgramFrame() {
         programFrame = new ProgramFrame(this);
     }
 
     public void openSettingsFrame() {
         settingsFrame = new SettingsFrame(this);
+    }
+
+    public void openProfileFrame() {
+        profileFrame = new ProfileFrame(this);
     }
 
     public Form getLoginForm() {
