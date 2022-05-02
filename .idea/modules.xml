@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Database/JDBC.iml" filepath="$PROJECT_DIR$/Database/JDBC.iml" />
       <module fileurl="file://$PROJECT_DIR$/Prototype/Prototype.iml" filepath="$PROJECT_DIR$/Prototype/Prototype.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RestAPI/RestAPI.iml" filepath="$PROJECT_DIR$/RestAPI/RestAPI.iml" />
       <module fileurl="file://$PROJECT_DIR$/training.iml" filepath="$PROJECT_DIR$/training.iml" />
       <module fileurl="file://$PROJECT_DIR$/common/training-common.iml" filepath="$PROJECT_DIR$/common/training-common.iml" />
       <module fileurl="file://$PROJECT_DIR$/javase/training-javase.iml" filepath="$PROJECT_DIR$/javase/training-javase.iml" />
