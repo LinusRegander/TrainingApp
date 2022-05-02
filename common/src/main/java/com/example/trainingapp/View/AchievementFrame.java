@@ -43,7 +43,7 @@ public class AchievementFrame {
     }
 
     public void topbar() {
-        topbar = new Container(BoxLayout.y());
+        topbar = new Container(BoxLayout.xCenter());
         topbar.setUIID("Topbar");
 
         Container top = new Container(BoxLayout.xCenter());
@@ -51,6 +51,11 @@ public class AchievementFrame {
 
         Label title = new Label("FitHub");
         top.add(title);
+
+        Button icon = new Button();
+        icon.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ACCOUNT_CIRCLE, icon.getUnselectedStyle()));
+        icon.addActionListener(l -> controller.openProfileFrame());
+        topbar.add(icon);
 
         form.add(NORTH, topbar);
     }

@@ -18,38 +18,41 @@ import java.util.ArrayList;
 
 
 public class Controller {
-    private MainFrame mainFrame;
-    private RegisterFrame registerFrame;
-    private LoginFrame loginFrame;
-    private ProgramFrame programFrame;
-    private SettingsFrame settingsFrame;
-    private CreateFrame createFrame;
-    private AchievementFrame achievementFrame;
-    private ProfileFrame profileFrame;
-    private Database database;
-    private UserManager userManager;
-    private User user;
-    private Services services;
-    private String loggedInEmail;
     private ArrayList<ExerciseInfo> exerciseList = new ArrayList<>();
     private ArrayList<WorkoutInfo> workoutList = new ArrayList<>();
     private ArrayList<ProgramInfo> programList = new ArrayList<>();
     private ArrayList<LogExerciseSet> logExerciseSetList = new ArrayList<>();
     private ArrayList<LogWorkout> logWorkoutList = new ArrayList<>();
     private ArrayList<LogProgram> logProgramList = new ArrayList<>();
+    private AchievementFrame achievementFrame;
+    private CreateFrame createFrame;
+    private Database database;
+    private LoginFrame loginFrame;
+    private MainFrame mainFrame;
+    private ProgramFrame programFrame;
+    private ProfileFrame profileFrame;
+    private RegisterFrame registerFrame;
+    private Services services;
+    private SettingsFrame settingsFrame;
+    private String loggedInEmail;
+    private User user;
+    private UserManager userManager;
 
     public Controller() {
         Setup();
     }
 
+    //Setup constructor.
     public void Setup() {
-        services = new Services();
-        mainFrame = new MainFrame(this);
+        services = new Services(); //Creates a new Database object, containing the Services class.
+        mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
         //loginFrame = new LoginFrame(this);
         //user = new User();
         //userManager = new UserManager(user);
     }
 
+
+    //todo: Will be replaced:
     public void loginVerification() {
         boolean login = false;
 
@@ -65,6 +68,7 @@ public class Controller {
         } while (!login);
     }
 
+    //todo: Will be replaced:
     public void registration() {
         boolean login = false;
 
@@ -84,6 +88,7 @@ public class Controller {
         }
     }
 
+    //The code below creates all of the GUI frames part of the application:
     public void openLoginFrame() {
         loginFrame = new LoginFrame(this);
     }
@@ -124,6 +129,7 @@ public class Controller {
         return mainFrame.getMainForm();
     }
 
+    //todo: Everything below will be used later:
     public boolean register(String username, String email, String password) {
         try {
             if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {

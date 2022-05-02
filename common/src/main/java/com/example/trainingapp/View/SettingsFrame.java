@@ -38,7 +38,7 @@ public class SettingsFrame {
     }
 
     public void topbar() {
-        topbar = new Container(BoxLayout.y());
+        topbar = new Container(BoxLayout.xCenter());
         topbar.setUIID("Topbar");
 
         Container top = new Container(BoxLayout.xCenter());
@@ -46,6 +46,11 @@ public class SettingsFrame {
 
         Label title = new Label("FitHub");
         top.add(title);
+
+        Button icon = new Button();
+        icon.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ACCOUNT_CIRCLE, icon.getUnselectedStyle()));
+        icon.addActionListener(l -> controller.openProfileFrame());
+        topbar.add(icon);
 
         form.add(NORTH, topbar);
     }
@@ -59,7 +64,7 @@ public class SettingsFrame {
         settingsContainer.add(a);
 
         profile = new Button("Profile");
-        profile.setUIID("SettingsProfile");
+        profile.setUIID("ProfileProfile");
         profile.addActionListener(l -> controller.openProfileFrame());
         a.add(profile);
 
@@ -93,12 +98,12 @@ public class SettingsFrame {
         create.addActionListener(l -> controller.openCreateFrame());
         container.add(create);
 
-        program = new Button ();
+        program = new Button();
         program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
         program.addActionListener(l -> controller.openProgramFrame());
         container.add(program);
 
-        settings = new Button ();
+        settings = new Button();
         settings.setIcon(FontImage.createMaterial(FontImage.MATERIAL_SETTINGS, settings.getUnselectedStyle()));
         settings.addActionListener(l -> controller.openSettingsFrame());
         container.add(settings);

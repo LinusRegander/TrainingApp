@@ -13,17 +13,14 @@ public class ProfileFrame {
     private Button create;
     private Button program;
     private Button settings;
-    private Button trainingLog;
     private Controller controller;
     private Container container;
-    private Container mainContainer;
+    private Container profileContainer;
     private Container topbar;
     private Form profileForm;
-    private Label sets;
-    private Label something;
-    private Label statistics;
-    private Label totalWeight;
-    private Label workouts;
+    private Label email;
+    private Label icon;
+    private Label username;
 
     public ProfileFrame(Controller controller) {
         this.controller = controller;
@@ -34,7 +31,7 @@ public class ProfileFrame {
         profileForm = new Form(new BorderLayout());
         profileForm.setUIID("ProfileForm");
         topbar();
-        homeArea();
+        profileFrame();
         navbar();
         profileForm.show();
     }
@@ -52,45 +49,30 @@ public class ProfileFrame {
         profileForm.add(NORTH, topbar);
     }
 
-    public void homeArea() {
-        mainContainer = new Container(BoxLayout.y());
-        profileForm.add(CENTER, mainContainer);
+    public void profileFrame() {
+        profileContainer = new Container(BoxLayout.y());
+        profileContainer.setUIID("ProfileContainer");
 
-        Container statisticsContainer = new Container(BoxLayout.y());
-        statisticsContainer.setUIID("StatisticsContainer");
-        mainContainer.add(statisticsContainer);
+        Container a = new Container(BoxLayout.xCenter());
+        a.setUIID("a");
+        profileContainer.add(a);
 
-        Container a = new Container(BoxLayout.y());
-        a.setUIID("mainSC");
-        statisticsContainer.add(a);
+        icon = new Label();
+        icon.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ACCOUNT_CIRCLE, icon.getUnselectedStyle()));
+        a.add(icon);
 
-        statistics = new Label("Statistics from last 7 days:");
-        a.add(statistics);
+        Container b = new Container(BoxLayout.y());
+        profileContainer.add(b);
 
-        Container b = new Container(BoxLayout.xCenter());
-        b.setUIID("mainWS");
-        statisticsContainer.add(b);
+        username = new Label();
+        username.setText("Place Holder");
+        b.add(username);
 
-        workouts = new Label("Workouts");
-        b.add(workouts);
+        email = new Label();
+        email.setText("Place Holder");
+        b.add(email);
 
-        sets = new Label("Sets");
-        b.add(sets);
-
-        Container c = new Container(BoxLayout.xCenter());
-        c.setUIID("mainTS");
-        statisticsContainer.add(c);
-
-        totalWeight = new Label("Total Weight");
-        c.add(totalWeight);
-
-        something = new Label("Something");
-        c.add(something);
-
-        trainingLog = new Button("Training Log >");
-        trainingLog.setUIID("TrainingLog");
-        trainingLog.addActionListener(l -> controller.openProgramFrame());
-        mainContainer.add(trainingLog);
+        profileForm.add(CENTER, profileContainer);
     }
 
     public void navbar() {

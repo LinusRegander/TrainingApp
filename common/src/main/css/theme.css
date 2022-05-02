@@ -24,6 +24,12 @@ StatisticsContainer {
     border-color: black;
 }
 
+ProfileContainer {
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+}
+
 SettingsContainer {
     border-radius: 25px;
     border-style: solid;
@@ -104,6 +110,10 @@ Navbar {
 }
 
 ProgramForm {
+    background-color: white;
+}
+
+ProfileForm {
     background-color: white;
 }
 
