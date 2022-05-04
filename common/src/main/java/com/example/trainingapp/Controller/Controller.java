@@ -2,15 +2,19 @@ package com.example.trainingapp.Controller;
 
 import HelperClasses.*;
 import com.codename1.db.Database;
+import com.codename1.io.BufferedOutputStream;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.ui.Form;
 import com.example.trainingapp.Model.User;
 import com.example.trainingapp.View.*;
 import dbcon.Services;
 import jdk.tools.jmod.Main;
+import com.codename1.io.Socket;
+import com.codename1.io.SocketConnection;
 
 import javax.swing.*;
 import javax.swing.plaf.OptionPaneUI;
+import java.io.*;
 import java.security.Provider;
 import java.sql.*;
 import java.text.Normalizer;
@@ -46,9 +50,38 @@ public class Controller {
     public void Setup() {
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
-        //loginFrame = new LoginFrame(this);
-        //user = new User();
-        //userManager = new UserManager(user);
+        loginFrame = new LoginFrame(this);
+        user = new User();
+        userManager = new UserManager(user);
+    }
+
+    public void testConnect(SocketConnection socketConnection){
+        System.out.println("inne");
+        Socket.connect("192.168.56.1", 541, socketConnection);
+        /*
+        Socket.connect("192.168.56.1", 541, new SocketConnection() {
+            @Override
+            public void connectionError(int i, String s) {
+                System.out.println(s);
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+                try {
+                    System.out.println("connection!");
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    dos.writeUTF("DanielxLinus@gmail.com");
+                    dos.writeUTF("LinusLover69");
+                    dos.writeUTF("älskaLinus");
+                    dos.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+         */
+
     }
 
 
@@ -131,7 +164,31 @@ public class Controller {
 
     //todo: Everything below will be used later:
     public boolean register(String username, String email, String password) {
+
+        SocketConnection sc = new SocketConnection() {
+            @Override
+            public void connectionError(int i, String s) {
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+                try {
+                    System.out.println("connection!");
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    dos.writeUTF(email);
+                    dos.writeUTF(username);
+                    dos.writeUTF(password);
+                    dos.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        testConnect(sc);
+        /*
         try {
+
             if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {
                 services.insertNewUser(email, username, password);
                 return true;
@@ -140,6 +197,9 @@ public class Controller {
         catch(Exception e){
             e.printStackTrace();
         }
+        return false;
+
+         */
         return false;
     }
 

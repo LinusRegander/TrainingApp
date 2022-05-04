@@ -72,7 +72,7 @@ public class RegisterFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == rButton) {
-            //controller.register(uTextField.getText(), eTextField.getText(), pTextField.getText());
+            controller.register(uTextField.getText(), eTextField.getText(), pTextField.getText());
             controller.openLoginFrame();
         }
     }

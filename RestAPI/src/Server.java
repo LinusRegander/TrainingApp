@@ -1,15 +1,15 @@
 import com.codename1.io.ConnectionRequest;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import dbcon.Services;
 
 import static com.codename1.ui.CN.*;
 
 public class Server extends Thread {
+    private Services services = new Services();
 
     public Server(int port){
         new Connection(port);
@@ -29,9 +29,12 @@ public class Server extends Thread {
 
         @Override
         public void run() {
+            System.out.println("den startar!");
             while (true){
                 try{
+                    System.out.println("vafan!");
                     Socket socket = serverSocket.accept();
+                    System.out.println("ny klient");
                     new ClientHandler(socket);
                 } catch (Exception e){
                     e.printStackTrace();
@@ -43,26 +46,39 @@ public class Server extends Thread {
     private class ClientHandler extends Thread{
         //User eller email variabel
         private Socket socket;
-        private ObjectOutputStream oos;
-        private ObjectInputStream ois;
+        private DataOutputStream dos;
+        private DataInputStream dis;
 
         public ClientHandler(Socket socket){
             this.socket = socket;
             try{
-                oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                oos.flush();
-                ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+                dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                dos.flush();
+                dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 
             } catch (Exception e){
                 e.printStackTrace();
             }
 
             start();
+
         }
 
         @Override
         public void run() {
             System.out.println("Connected blablabla");
+            try {
+                String email = dis.readUTF();
+                String username = dis.readUTF();
+                String password = dis.readUTF();
+
+                if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {
+                    services.insertNewUser(email, username, password);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

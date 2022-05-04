@@ -8,5 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: com.codenameone:codenameone-core:7.0.61" level="project" />
+    <orderEntry type="module" module-name="JDBC" />
   </component>
 </module>
