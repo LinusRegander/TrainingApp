@@ -50,37 +50,14 @@ public class Controller {
     public void Setup() {
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
-        loginFrame = new LoginFrame(this);
+       loginFrame = new LoginFrame(this);
         user = new User();
         userManager = new UserManager(user);
     }
 
-    public void testConnect(SocketConnection socketConnection){
+    public void connect(SocketConnection socketConnection){
         System.out.println("inne");
         Socket.connect("192.168.56.1", 541, socketConnection);
-        /*
-        Socket.connect("192.168.56.1", 541, new SocketConnection() {
-            @Override
-            public void connectionError(int i, String s) {
-                System.out.println(s);
-            }
-
-            @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
-                try {
-                    System.out.println("connection!");
-                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
-                    dos.writeUTF("DanielxLinus@gmail.com");
-                    dos.writeUTF("LinusLover69");
-                    dos.writeUTF("älskaLinus");
-                    dos.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-         */
 
     }
 
@@ -164,7 +141,40 @@ public class Controller {
 
     //todo: Everything below will be used later:
     public boolean register(String username, String email, String password) {
+        SocketConnection sc = new SocketConnection() {
+            @Override
+            public void connectionError(int i, String s) {
 
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+
+                try {
+                    System.out.println("connection!");
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+
+                    String temp = username + "\0" + email + "\0" + password;
+                    dos.writeInt(1);
+                    dos.writeUTF(temp);
+                    dos.flush();
+                    /*
+                    dos.writeUTF(email);
+                    dos.writeUTF(username);
+                    dos.writeUTF(password);
+                    dos.flush();
+
+                     */
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        connect(sc);
+        return false;
+    }
+
+    public void login(String email, String password){
         SocketConnection sc = new SocketConnection() {
             @Override
             public void connectionError(int i, String s) {
@@ -174,65 +184,64 @@ public class Controller {
             @Override
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
                 try {
-                    System.out.println("connection!");
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     dos.writeUTF(email);
-                    dos.writeUTF(username);
                     dos.writeUTF(password);
+                    dos.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        connect(sc);
+    }
+
+    public void addWorkoutInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<ExerciseInfo> exerciseInfos){
+        SocketConnection sc = new SocketConnection() {
+            @Override
+            public void connectionError(int i, String s) {
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+                try{
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    dos.writeUTF(name);
+                    dos.writeUTF(creatorEmail);
+                    dos.writeUTF(description);
+                    dos.writeUTF(tag1);
+                    dos.writeUTF(tag2);
+                    dos.writeUTF(tag3);
+                    for(ExerciseInfo exerciseInfo : exerciseInfos){
+                        dos.writeUTF(String.valueOf(exerciseInfo.getId()));
+                        dos.writeUTF(exerciseInfo.getName());
+                        dos.writeUTF(exerciseInfo.getDescription());
+                        dos.writeUTF(exerciseInfo.getPrimary());
+                        dos.writeUTF(exerciseInfo.getSecondary());
+                    }
                     dos.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         };
-        testConnect(sc);
-        /*
-        try {
-
-            if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {
-                services.insertNewUser(email, username, password);
-                return true;
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        return false;
-
-         */
-        return false;
-    }
-
-    public void addWorkoutInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<ExerciseInfo> exerciseInfos){
-        try {
-            WorkoutInfo workout =  services.insertNewWorkout(name, creatorEmail, description, tag1, tag2, tag3);
-            for(ExerciseInfo e : exerciseInfos){
-                services.insertExerciseInToWorkout(loggedInEmail, e, workout);
-            }
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+        connect(sc);
     }
 
     public void addProgramInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<WorkoutInfo> workoutInfos){
-        try{
-            ProgramInfo program = services.insertNewProgram(name, creatorEmail, description, tag1, tag2, tag3);
-            for(WorkoutInfo e : workoutInfos){
-                services.insertWorkoutInToProgram(loggedInEmail, program, e);
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+        SocketConnection sc = new SocketConnection() {
+            @Override
+            public void connectionError(int i, String s) {
 
-    public void login(String email, String password){
-        try {
-            loggedInEmail = services.login(email,password);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+
+            }
+        };
     }
 
     public void logout(){

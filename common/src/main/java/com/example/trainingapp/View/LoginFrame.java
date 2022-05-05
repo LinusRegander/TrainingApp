@@ -68,7 +68,7 @@ public class LoginFrame {
 
         lButton = new Button("Login");
         lButton.setUIID("LoginButton");
-        lButton.addActionListener(l -> controller.loginVerification());
+        lButton.addActionListener(l -> controller.login(uLabel.getText(), pLabel.getText()));
         buttonContainer.add(lButton);
 
         rButton = new Button("Register");
