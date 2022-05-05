@@ -63,7 +63,51 @@ public class Server extends Thread {
         @Override
         public void run() {
             System.out.println("Connected blablabla");
+<<<<<<< Updated upstream
+=======
+            int choice;
+            try {
+                choice = dis.readInt();
+
+               switch (choice){
+                   case 0 -> login();
+                   case 1 -> register();
+               }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+>>>>>>> Stashed changes
         }
+        private void register() throws Exception{
+            String[] strings;
+
+            String temp = dis.readUTF();
+            strings = temp.split("\0");
+
+            String email = strings[0];
+            String username = strings[1];
+            String password = strings[2];
+
+            if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {
+                services.insertNewUser(email, username, password);
+            }
+        }
+
+
+        /*private void register() throws Exception{
+            String email = dis.readUTF();
+            String username = dis.readUTF();
+            String password = dis.readUTF();
+
+            if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {
+                services.insertNewUser(email, username, password);
+            }
+        }*/
+        private void login() throws Exception{
+
+        }
+
     }
 
     public static void main(String[] args) {
