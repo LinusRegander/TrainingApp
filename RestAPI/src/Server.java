@@ -1,15 +1,14 @@
 import com.codename1.io.ConnectionRequest;
+import dbcon.Services;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import static com.codename1.ui.CN.*;
 
 public class Server extends Thread {
+    private Services services = new Services();
 
     public Server(int port){
         new Connection(port);
@@ -43,17 +42,17 @@ public class Server extends Thread {
     private class ClientHandler extends Thread{
         //User eller email variabel
         private Socket socket;
-        private ObjectOutputStream oos;
-        private ObjectInputStream ois;
+        private DataOutputStream dos;
+        private DataInputStream dis;
 
-        public ClientHandler(Socket socket){
+        public ClientHandler(Socket socket) {
             this.socket = socket;
-            try{
-                oos = new ObjectOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                oos.flush();
-                ois = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
+            try {
+                dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                dos.flush();
+                dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -63,8 +62,7 @@ public class Server extends Thread {
         @Override
         public void run() {
             System.out.println("Connected blablabla");
-<<<<<<< Updated upstream
-=======
+
             int choice;
             try {
                 choice = dis.readInt();
@@ -77,7 +75,7 @@ public class Server extends Thread {
             } catch (Exception e) {
                 e.printStackTrace();
             }
->>>>>>> Stashed changes
+
         }
         private void register() throws Exception{
             String[] strings;
