@@ -1,7 +1,9 @@
 package com.example.trainingapp.View;
 
+import HelperClasses.ExerciseInfo;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
@@ -21,7 +23,9 @@ public class CreateFrame {
     private Button home;
     private Button program;
     private Button settings;
+    private Container a;
     private Container navbar;
+    private Container temp;
     private Container topbar;
     private Container workoutContainer;
     private Controller controller;
@@ -33,7 +37,10 @@ public class CreateFrame {
     private Label weightAmount;
     private String textFromArea;
     private TextArea textArea;
+    private TextArea textArea2;
     private TextField workout;
+    private ArrayList<ExerciseInfo> exerciseInfo = new ArrayList<>();
+    private ArrayList<Container> containers = new ArrayList<>();
 
     public CreateFrame(Controller controller) {
         this.controller = controller;
@@ -76,7 +83,7 @@ public class CreateFrame {
 
         Button accept = new Button();
         accept.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DONE, accept.getUnselectedStyle()));
-        accept.addActionListener(l -> controller.openProgramFrame());
+        accept.addActionListener(l -> getWorkoutInfo());
         top.add(accept);
 
         Container bottom = new Container(BoxLayout.xCenter());
@@ -92,24 +99,34 @@ public class CreateFrame {
         workoutContainer = new Container(BoxLayout.y());
         workoutContainer.setUIID("WorkoutContainer");
 
-        Container a = new Container(BoxLayout.y());
+        a = new Container(BoxLayout.y());
+        containers.add(a);
         a.setUIID("a");
         workoutContainer.add(a);
 
         workout = new TextField();
         a.add(workout);
 
+        temp = new Container(BoxLayout.y());
+        a.add(temp);
+
         textArea = new TextArea();
-        a.add(textArea);
+        temp.add(textArea);
+
+        textArea2 = new TextArea();
+        temp.add(textArea2);
 
         Container b = new Container(BoxLayout.yCenter());
+        containers.add(b);
         b.setUIID("b");
         a.add(b);
 
         addSet = new Button("+ Add Set");
+        addSet.addActionListener(l -> newContainer());
         b.add(addSet);
 
         Container c = new Container(BoxLayout.xCenter());
+        containers.add(c);
         c.setUIID("c");
         a.add(c);
 
@@ -120,6 +137,7 @@ public class CreateFrame {
         c.add(averageWeight);
 
         Container d = new Container(BoxLayout.yCenter());
+        containers.add(d);
         d.setUIID("d");
         workoutContainer.add(d);
 
@@ -127,6 +145,7 @@ public class CreateFrame {
         d.add(addExercise);
 
         Container e = new Container(BoxLayout.xCenter());
+        containers.add(e);
         e.setUIID("e");
         workoutContainer.add(e);
 
@@ -140,6 +159,14 @@ public class CreateFrame {
         e.add(repAmount);
 
         form.add(CENTER, workoutContainer);
+    }
+
+    public void newContainer() {
+        TextArea newArea = new TextArea();
+        temp.add(newArea);
+
+        TextArea newArea2 = new TextArea();
+        temp.add(newArea2);
     }
 
     public void navbar() {
@@ -174,11 +201,41 @@ public class CreateFrame {
         form.add(SOUTH, navbar);
     }
 
-    public void setTextArea(TextArea textArea) {
-        this.textArea = textArea;
-    }
+    public void getWorkoutInfo() {
+        Form tempForm = new Form(null, new BorderLayout());
 
-    public TextArea getTextArea() {
-        return textArea;
+        Container tempA = new Container(BoxLayout.y());
+
+        Label name = new Label("Enter Workout Name:");
+        tempA.add(name);
+
+        TextField tempName = new TextField();
+        tempA.add(tempName);
+
+        Label description = new Label("Enter a description");
+        tempA.add(description);
+
+        TextField tempDescription = new TextField();
+        tempA.add(tempDescription);
+
+        Label tempTag = new Label("Enter 3 Tags:");
+        tempA.add(tempTag);
+
+        TextField tag1 = new TextField();
+        tempA.add(tag1);
+
+        TextField tag2 = new TextField();
+        tempA.add(tag2);
+
+        TextField tag3 = new TextField();
+        tempA.add(tag3);
+
+        Button finished = new Button("Finished");
+        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), "email", tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
+        finished.addActionListener(l -> controller.openProgramFrame());
+        tempA.add(finished);
+
+        tempForm.add(CENTER, tempA);
+        tempForm.show();
     }
 }

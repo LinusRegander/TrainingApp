@@ -3,21 +3,14 @@ package com.example.trainingapp.Controller;
 import HelperClasses.*;
 import com.codename1.db.Database;
 import com.codename1.io.BufferedOutputStream;
-import com.codename1.io.ConnectionRequest;
 import com.codename1.ui.Form;
-import com.example.trainingapp.Model.User;
 import com.example.trainingapp.View.*;
 import dbcon.Services;
-import jdk.tools.jmod.Main;
 import com.codename1.io.Socket;
 import com.codename1.io.SocketConnection;
 
-import javax.swing.*;
-import javax.swing.plaf.OptionPaneUI;
 import java.io.*;
-import java.security.Provider;
 import java.sql.*;
-import java.text.Normalizer;
 import java.util.ArrayList;
 
 
@@ -39,8 +32,6 @@ public class Controller {
     private Services services;
     private SettingsFrame settingsFrame;
     private String loggedInEmail;
-    private User user;
-    private UserManager userManager;
 
     public Controller() {
         Setup();
@@ -50,52 +41,13 @@ public class Controller {
     public void Setup() {
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
-       loginFrame = new LoginFrame(this);
-        user = new User();
-        userManager = new UserManager(user);
+       //loginFrame = new LoginFrame(this);
     }
 
     public void connect(SocketConnection socketConnection){
         System.out.println("inne");
         Socket.connect("192.168.56.1", 541, socketConnection);
 
-    }
-
-
-    //todo: Will be replaced:
-    public void loginVerification() {
-        boolean login = false;
-
-        do {
-            if (userManager.existingUser(loginFrame.getFieldContent())) {
-                user = userManager.getCurrUser();
-                login = true;
-                openMainFrame();
-                System.out.println("Login complete");
-            } else {
-                System.err.println("Login failed");
-            }
-        } while (!login);
-    }
-
-    //todo: Will be replaced:
-    public void registration() {
-        boolean login = false;
-
-        try {
-            do {
-                user = new User();
-                user.setUserName(registerFrame.getUserName());
-                user.setPassword(registerFrame.getPassword());
-                user.setEmail(registerFrame.getEmail());
-                if (userManager.addUser(user)) {
-                    userManager.setCurrUser(user);
-                    login = true;
-                }
-            } while (!login);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     //The code below creates all of the GUI frames part of the application:
