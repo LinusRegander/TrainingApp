@@ -1,3 +1,4 @@
+import HelperClasses.WorkoutInfo;
 import com.codename1.io.ConnectionRequest;
 import dbcon.Services;
 
@@ -70,6 +71,7 @@ public class Server extends Thread {
                switch (choice){
                    case 0 -> login();
                    case 1 -> register();
+                   case 2 -> insertNewWorkoutInfo();
                }
 
             } catch (Exception e) {
@@ -77,6 +79,24 @@ public class Server extends Thread {
             }
 
         }
+
+        //services.login() retunerar "" om de inte lyckades logga in
+        //Om man lyckas retuneras en String som är emailen på inloggningen
+        // TODO: 2022-05-05 Hantera login på klient sidan
+        private void login() throws Exception{
+            String[] strings;
+            String temp = dis.readUTF();
+            strings = temp.split("\n");
+
+            String email = strings[0];
+            String password = strings[1];
+
+            String response = services.login(email, password);
+
+            dos.writeUTF(response);
+            dos.flush();
+        }
+
         private void register() throws Exception{
             String[] strings;
 
@@ -90,6 +110,24 @@ public class Server extends Thread {
             if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {
                 services.insertNewUser(email, username, password);
             }
+            // TODO: 2022-05-05 Lägg till så att ifall ifsatsen failas så ska den svara till klienten vad som failar.
+        }
+
+        private void insertNewWorkoutInfo() throws Exception{
+            String[] strings;
+            String temp = dis.readUTF();
+            strings = temp.split("\n");
+
+            String workoutName = strings[0];
+            String creatorEmail = strings[1];
+            String description = strings[2];
+            String tag1 = strings[3];
+            String tag2 = strings[4];
+            String tag3 = strings[5];
+
+            WorkoutInfo workoutInfo = services.insertNewWorkout(workoutName, creatorEmail, description, tag1, tag2, tag3);
+            work
+
         }
 
 
@@ -102,9 +140,7 @@ public class Server extends Thread {
                 services.insertNewUser(email, username, password);
             }
         }*/
-        private void login() throws Exception{
 
-        }
 
     }
 
