@@ -126,9 +126,27 @@ public class Server extends Thread {
             String tag3 = strings[5];
 
             WorkoutInfo workoutInfo = services.insertNewWorkout(workoutName, creatorEmail, description, tag1, tag2, tag3);
-            work
+            int id = workoutInfo.getId();
 
+            dos.writeInt(id);
+            dos.flush();
         }
+
+        private void insertExerciseIntoWorkout() throws Exception{
+            String[] strings;
+            String temp = dis.readUTF();
+            strings = temp.split("\0");
+
+            String loggedInMail = strings[0];
+            int exerciseId = Integer.parseInt(strings[1]);
+            int workoutId = Integer.parseInt(strings[2]);
+
+            String response = services.insertExerciseInToWorkout(loggedInMail, exerciseId, workoutId);
+
+            dos.writeUTF(response);
+            dos.flush();
+        }
+        
 
 
         /*private void register() throws Exception{

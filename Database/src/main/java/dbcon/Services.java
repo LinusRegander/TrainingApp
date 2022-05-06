@@ -169,6 +169,25 @@ public class Services {
 
     }
 
+    public String insertExerciseInToWorkout(String loggedInMail, int exerciseId, int workoutId) throws SQLException{
+        if(checkIfCreatorOfWorkout(loggedInMail, workoutId)) {
+            Connection con = this.getDatabaseConnection();
+            PreparedStatement pstmt = con.prepareStatement("call training.insertExerciseInToWorkout(?,?)");
+            pstmt.setInt(1, exerciseId);
+            pstmt.setInt(2, workoutId);
+
+            pstmt.execute();
+            pstmt.close();
+            con.close();
+
+            return "Successful";
+        }
+        else {
+            return "You do not have access";
+        }
+
+    }
+
     //creatorEmail == email som man är inloggad på
     public WorkoutInfo insertNewWorkout(String name, String creatorEmail, String description, String tag1, String tag2, String tag3) throws SQLException{
         Connection con = this.getDatabaseConnection();
@@ -719,5 +738,23 @@ public class Services {
         return id;
     }
 
+    public boolean checkIfCreatorOfWorkout(String email, int workoutId) throws SQLException {
+        String temp = null;
+
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("select * from training.workoutinfo where creatoremail = ? and workoutid = ?");
+        pstmt.setString(1, email);
+        pstmt.setInt(2, workoutId);
+
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()){
+            temp = rs.getString("name");
+        }
+        rs.close();
+        pstmt.close();
+        con.close();
+
+        return temp != null;
+    }
 
 }
