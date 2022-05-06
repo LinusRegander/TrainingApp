@@ -51,7 +51,7 @@ public class WorkoutLogFrame {
         logForm.add(NORTH, topBar);
     }
     public void workoutLog(){
-        logContainer = new Container(BoxLayout.y());
+        logContainer = new Container(BoxLayout.yCenter());
         logContainer.setScrollableY(true);
         String[] workouts = testWorkouts();
         for(int i = 0; i < workouts.length; i++){

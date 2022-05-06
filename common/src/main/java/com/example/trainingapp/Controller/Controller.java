@@ -32,6 +32,7 @@ public class Controller {
     private MainFrame mainFrame;
     private ProgramFrame programFrame;
     private ProfileFrame profileFrame;
+    private WorkoutLogFrame workoutLogFrame;
     private RegisterFrame registerFrame;
     private Services services;
     private SettingsFrame settingsFrame;
@@ -85,6 +86,10 @@ public class Controller {
 
     public void openProfileFrame() {
         profileFrame = new ProfileFrame(this);
+    }
+
+    public void openWorkoutLogFrame(){
+        workoutLogFrame = new WorkoutLogFrame(this);
     }
 
     public Form getLoginForm() {
