@@ -103,20 +103,13 @@ public class Controller {
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
 
                 try {
-                    System.out.println("connection!");
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
                     String temp = username + "\0" + email + "\0" + password;
                     dos.writeInt(1);
                     dos.writeUTF(temp);
                     dos.flush();
-                    /*
-                    dos.writeUTF(email);
-                    dos.writeUTF(username);
-                    dos.writeUTF(password);
-                    dos.flush();
 
-                     */
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -137,9 +130,12 @@ public class Controller {
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
                 try {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
-                    dos.writeUTF(email);
-                    dos.writeUTF(password);
+
+                    String temp = email + "\0" + password;
+                    dos.writeInt(0);
+                    dos.writeUTF(temp);
                     dos.flush();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -160,23 +156,47 @@ public class Controller {
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
-                    dos.writeUTF(name);
-                    dos.writeUTF(creatorEmail);
-                    dos.writeUTF(description);
-                    dos.writeUTF(tag1);
-                    dos.writeUTF(tag2);
-                    dos.writeUTF(tag3);
+
+                    String temp = name + "\0" + creatorEmail + "\0" + description + "\0" + tag1 + "\0" + tag2 + "\0" + tag3;
+
                     for(ExerciseInfo exerciseInfo : exerciseInfos){
-                        dos.writeUTF(String.valueOf(exerciseInfo.getId()));
-                        dos.writeUTF(exerciseInfo.getName());
-                        dos.writeUTF(exerciseInfo.getDescription());
-                        dos.writeUTF(exerciseInfo.getPrimary());
-                        dos.writeUTF(exerciseInfo.getSecondary());
+                        temp += "\0" + exerciseInfo.getId();
+                        temp += "\0" + exerciseInfo.getName();
+                        temp += "\0" + exerciseInfo.getDescription();
+                        temp += "\0" + exerciseInfo.getPrimary();
+                        temp += "\0" + exerciseInfo.getSecondary();
                     }
+                    dos.writeInt(5);
+                    dos.writeUTF(temp);
                     dos.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        };
+        connect(sc);
+    }
+
+    public void addLogWorkout(String email, int workoutId, Date date, String evaluation){
+        SocketConnection sc = new SocketConnection() {
+            @Override
+            public void connectionError(int i, String s) {
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+                try {
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+
+                    String temp = email + "\0" + workoutId + "\0" + date + "\0" + evaluation;
+                    dos.writeInt(6);
+                    dos.writeUTF(temp);
+                    dos.flush();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+
             }
         };
         connect(sc);
@@ -254,5 +274,5 @@ public class Controller {
             }
         }
     }
-    
+
 }
