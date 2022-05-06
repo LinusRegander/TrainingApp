@@ -38,6 +38,9 @@ public class Controller {
     private SettingsFrame settingsFrame;
     private String loggedInEmail;
 
+    private String loggedInMail;
+    private String username;
+
     public Controller() {
         Setup();
     }
@@ -128,6 +131,8 @@ public class Controller {
         return false;
     }
 
+    //write int talar om för servern vilken metod det är som ska anropas
+    //writeUTF är själva datan som ska skickas till servern och det är server sidan som hanterar det. 
     public void login(String email, String password){
         SocketConnection sc = new SocketConnection() {
             @Override
@@ -139,11 +144,22 @@ public class Controller {
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
                 try {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
 
                     String temp = email + "\0" + password;
                     dos.writeInt(0);
                     dos.writeUTF(temp);
                     dos.flush();
+
+                    String response = dis.readUTF();
+                    if(!response.isEmpty()){
+                        String[] loggedIn = response.split("\0");
+                        loggedInEmail = loggedIn[0];
+                        username = loggedIn[1];
+                        // TODO: 2022-05-06 BYT PANEL TILL NÄR MAN ÄR INLOGGAD
+                    } else {
+                        // TODO: 2022-05-06 Error meddelande som säger login failed
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();

@@ -5,6 +5,7 @@ import dbcon.Services;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Date;
 
 import static com.codename1.ui.CN.*;
 
@@ -116,7 +117,7 @@ public class Server extends Thread {
         private void insertNewWorkoutInfo() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
-            strings = temp.split("\n");
+            strings = temp.split("\0");
 
             String workoutName = strings[0];
             String creatorEmail = strings[1];
@@ -146,7 +147,24 @@ public class Server extends Thread {
             dos.writeUTF(response);
             dos.flush();
         }
-        
+
+        private void insertLogWorkout() throws Exception{
+            String[] strings;
+            String temp = dis.readUTF();
+            strings = temp.split("\0");
+
+            String email = strings[0];
+            int workoutId = Integer.parseInt(strings[1]);
+            Date date = Date.valueOf(strings[2]);
+            String evaluation = strings[3];
+
+            services.insertNewLogworkout(email, workoutId, date, evaluation);
+
+        }
+
+        private void insertProgramInfo() throws Exception{
+
+        }
 
 
         /*private void register() throws Exception{
