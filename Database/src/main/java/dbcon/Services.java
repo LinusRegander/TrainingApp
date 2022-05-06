@@ -49,7 +49,7 @@ public class Services {
     }
 
     public String login(String email, String password) throws SQLException{
-        String loginMail = "";
+        String loginMailAndUsername = "";
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.users where email = ? and password = ?");
         pstmt.setString(1, email);
@@ -57,13 +57,16 @@ public class Services {
         ResultSet rs = pstmt.executeQuery();
 
         while (rs.next()){
-            loginMail = rs.getString("email");
+            loginMailAndUsername = rs.getString("email");
+            loginMailAndUsername += '\0';
+            loginMailAndUsername += rs.getString("username");
+
         }
         pstmt.close();
         rs.close();
         con.close();
 
-        return loginMail;
+        return loginMailAndUsername;
     }
 
     public boolean checkIfEmailExists(String email) throws SQLException{
@@ -216,6 +219,32 @@ public class Services {
         } else {
             return "You do not have access";
         }
+    }
+
+    public void insertNewPLanWorkout(String loggedInMail, int workoutId, Date date) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Call training.insertNewPlanWorkout(?,?,?)");
+        pstmt.setString(1, loggedInMail);
+        pstmt.setInt(2, workoutId);
+        pstmt.setDate(3, date);
+
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+
+    public void insertPlanExerciseSetIntoPlanWorkout(int planWorkoutId, int exerciseInfoId, int set, int reps, double weight) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Call training.insertPlanExerciseSetIntoPlanWorkout(?,?,?,?,?)");
+        pstmt.setInt(1, planWorkoutId);
+        pstmt.setInt(2, exerciseInfoId);
+        pstmt.setInt(3, set);
+        pstmt.setInt(4, reps);
+        pstmt.setDouble(5, weight);
+
+        pstmt.execute();
+        pstmt.close();
+        con.close();
     }
 
     //email == inloggade email
