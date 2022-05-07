@@ -87,10 +87,14 @@ public class Server extends Thread {
         private void login() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
-            strings = temp.split("\n");
+            System.out.println(temp);
+            strings = temp.split("\0");
 
             String email = strings[0];
             String password = strings[1];
+
+            System.out.println(email);
+            System.out.println(password);
 
             String response = services.login(email, password);
 

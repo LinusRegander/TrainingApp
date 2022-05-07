@@ -25,10 +25,13 @@ public class LoginFrame {
     private Label pLabel;
     private Label testLabel;
     private Label uLabel;
+    private Label incorrectLabel;
     private TextField eTextField;
     private TextField pTextField;
     private TextField uTextField;
     private Form loginForm;
+
+    Style iL;
 
     public LoginFrame(Controller controller) {
         this.controller = controller;
@@ -63,12 +66,17 @@ public class LoginFrame {
         pTextField = new TextField();
         loginContainer.add(pTextField);
 
+        incorrectLabel = new Label("The username or password isn't correct!");
+        iL = incorrectLabel.getStyle();
+        iL.setFgColor(16777215);
+        loginContainer.add(incorrectLabel);
+
         buttonContainer = new Container(BoxLayout.xCenter());
         loginForm.add(buttonContainer);
 
         lButton = new Button("Login");
         lButton.setUIID("LoginButton");
-        lButton.addActionListener(l -> controller.login(uLabel.getText(), pLabel.getText()));
+        lButton.addActionListener(l -> controller.login(uTextField.getText(), pTextField.getText()));
         buttonContainer.add(lButton);
 
         rButton = new Button("Register");
@@ -83,5 +91,11 @@ public class LoginFrame {
 
     public Form getLoginForm() {
         return loginForm;
+    }
+
+    public void failedLogin(){
+        System.out.println("hallå");
+        iL.setFgColor(16711680);
+        loginForm.refreshTheme();
     }
 }

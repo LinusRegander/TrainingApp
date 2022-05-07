@@ -3,6 +3,7 @@ package com.example.trainingapp.Controller;
 import HelperClasses.*;
 import com.codename1.db.Database;
 import com.codename1.io.BufferedOutputStream;
+import com.codename1.io.BufferedInputStream;
 import com.codename1.l10n.ParseException;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Form;
@@ -14,6 +15,7 @@ import com.codename1.io.SocketConnection;
 import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 
 public class Controller {
@@ -49,7 +51,7 @@ public class Controller {
     public void Setup() {
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
-       //loginFrame = new LoginFrame(this);
+       loginFrame = new LoginFrame(this);
     }
 
     public void connect(SocketConnection socketConnection){
@@ -142,6 +144,7 @@ public class Controller {
 
             @Override
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+                System.out.println("hej");
                 try {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
@@ -152,13 +155,18 @@ public class Controller {
                     dos.flush();
 
                     String response = dis.readUTF();
+                    System.out.println(response);
                     if(!response.isEmpty()){
-                        String[] loggedIn = response.split("\0");
+                        String[] loggedIn = split(response);
                         loggedInEmail = loggedIn[0];
                         username = loggedIn[1];
                         // TODO: 2022-05-06 BYT PANEL TILL NÄR MAN ÄR INLOGGAD
+                        openMainFrame();
+                        System.out.println("du är inloggad!");
                     } else {
                         // TODO: 2022-05-06 Error meddelande som säger login failed
+                        loginFrame.failedLogin();
+                        System.out.println("du kom inte in!");
                     }
 
                 } catch (IOException e) {
@@ -227,6 +235,56 @@ public class Controller {
         connect(sc);
     }
 
+    public void addPlanWorkout(int planWorkoutId, int workoutId, String creator, Date date){
+        SocketConnection sc = new SocketConnection() {
+            @Override
+            public void connectionError(int i, String s) {
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+                try {
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+
+                    String temp = planWorkoutId + "\0" + workoutId + "\0" + creator + "\0" + date;
+                    dos.writeInt(22);
+                    dos.writeUTF(temp);
+                    dos.flush();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        connect(sc);
+    }
+
+    public void addPlanExerciseSet(int planExerciseId, int exerciseId, int set, int reps, double weight, String email, int planWorkoutId){
+        SocketConnection sc = new SocketConnection() {
+            @Override
+            public void connectionError(int i, String s) {
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+                try {
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+
+                    String temp = planExerciseId + "\0" + exerciseId + "\0" + set + "\0" + reps + "\0" + weight + "\0" + email + "\0" + planWorkoutId;
+                    dos.writeInt(69);
+                    dos.writeUTF(temp);
+                    dos.flush();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        connect(sc);
+    }
+
     public void addProgramInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<WorkoutInfo> workoutInfos){
         SocketConnection sc = new SocketConnection() {
             @Override
@@ -266,7 +324,7 @@ public class Controller {
                     ArrayList<ExerciseInfo> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
-                    strings = temp.split("\0");
+                    strings = split(temp);
                     for(int i = 0; i < strings.length / 5; i++){
                         int id = Integer.parseInt(strings[i * 5]);
                         String name = strings[i * 5 + 1];
@@ -302,7 +360,7 @@ public class Controller {
                     ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
-                    strings = temp.split("\0");
+                    strings = split(temp);
                     for(int i = 0; i < strings.length / 8; i++){
                         int id = Integer.parseInt(strings[i * 8]);
                         String name = strings[i * 8 + 1];
@@ -341,7 +399,7 @@ public class Controller {
                     ArrayList<ProgramInfo> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
-                    strings = temp.split("\0");
+                    strings = split(temp);
                     for(int i = 0; i < strings.length / 8; i++){
                         int id = Integer.parseInt(strings[i * 8]);
                         String name = strings[i * 8 + 1];
@@ -379,7 +437,7 @@ public class Controller {
                     ArrayList<LogExerciseSet> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
-                    strings = temp.split("\0");
+                    strings = split(temp);
                     for(int i = 0; i < strings.length / 7; i++){
                         int logExerciseid = Integer.parseInt(strings[i * 7]);
                         int exerciseId = Integer.parseInt(strings[i * 7 + 1]);
@@ -416,7 +474,7 @@ public class Controller {
                     ArrayList<LogWorkout> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
-                    strings = temp.split("\0");
+                    strings = split(temp);
                     for(int i = 0; i < strings.length / 5; i++){
                         int logWorkoutId = Integer.parseInt(strings[i * 5]);
                         int workoutId = Integer.parseInt(strings[i * 5 + 1]);
@@ -451,7 +509,7 @@ public class Controller {
                     ArrayList<LogProgram> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
-                    strings = temp.split("\0");
+                    strings = split(temp);
                     for(int i = 0; i < strings.length / 5; i++){
                         int logProgramId = Integer.parseInt(strings[i * 5]);
                         String email = strings[i * 5 + 1];
@@ -468,6 +526,15 @@ public class Controller {
             }
         };
         connect(sc);
+    }
+
+    public String[] split(String str)
+    {
+        ArrayList<String> splitArray = new ArrayList<>();
+        StringTokenizer arr = new StringTokenizer(str, "\0");//split by commas
+        while(arr.hasMoreTokens())
+            splitArray.add(arr.nextToken());
+        return splitArray.toArray(new String[splitArray.size()]);
     }
 
 }

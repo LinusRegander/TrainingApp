@@ -7,14 +7,12 @@ public class PlanWorkout {
     private int workoutId;
     private String creator;
     private Date date;
-    private String evaluation;
 
-    public PlanWorkout(int planWorkoutId, int workoutId, String name, Date date, String evaluation){
+    public PlanWorkout(int planWorkoutId, int workoutId, String name, Date date){
         this.planWorkoutId = planWorkoutId;
         this.workoutId = workoutId;
         this.creator = name;
         this.date = date;
-        this.evaluation = evaluation;
     }
 
     public int getPlanWorkoutId() {
@@ -40,12 +38,5 @@ public class PlanWorkout {
     }
     public void setDate(Date date) {
         this.date = date;
-    }
-    public String getEvaluation() {
-        return evaluation;
-    }
-
-    public void setEvaluation(String evaluation) {
-        this.evaluation = evaluation;
     }
 }
