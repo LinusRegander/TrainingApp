@@ -20,7 +20,6 @@ public class Training extends Lifecycle {
 
     @Override
     public void runApp() {
-        //controller = new Controller();
-        AchievementFrame  achievementFrame = new AchievementFrame(new Controller());
+        controller = new Controller();
     }
 }
