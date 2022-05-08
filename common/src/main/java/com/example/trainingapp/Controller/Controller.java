@@ -235,6 +235,7 @@ public class Controller {
         connect(sc);
     }
 
+    // TODO: 2022-05-08 PlanWorkoutId finns inte förens efter den har insertats till databasen
     public void addPlanWorkout(int planWorkoutId, int workoutId, String creator, Date date){
         SocketConnection sc = new SocketConnection() {
             @Override
@@ -244,6 +245,7 @@ public class Controller {
 
             @Override
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+
                 try {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
@@ -260,6 +262,7 @@ public class Controller {
         connect(sc);
     }
 
+    // TODO: 2022-05-08 planExerciseId finns inte förens första har lagts till i databasen.
     public void addPlanExerciseSet(int planExerciseId, int exerciseId, int set, int reps, double weight, String email, int planWorkoutId){
         SocketConnection sc = new SocketConnection() {
             @Override

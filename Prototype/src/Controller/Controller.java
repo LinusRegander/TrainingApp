@@ -147,7 +147,7 @@ public class Controller {
     public void updateLogExerciseSetList(){
         if(!loggedInEmail.isEmpty()){
             try {
-                logExerciseSetList = services.selectExerciseSet(loggedInEmail);
+                logExerciseSetList = services.selectLogExerciseSet(loggedInEmail);
             } catch (SQLException e){
                 e.printStackTrace();
             }

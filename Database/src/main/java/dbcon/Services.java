@@ -624,7 +624,7 @@ public class Services {
         return programInfos;
     }
 
-    public ArrayList<LogExerciseSet> selectExerciseSet(String userEmail) throws SQLException{
+    public ArrayList<LogExerciseSet> selectLogExerciseSet(String userEmail) throws SQLException{
         ArrayList<LogExerciseSet> logExerciseSets = new ArrayList<>();
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.logexerciseset where email = ?");
@@ -636,7 +636,7 @@ public class Services {
             int workoutId = rs.getInt("logworkoutid");
             String email = rs.getString("email");
             int set = rs.getInt("set");
-            int rep = rs.getInt("rep");
+            int rep = rs.getInt("reps");
             double weight = rs.getDouble("weight");
 
             logExerciseSets.add(new LogExerciseSet(setId, exerciseId,  set, rep, weight, email, workoutId));
