@@ -4,17 +4,18 @@ import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.GridLayout;
 import com.example.trainingapp.Controller.Controller;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
 public class AchievementFrame {
     private Button achievement;
-    private Button bAchievement1;
+    /*private Button bAchievement1;
     private Button bAchievement2;
     private Button bAchievement3;
     private Button bAchievement4;
-    private Button bAchievement5;
+    private Button bAchievement5;*/
     private Button create;
     private Button home;
     private Button program;
@@ -40,6 +41,10 @@ public class AchievementFrame {
         achievementFrame();
         navbar();
         form.show();
+    }
+    public String[] testAchievments(){
+        String[] testAchievments = new String[]{"1", "2", "3","4", "5", "6", "7", "8"};
+        return testAchievments;
     }
 
     public void topbar() {
@@ -70,10 +75,32 @@ public class AchievementFrame {
         lAchievement = new Label("Achievements");
         a.add(lAchievement);
 
-        Container b = new Container(BoxLayout.yCenter());
+        Container b = new Container(GridLayout.autoFit());
+        b.setScrollableY(true);
+        String[] achievements = testAchievments();
+        for(int i = 0; i < achievements.length; i++){
+            Button achievementButton = new Button();
+            if(Integer.parseInt(achievements[i]) % 2 == 0){
+                achievementButton.setUIID("AchievementButton");
+                achievementButton.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_RATE, achievementButton.getUnselectedStyle()));
+            }
+            else{
+                achievementButton.setUIID("CAchievementButton");
+                achievementButton.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, achievementButton.getUnselectedStyle()));
+            }
+
+            int finalI = i;
+            achievementButton.addActionListener(l -> {
+                        descriptionText.setText("Achievement " + achievements[finalI]);
+                        statusText.setText("Status for " + achievements[finalI]);
+                    });
+            b.add(achievementButton);
+        }
+
         mainContainer.add(b);
 
-        bAchievement1 = new Button();
+
+        /*bAchievement1 = new Button();
         bAchievement1.setUIID("AchievementButton");
         bAchievement1.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, bAchievement1.getUnselectedStyle()));
         bAchievement1.addActionListener(e -> statusText.setText("Unfinished"));
@@ -97,7 +124,7 @@ public class AchievementFrame {
         bAchievement5 = new Button();
         bAchievement5.setUIID("CAchievementButton");
         bAchievement5.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_BORDER, bAchievement5.getUnselectedStyle()));
-        b.add(bAchievement5);
+        b.add(bAchievement5);*/
 
         Container description = new Container(BoxLayout.y());
         description.setUIID("DescriptionContainer");
@@ -109,7 +136,7 @@ public class AchievementFrame {
         Label lDescription = new Label("Description: ");
         c.add(lDescription);
 
-        descriptionText = new Label();
+        descriptionText = new Label("                                                ");
         c.add(descriptionText);
 
         Container d = new Container(BoxLayout.x());
@@ -118,7 +145,7 @@ public class AchievementFrame {
         Label status = new Label("Status: ");
         d.add(status);
 
-        statusText = new Label();
+        statusText = new Label("                                                      ");
         d.add(statusText);
 
         form.add(CENTER, mainContainer);
