@@ -152,6 +152,20 @@ public class Server extends Thread {
             dos.flush();
         }
 
+        private void insertWorkoutIntoProgram() throws Exception{
+            String[] strings;
+            String temp = dis.readUTF();
+            strings = temp.split("\0");
+
+            String loggedInMail = strings[0];
+            int programInfoId = Integer.parseInt(strings[1]);
+            int workoutId = Integer.parseInt(strings[2]);
+
+            String response = services.insertWorkoutInToProgram(loggedInMail, programInfoId, workoutId);
+            dos.writeUTF(response);
+            dos.flush();
+        }
+
         private void insertLogWorkout() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
@@ -163,8 +177,37 @@ public class Server extends Thread {
             String evaluation = strings[3];
 
             services.insertNewLogworkout(email, workoutId, date, evaluation);
-
         }
+
+        private void insertLogExerciseSet() throws Exception{
+            String[] strings;
+            String temp = dis.readUTF();
+            strings = temp.split("\0");
+
+            String loggedInMail = strings[0];
+            int exerciseId = Integer.parseInt(strings[1]);
+            int set = Integer.parseInt(strings[2]);
+            int reps = Integer.parseInt(strings[3]);
+            double weight = Double.parseDouble(strings[4]);
+            int logWorkoutId = Integer.parseInt(strings[5]);
+
+            services.insertLogExerciseSet(exerciseId, set, reps, weight, loggedInMail, logWorkoutId);
+        }
+
+        private void insertLogProgram() throws Exception{
+            String[] strings;
+            String temp = dis.readUTF();
+            strings = temp.split("\0");
+
+            String loggedInMail = strings[0];
+            int programId = Integer.parseInt(strings[1]);
+            Date date = Date.valueOf(strings[3]);
+            String evaluation = strings[4];
+
+            services.insertNewLogProgram(loggedInMail, programId, date, evaluation);
+        }
+
+
 
         // TODO: 2022-05-08 Uppdatera indexen för att matcha outputen från controller
         private void insertPlanWorkout() throws Exception{
@@ -197,7 +240,18 @@ public class Server extends Thread {
         }
 
         private void insertProgramInfo() throws Exception{
+            String[] strings;
+            String temp = dis.readUTF();
+            strings = temp.split("\0");
 
+            String name = strings[0];
+            String creatorEmail = strings[1];
+            String description = strings[2];
+            String tag1 = strings[3];
+            String tag2 = strings[4];
+            String tag3 = strings[5];
+
+            services.insertNewProgram(name, creatorEmail, description, tag1, tag2, tag3);
         }
 
         // TODO: 2022-05-08 Kolla upp om sista "\0" ska vara med eller inte, funderar på om man ska ha en vanlig
