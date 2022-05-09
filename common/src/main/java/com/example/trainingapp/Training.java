@@ -9,6 +9,7 @@ import com.codename1.ui.plaf.*;
 import com.codename1.ui.util.Resources;
 import com.example.trainingapp.Controller.Controller;
 import com.example.trainingapp.View.AchievementFrame;
+import com.example.trainingapp.View.CreateFrame;
 import com.example.trainingapp.View.LoginFrame;
 
 /**
@@ -21,6 +22,6 @@ public class Training extends Lifecycle {
     @Override
     public void runApp() {
         //controller = new Controller();
-        AchievementFrame  achievementFrame = new AchievementFrame(new Controller());
+        CreateFrame createFrame = new CreateFrame(new Controller());
     }
 }

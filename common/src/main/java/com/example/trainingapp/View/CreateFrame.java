@@ -97,6 +97,7 @@ public class CreateFrame {
 
     public void workoutContainer() {
         workoutContainer = new Container(BoxLayout.y());
+        workoutContainer.setScrollableY(true);
         workoutContainer.setUIID("WorkoutContainer");
 
         a = new Container(BoxLayout.y());
