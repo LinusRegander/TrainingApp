@@ -29,7 +29,7 @@ public class WorkoutLogFrame {
     }
     public void startLogForm(){
         logForm = new Form(new BorderLayout());
-        logForm.setUIID("LogForm");
+        //logForm.setUIID("LogForm");
         topBar();
         workoutLog();
         navBar();

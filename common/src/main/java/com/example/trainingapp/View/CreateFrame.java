@@ -30,6 +30,7 @@ public class CreateFrame {
     private Container workoutContainer;
     private Controller controller;
     private Form form;
+    private int exerciseID = 0;
     private Label averageWeight;
     private Label repAmount;
     private Label setAmount;
@@ -38,6 +39,7 @@ public class CreateFrame {
     private String textFromArea;
     private TextArea textArea;
     private TextArea textArea2;
+    private TextArea textAreaWeight;
     private TextField workout;
     private ArrayList<ExerciseInfo> exerciseInfo = new ArrayList<>();
     private ArrayList<Container> containers = new ArrayList<>();
@@ -48,7 +50,8 @@ public class CreateFrame {
     }
 
     public void createForm() {
-        form = new Form(null, new BorderLayout());
+        form = new Form(null, new BoxLayout(BoxLayout.Y_AXIS));
+        form.setScrollableY(true);
         form.setUIID("CreateForm");
         topbar();
         workoutContainer();
@@ -92,11 +95,12 @@ public class CreateFrame {
         Label time = new Label("PlaceHolder Time");
         bottom.add(time);
 
-        form.add(NORTH, topbar);
+        form.add(topbar);
     }
 
     public void workoutContainer() {
         workoutContainer = new Container(BoxLayout.y());
+        workoutContainer.setScrollableY(true);
         workoutContainer.setUIID("WorkoutContainer");
 
         a = new Container(BoxLayout.y());
@@ -104,17 +108,32 @@ public class CreateFrame {
         a.setUIID("a");
         workoutContainer.add(a);
 
+        Label name = new Label("ID (Number): ");
+        a.add(name);
+
         workout = new TextField();
         a.add(workout);
 
         temp = new Container(BoxLayout.y());
         a.add(temp);
 
+        Label set = new Label("Sets:");
+        temp.add(set);
+
         textArea = new TextArea();
         temp.add(textArea);
 
+        Label reps = new Label("Reps:");
+        temp.add(reps);
+
         textArea2 = new TextArea();
         temp.add(textArea2);
+
+        Label lblWeight = new Label("Weight:");
+        temp.add(lblWeight);
+
+        textAreaWeight = new TextArea();
+        temp.add(textAreaWeight);
 
         Container b = new Container(BoxLayout.yCenter());
         containers.add(b);
@@ -122,51 +141,43 @@ public class CreateFrame {
         a.add(b);
 
         addSet = new Button("+ Add Set");
-        addSet.addActionListener(l -> newContainer());
+        addSet.addActionListener(l -> temp.add(new TextArea()));
         b.add(addSet);
 
-        Container c = new Container(BoxLayout.xCenter());
+        Container c = new Container(BoxLayout.y());
         containers.add(c);
-        c.setUIID("c");
         a.add(c);
 
-        totalWeight = new Label("Total Weight");
+        Label weight = new Label("Total Weight");
+        c.add(weight);
+
+        totalWeight = new Label("0");
         c.add(totalWeight);
 
-        averageWeight = new Label("Average Weight");
-        c.add(averageWeight);
-
-        Container d = new Container(BoxLayout.yCenter());
+        Container d = new Container(BoxLayout.y());
         containers.add(d);
-        d.setUIID("d");
-        workoutContainer.add(d);
+        a.add(d);
 
-        addExercise = new Button("+ Add Exercise");
-        d.add(addExercise);
+        Label average = new Label("Average Weight");
+        d.add(average);
 
-        Container e = new Container(BoxLayout.xCenter());
+        averageWeight = new Label("0");
+        d.add(averageWeight);
+
+        Container e = new Container(BoxLayout.yCenter());
         containers.add(e);
-        e.setUIID("e");
         workoutContainer.add(e);
 
-        weightAmount = new Label("Total Weight");
-        e.add(weightAmount);
+        addExercise = new Button("+ Add Exercise");
+        try {
+            addExercise.addActionListener(l -> controller.addExercise(Integer.parseInt(workout.getText()), exerciseID++, Integer.parseInt(textArea.getText()), Integer.parseInt(textArea2.getText()), Integer.parseInt(textArea2.getText())));
+            addExercise.addActionListener(l -> addedExercise());
+        } catch (NumberFormatException exception) {
+            exception.printStackTrace();
+        }
+        d.add(addExercise);
 
-        setAmount = new Label("Total Sets");
-        e.add(setAmount);
-
-        repAmount = new Label("Total Reps");
-        e.add(repAmount);
-
-        form.add(CENTER, workoutContainer);
-    }
-
-    public void newContainer() {
-        TextArea newArea = new TextArea();
-        temp.add(newArea);
-
-        TextArea newArea2 = new TextArea();
-        temp.add(newArea2);
+        form.add(workoutContainer);
     }
 
     public void navbar() {
@@ -198,11 +209,87 @@ public class CreateFrame {
         settings.addActionListener(l -> controller.openSettingsFrame());
         navbar.add(settings);
 
-        form.add(SOUTH, navbar);
+        form.add(navbar);
+    }
+
+    public void addedExercise() {
+        Container nExerciseContainer = new Container(BoxLayout.y());
+        workoutContainer.add(nExerciseContainer);
+
+        Label exercise = new Label("Exercise " + workout.getText() + " Sets: " + textArea.getText() + " Reps: " + textArea2.getText() + " Weight: " + textAreaWeight.getText());
+        //TODO: Fixa denna: exerciseInfo.add(exercise.getText());
+        nExerciseContainer.add(exercise);
+
+        calculateTotal();
+        calculateAverage();
+
+        workout.setText("");
+
+        textArea.setText("");
+
+        textArea2.setText("");
+
+        textAreaWeight.setText("");
+    }
+
+    public void calculateTotal() {
+        double temp = 0;
+        double total = Double.parseDouble(textAreaWeight.getText());
+
+        ArrayList<Double> totalList = new ArrayList<>();
+        totalList.add(total);
+
+        for (int i = 0; i < totalList.size(); i++) {
+            temp += totalList.get(i);
+        }
+
+        totalWeight.setText(String.valueOf(temp));
+    }
+
+    public void calculateAverage() {
+        double weight = Double.parseDouble(textAreaWeight.getText());
+
+        ArrayList<Double> weightList = new ArrayList<>();
+        weightList.add(weight);
+
+        float sum = 0;
+
+        for (int i = 0; i < weightList.size(); i++) {
+            sum += weightList.get(i);
+        }
+
+        float average = (sum / weightList.size());
+
+        averageWeight.setText(String.valueOf(average));
     }
 
     public void getWorkoutInfo() {
         Form tempForm = new Form(null, new BorderLayout());
+
+        topbar = new Container(BoxLayout.y());
+        topbar.setUIID("Topbar");
+
+        Container top = new Container(BoxLayout.xCenter());
+        topbar.add(top);
+
+        Button back = new Button();
+        back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
+        back.addActionListener((e) -> {
+            form.setToolbar(new Toolbar());
+            form.setBackCommand(new Command("Back") {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    tempForm.showBack();
+                }
+            });
+            form.show();
+        });
+        top.add(back);
+
+        tempForm.add(NORTH, topbar);
+
+        Label title = new Label("FitHub");
+        top.add(title);
 
         Container tempA = new Container(BoxLayout.y());
 
@@ -231,7 +318,7 @@ public class CreateFrame {
         tempA.add(tag3);
 
         Button finished = new Button("Finished");
-        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), "email", tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
+        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
         finished.addActionListener(l -> controller.openProgramFrame());
         tempA.add(finished);
 

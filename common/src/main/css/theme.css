@@ -98,7 +98,21 @@ c {
     border-color: black;
 }
 
+d {
+    border-radius: 25px;
+    background-color: #7092be;
+    border-style: solid;
+    border-color: black;
+}
+
 e {
+    border-radius: 25px;
+    background-color: #7092be;
+    border-style: solid;
+    border-color: black;
+}
+
+f {
     border-radius: 25px;
     background-color: #7092be;
     border-style: solid;

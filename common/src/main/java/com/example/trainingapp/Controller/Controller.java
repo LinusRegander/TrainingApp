@@ -39,8 +39,6 @@ public class Controller {
     private Services services;
     private SettingsFrame settingsFrame;
     private String loggedInEmail;
-
-    private String loggedInMail;
     private String username;
 
     public Controller() {
@@ -51,7 +49,7 @@ public class Controller {
     public void Setup() {
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
-       loginFrame = new LoginFrame(this);
+       //loginFrame = new LoginFrame(this);
     }
 
     public void connect(SocketConnection socketConnection){
@@ -540,4 +538,71 @@ public class Controller {
         return splitArray.toArray(new String[splitArray.size()]);
     }
 
+    public void updatePlanExercise(){
+        SocketConnection sc = new SocketConnection() {
+            @Override
+            public void connectionError(int i, String s) {
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+                try{
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
+                    dos.writeInt(8);
+                    dos.flush();
+                    ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
+                    String[] strings;
+                    String temp = dis.readUTF();
+                    strings = temp.split("\0");
+                    for(int i = 0; i < strings.length / 8; i++){
+                        int id = Integer.parseInt(strings[i * 8]);
+                        String name = strings[i * 8 + 1];
+                        String creatorEmail = strings[i * 8 + 2];
+                        String description = strings[i * 8 + 3];
+                        String tag1 = strings[i * 8 + 4];
+                        String tag2 = strings[i * 8 + 5];
+                        String tag3 = strings[i * 8 + 6];
+                        String creatorUsername = strings[i * 8 + 7];
+
+                        arrayTemp.add(new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, creatorUsername));
+                    }
+                    workoutList = arrayTemp;
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        connect(sc);
+    }
+
+    public void addExercise(int workoutId, int exerciseId, int sets, int reps, double weight){
+        SocketConnection sc = new SocketConnection() {
+            @Override
+            public void connectionError(int i, String s) {
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+                try {
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+
+                    String temp = workoutId + "\0" + exerciseId + "\0" + sets + "\0" + reps + "\0" + weight + "\0";
+                    dos.writeInt(13);
+                    dos.writeUTF(temp);
+                    dos.flush();
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        connect(sc);
+    }
+
+    public String getLoggedInEmail() {
+        return loggedInEmail;
+    }
 }
