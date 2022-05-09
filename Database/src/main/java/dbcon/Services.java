@@ -240,6 +240,22 @@ public class Services {
         }
     }
 
+    public String insertWorkoutInToProgram(String loggedInMail, int programInfoId, int workoutId) throws SQLException{
+        if(checkIfCreatorOfProgram(loggedInMail, programInfoId)){
+            Connection con = this.getDatabaseConnection();
+            PreparedStatement pstmt = con.prepareStatement("Call training.insertWorkoutInToProgram(?,?)");
+            pstmt.setInt(1, programInfoId);
+            pstmt.setInt(1, workoutId);
+
+            pstmt.execute();
+            pstmt.close();
+            con.close();
+            return "Successful";
+        } else {
+            return "You do not have access";
+        }
+    }
+
     public void insertNewPLanWorkout(String loggedInMail, int workoutId, Date date) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training.insertNewPlanWorkout(?,?,?)");
@@ -267,10 +283,10 @@ public class Services {
     }
 
     //email == inloggade email
-    public void logExerciseSet(ExerciseInfo exercise, int set, int reps, double weight, String loggedInMail, int logWorkoutId) throws SQLException{
+    public void insertLogExerciseSet(int exerciseId, int set, int reps, double weight, String loggedInMail, int logWorkoutId) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training.logExerciseSet(?,?,?,?,?,?)");
-        pstmt.setInt(1, exercise.getId());
+        pstmt.setInt(1, exerciseId);
         pstmt.setInt(2, set);
         pstmt.setInt(3, reps);
         pstmt.setDouble(4, weight);
@@ -745,6 +761,25 @@ public class Services {
         PreparedStatement pstmt = con.prepareStatement("select * from training.workoutinfo where creatoremail = ? and workoutid = ?");
         pstmt.setString(1, email);
         pstmt.setInt(2, workoutId);
+
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()){
+            temp = rs.getString("name");
+        }
+        rs.close();
+        pstmt.close();
+        con.close();
+
+        return temp != null;
+    }
+
+    public boolean checkIfCreatorOfProgram(String email, int programId) throws SQLException{
+        String temp = null;
+
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.programinfo where creatoremail = ? and programid = ?");
+        pstmt.setString(1, email);
+        pstmt.setInt(2, programId);
 
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()){
