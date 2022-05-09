@@ -162,19 +162,6 @@ public class Server extends Thread {
             dos.flush();
         }
 
-        private void insertLogWorkout() throws Exception{
-            String[] strings;
-            String temp = dis.readUTF();
-            strings = temp.split("\0");
-
-            String email = strings[0];
-            int workoutId = Integer.parseInt(strings[1]);
-            Date date = Date.valueOf(strings[2]);
-            String evaluation = strings[3];
-
-            services.insertNewLogworkout(email, workoutId, date, evaluation);
-        }
-
         private void insertLogExerciseSet() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
@@ -190,6 +177,19 @@ public class Server extends Thread {
             services.insertLogExerciseSet(exerciseId, set, reps, weight, loggedInMail, logWorkoutId);
         }
 
+        private void insertLogWorkout() throws Exception{
+            String[] strings;
+            String temp = dis.readUTF();
+            strings = temp.split("\0");
+
+            String email = strings[0];
+            int workoutId = Integer.parseInt(strings[1]);
+            Date date = Date.valueOf(strings[2]);
+            String evaluation = strings[3];
+
+            services.insertNewLogworkout(email, workoutId, date, evaluation);
+        }
+
         private void insertLogProgram() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
@@ -202,8 +202,6 @@ public class Server extends Thread {
 
             services.insertNewLogProgram(loggedInMail, programId, date, evaluation);
         }
-
-
 
         // TODO: 2022-05-08 Uppdatera indexen för att matcha outputen från controller
         private void insertPlanWorkout() throws Exception{
