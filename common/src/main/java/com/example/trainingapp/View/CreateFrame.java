@@ -14,6 +14,7 @@ import com.codename1.ui.table.TableLayout;
 import com.example.trainingapp.Controller.Controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
@@ -334,7 +335,9 @@ public class CreateFrame {
         tempA.add(tag3);
 
         Button finished = new Button("Finished");
-        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
+        //TODO: Fixa mailen och addLogWorkout
+        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), "daniel.olsson@gmail.com", tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
+        finished.addActionListener(l -> controller.addLogWorkout("daniel.olsson@gmail.com", 1, null, null));
         finished.addActionListener(l -> controller.openMainFrame());
         tempA.add(finished);
 

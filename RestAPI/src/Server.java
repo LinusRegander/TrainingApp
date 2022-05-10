@@ -75,6 +75,9 @@ public class Server extends Thread {
                    case 1 -> register();
                    case 2 -> insertNewWorkoutInfo();
                    case 3 -> getLogWorkoutList();
+
+                   case 5 -> insertNewWorkoutInfo();
+                   case 6 -> insertLogWorkout();
                }
 
             } catch (Exception e) {

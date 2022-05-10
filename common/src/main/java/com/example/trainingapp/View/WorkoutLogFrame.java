@@ -30,20 +30,13 @@ public class WorkoutLogFrame {
     }
 
     public void startLogForm(){
+        workouts = controller.getLogWorkoutList();
         logForm = new Form(new BorderLayout());
-        //logForm.setUIID("LogForm");
+        logForm.setUIID("LogForm");
         topBar();
         workoutLog();
         navBar();
-        refreshTheme(logForm);
         logForm.show();
-    }
-
-    private void refreshTheme(Form parentForm) {
-        Form c = Display.getInstance().getCurrent();
-        c.refreshTheme();
-        parentForm.refreshTheme();
-        parentForm.revalidate();
     }
 
     public void topBar(){
@@ -61,8 +54,6 @@ public class WorkoutLogFrame {
         logForm.add(NORTH, topBar);
     }
     public void workoutLog(){
-        controller.updateLogWorkoutList();
-        workouts = controller.getLogWorkoutList();
         logContainer = new Container(BoxLayout.y());
         logContainer.setScrollableY(true);
         for(int i = 0; i < workouts.size(); i++){
@@ -76,7 +67,7 @@ public class WorkoutLogFrame {
             logContainer.add(multiButton);
         }
         logForm.add(CENTER, logContainer);
-        logContainer.revalidate();
+        logForm.forceRevalidate();
     }
     public void navBar() {
         navBar = new Container(BoxLayout.xCenter());
@@ -108,9 +99,5 @@ public class WorkoutLogFrame {
         navBar.add(settingsButton);
 
         logForm.add(SOUTH, navBar);
-    }
-
-    public Container getLogContainer() {
-        return logContainer;
     }
 }

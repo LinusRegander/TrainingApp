@@ -6,6 +6,7 @@ import com.codename1.io.BufferedOutputStream;
 import com.codename1.io.BufferedInputStream;
 import com.codename1.l10n.ParseException;
 import com.codename1.l10n.SimpleDateFormat;
+import com.codename1.ui.Container;
 import com.codename1.ui.Form;
 import com.example.trainingapp.View.*;
 import dbcon.Services;
@@ -47,6 +48,7 @@ public class Controller {
 
     //Setup constructor.
     public void Setup() {
+        updateLogWorkoutList();
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
        //loginFrame = new LoginFrame(this);
@@ -93,7 +95,6 @@ public class Controller {
 
     public void openWorkoutLogFrame(){
         workoutLogFrame = new WorkoutLogFrame(this);
-        workoutLogFrame.getLogContainer().refreshTheme();
     }
 
     public Form getLoginForm() {
@@ -209,7 +210,7 @@ public class Controller {
         connect(sc);
     }
 
-    public void addLogWorkout(String email, int workoutId, Date date, String evaluation){
+    public void addLogWorkout(String email, int workoutId, java.util.Date date, String evaluation){
         SocketConnection sc = new SocketConnection() {
             @Override
             public void connectionError(int i, String s) {
