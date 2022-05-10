@@ -224,7 +224,7 @@ public class CreateFrame {
         Button addExerciseButton = new Button("+ Add exercise");
         addExerciseButton.setUIID("CAchievementButton");
         //TODO: change button functionality
-        addExerciseButton.addActionListener(l -> addExercise("Squat", 2));
+        addExerciseButton.addActionListener(l -> new ExerciseSelectFrame(controller));
         addExerciseContainer.add(addExerciseButton);
 
         workoutContainer.add(addExerciseContainer);

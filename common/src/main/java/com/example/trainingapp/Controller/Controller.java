@@ -56,7 +56,7 @@ public class Controller {
 
     public void connect(SocketConnection socketConnection){
         System.out.println("inne");
-        Socket.connect("192.168.56.1", 541, socketConnection);
+        Socket.connect("127.0.0.1", 541, socketConnection);
 
     }
 
@@ -322,11 +322,13 @@ public class Controller {
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(7);
+                    dos.writeInt(4);
+                    System.out.println("hej");
                     dos.flush();
                     ArrayList<ExerciseInfo> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
+                    System.out.println(temp);
                     strings = split(temp);
                     for(int i = 0; i < strings.length / 5; i++){
                         int id = Integer.parseInt(strings[i * 5]);
@@ -538,6 +540,9 @@ public class Controller {
         while(arr.hasMoreTokens())
             splitArray.add(arr.nextToken());
         return splitArray.toArray(new String[splitArray.size()]);
+    }
+    public ArrayList<ExerciseInfo> getExerciseList(){
+        return exerciseList;
     }
 
 }
