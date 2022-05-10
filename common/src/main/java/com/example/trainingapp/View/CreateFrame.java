@@ -61,6 +61,7 @@ public class CreateFrame {
         //workoutContainer();
         workoutContainerReworked();
         navbar();
+        form.revalidate();
         form.show();
     }
 
@@ -101,6 +102,13 @@ public class CreateFrame {
         bottom.add(time);
 
         form.add(NORTH, topbar);
+    }
+
+    private void refreshTheme(Form form) {
+        Form c = Display.getInstance().getCurrent();
+        c.refreshTheme();
+        form.refreshTheme();
+        form.revalidate();
     }
 
     public void workoutContainerReworked(){
