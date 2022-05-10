@@ -1,6 +1,9 @@
 package com.example.trainingapp.View;
 
+import HelperClasses.Exercise;
 import HelperClasses.ExerciseInfo;
+import HelperClasses.LogExerciseSet;
+import HelperClasses.Set;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.layouts.BorderLayout;
@@ -40,6 +43,7 @@ public class CreateFrame {
     private ArrayList<ExerciseInfo> exerciseInfo = new ArrayList<>();
     private ArrayList<Container> containers = new ArrayList<>();
     private TableLayout tableLayout = new TableLayout(1, 3);
+    private ArrayList<Exercise> exercises = new ArrayList<>();
 
     public CreateFrame(Controller controller) {
         this.controller = controller;
@@ -171,11 +175,15 @@ public class CreateFrame {
         Container testExerciseContainer = new Container(BoxLayout.y());
         testExerciseContainer.setUIID("a");
 
-        Label exerciseName = new Label("Test exercise");
+        Exercise exercise = new Exercise("Deadlift", 1);
+        exercises.add(exercise);
+        Label exerciseName = new Label(exercise.getName());
         testExerciseContainer.add(exerciseName);
 
         Container setsContainer = new Container(BoxLayout.y());
         Container setContainer = new Container(tableLayout);
+        Set set = new Set(0, 0);
+        exercise.getSets().add(set);
         int[] setCount = new int[]{1};
         Button setButton = new Button(Integer.toString(setCount[0]));
         setButton.setUIID("AchievementButton");
