@@ -2,18 +2,18 @@ package com.example.trainingapp.View;
 
 import HelperClasses.Exercise;
 import HelperClasses.ExerciseInfo;
-import HelperClasses.LogExerciseSet;
 import HelperClasses.Set;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.DataChangedListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.GridBagConstraints;
+import com.codename1.ui.layouts.GridBagLayout;
 import com.codename1.ui.table.TableLayout;
 import com.example.trainingapp.Controller.Controller;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
@@ -30,6 +30,7 @@ public class CreateFrame {
     private Container temp;
     private Container topbar;
     private Container workoutContainer;
+    private Container exercisesContainer;
     private Controller controller;
     private Form form;
     private Label averageWeight;
@@ -43,8 +44,8 @@ public class CreateFrame {
     private TextField workout;
     private ArrayList<ExerciseInfo> exerciseInfo = new ArrayList<>();
     private ArrayList<Container> containers = new ArrayList<>();
-    private TableLayout tableLayout = new TableLayout(1, 3);
     private ArrayList<Exercise> exercises = new ArrayList<>();
+    private GridBagLayout gridBagLayout = new GridBagLayout();
 
     public CreateFrame(Controller controller) {
         this.controller = controller;
@@ -172,7 +173,7 @@ public class CreateFrame {
         workoutContainer.setScrollableY(true);
         workoutContainer.setUIID("WorkoutContainer");
 
-        Container exerciseContainer = new Container(BoxLayout.y());
+        exercisesContainer = new Container(BoxLayout.y());
         Container testExerciseContainer = new Container(BoxLayout.y());
         testExerciseContainer.setUIID("a");
 
@@ -182,13 +183,14 @@ public class CreateFrame {
         testExerciseContainer.add(exerciseName);
 
         Container setsContainer = new Container(BoxLayout.y());
-        Container setContainer = new Container(tableLayout);
-        Set set = new Set(0, 0);
+        TableLayout layout = new TableLayout(1, 3);
+        Container setContainer = new Container(layout);
+        Set set = new Set(0, 0.0);
         exercise.getSets().add(set);
         int[] setCount = new int[]{1};
         Button setButton = new Button(Integer.toString(setCount[0]));
         setButton.setUIID("AchievementButton");
-        setContainer.add(tableLayout.createConstraint().widthPercentage(10), setButton);
+        setContainer.add(layout.createConstraint().widthPercentage(10), setButton);
 
         TextField weightTextField = new TextField("","Weight");
         weightTextField.addDataChangedListener(new DataChangedListener() {
@@ -197,7 +199,7 @@ public class CreateFrame {
                 set.setWeight(Double.parseDouble(weightTextField.getText()));
             }
         });
-        setContainer.add(tableLayout.createConstraint().widthPercentage(45), weightTextField);
+        setContainer.add(layout.createConstraint().widthPercentage(45), weightTextField);
         TextField repTextField = new TextField("", "Reps");
         repTextField.addDataChangedListener(new DataChangedListener() {
             @Override
@@ -205,7 +207,7 @@ public class CreateFrame {
                 set.setReps(Integer.parseInt(repTextField.getText()));
             }
         });
-        setContainer.add(tableLayout.createConstraint().widthPercentage(45), repTextField);
+        setContainer.add(layout.createConstraint().widthPercentage(45), repTextField);
         
         setsContainer.add(setContainer);
         testExerciseContainer.add(setsContainer);
@@ -214,13 +216,15 @@ public class CreateFrame {
         addSetButton.setUIID("AchievementButton");
         addSetButton.addActionListener(l -> addSet(setsContainer, ++setCount[0], exercise.getSets()));
         testExerciseContainer.add(addSetButton);
-        exerciseContainer.add(testExerciseContainer);
+        exercisesContainer.add(testExerciseContainer);
 
-        workoutContainer.add(exerciseContainer);
+        workoutContainer.add(exercisesContainer);
 
         Container addExerciseContainer = new Container(BoxLayout.xCenter());
         Button addExerciseButton = new Button("+ Add exercise");
         addExerciseButton.setUIID("CAchievementButton");
+        //TODO: change button functionality
+        addExerciseButton.addActionListener(l -> addExercise("Squat", 2));
         addExerciseContainer.add(addExerciseButton);
 
         workoutContainer.add(addExerciseContainer);
@@ -237,12 +241,14 @@ public class CreateFrame {
     }
 
     public void addSet(Container setsContainer, int setCount, ArrayList<Set> sets){
-        Container setContainer = new Container(tableLayout);
+        TableLayout layout = new TableLayout(1, 3);
+        Container setContainer = new Container(layout);
         Button setButton = new Button(Integer.toString(setCount));
         setButton.setUIID("AchievementButton");
-        setContainer.add(tableLayout.createConstraint().widthPercentage(10), setButton);
+        setContainer.add(layout.createConstraint().widthPercentage(10), setButton);
 
-        Set set = new Set(0, 0);
+
+        Set set = new Set(0, 0.0);
         sets.add(set);
         TextField weightTextField = new TextField("","Weight");
         weightTextField.addDataChangedListener(new DataChangedListener() {
@@ -251,7 +257,7 @@ public class CreateFrame {
                 set.setWeight(Double.parseDouble(weightTextField.getText()));
             }
         });
-        setContainer.add(tableLayout.createConstraint().widthPercentage(45), weightTextField);
+        setContainer.add(layout.createConstraint().widthPercentage(45), weightTextField);
         TextField repTextField = new TextField("", "Reps");
         repTextField.addDataChangedListener(new DataChangedListener() {
             @Override
@@ -259,10 +265,57 @@ public class CreateFrame {
                 set.setReps(Integer.parseInt(repTextField.getText()));
             }
         });
-        setContainer.add(tableLayout.createConstraint().widthPercentage(45), repTextField);
+        setContainer.add(layout.createConstraint().widthPercentage(45), repTextField);
 
         setsContainer.add(setContainer);
-        setsContainer.revalidate();
+        workoutContainer.revalidate();
+    }
+    public void addExercise(String name, int id){
+        Container exerciseContainer = new Container(BoxLayout.y());
+        exerciseContainer.setUIID("a");
+
+        Exercise exercise = new Exercise(name, id);
+        exercises.add(exercise);
+        Label exerciseName = new Label(exercise.getName());
+        exerciseContainer.add(exerciseName);
+
+        Container setsContainer = new Container(BoxLayout.y());
+        TableLayout layout = new TableLayout(1, 3);
+        Container setContainer = new Container(layout);
+        Set set = new Set(0, 0);
+        exercise.getSets().add(set);
+        int[] setCount = new int[]{1};
+        Button setButton = new Button(Integer.toString(setCount[0]));
+        setButton.setUIID("AchievementButton");
+        setContainer.add(layout.createConstraint().widthPercentage(10), setButton);
+
+        TextField weightTextField = new TextField("","Weight");
+        weightTextField.addDataChangedListener(new DataChangedListener() {
+            @Override
+            public void dataChanged(int i, int i1) {
+                set.setWeight(Double.parseDouble(weightTextField.getText()));
+            }
+        });
+        setContainer.add(layout.createConstraint().widthPercentage(45), weightTextField);
+        TextField repTextField = new TextField("", "Reps");
+        repTextField.addDataChangedListener(new DataChangedListener() {
+            @Override
+            public void dataChanged(int i, int i1) {
+                set.setReps(Integer.parseInt(repTextField.getText()));
+            }
+        });
+        setContainer.add(layout.createConstraint().widthPercentage(45), repTextField);
+
+        setsContainer.add(setContainer);
+        exerciseContainer.add(setsContainer);
+
+        Button addSetButton = new Button("+ Add set");
+        addSetButton.setUIID("AchievementButton");
+        addSetButton.addActionListener(l -> addSet(setsContainer, ++setCount[0], exercise.getSets()));
+        exerciseContainer.add(addSetButton);
+
+        exercisesContainer.add(exerciseContainer);
+        exercisesContainer.revalidate();
     }
 
     public void navbar() {
