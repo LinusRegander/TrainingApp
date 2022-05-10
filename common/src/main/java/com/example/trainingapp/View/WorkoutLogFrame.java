@@ -35,9 +35,17 @@ public class WorkoutLogFrame {
         topBar();
         workoutLog();
         navBar();
-        logForm.refreshTheme();
+        refreshTheme(logForm);
         logForm.show();
     }
+
+    private void refreshTheme(Form parentForm) {
+        Form c = Display.getInstance().getCurrent();
+        c.refreshTheme();
+        parentForm.refreshTheme();
+        parentForm.revalidate();
+    }
+
     public void topBar(){
         topBar = new Container(BoxLayout.xCenter());
         topBar.setUIID("TopBar");
