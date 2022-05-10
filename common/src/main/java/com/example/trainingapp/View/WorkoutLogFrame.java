@@ -1,9 +1,13 @@
 package com.example.trainingapp.View;
 
+import HelperClasses.LogWorkout;
 import com.codename1.components.MultiButton;
 import com.codename1.ui.*;
 import com.codename1.ui.layouts.*;
 import com.example.trainingapp.Controller.Controller;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
@@ -18,23 +22,21 @@ public class WorkoutLogFrame {
     private Container navBar;
     private Container topBar;
     private Container logContainer;
+    private ArrayList<LogWorkout> workouts = new ArrayList<>();
 
     public WorkoutLogFrame(Controller controller){
         this.controller = controller;
         startLogForm();
     }
-    public String[] testWorkouts(){
-        String [] workouts = new String[]{"Workout 1", "Workout 2", "Workout 3", "Workout 4","Workout 5","Workout 6","Workout 7","Workout 8","Workout 9","Workout 10","Workout 11","Workout 12","Workout 13"};
-        return workouts;
-    }
+
     public void startLogForm(){
         logForm = new Form(new BorderLayout());
         //logForm.setUIID("LogForm");
         topBar();
         workoutLog();
         navBar();
+        logForm.refreshTheme();
         logForm.show();
-
     }
     public void topBar(){
         topBar = new Container(BoxLayout.xCenter());
@@ -51,16 +53,22 @@ public class WorkoutLogFrame {
         logForm.add(NORTH, topBar);
     }
     public void workoutLog(){
-        logContainer = new Container(BoxLayout.yCenter());
+        controller.updateLogWorkoutList();
+        workouts = controller.getLogWorkoutList();
+        logContainer = new Container(BoxLayout.y());
         logContainer.setScrollableY(true);
-        String[] workouts = testWorkouts();
-        for(int i = 0; i < workouts.length; i++){
-            MultiButton multiButton = new MultiButton(workouts[i]);
+        for(int i = 0; i < workouts.size(); i++){
+            int id = workouts.get(i).getWorkoutId();
+            String creator = workouts.get(i).getCreator();
+            Date date = workouts.get(i).getDate();
+            String evaluation = workouts.get(i).getEvaluation();
+            MultiButton multiButton = new MultiButton("Workout: " + id);
             multiButton.setTextLine2("Click to see more");
-            multiButton.addActionListener(l -> Dialog.show("Clicked", "Something happened", "OK", "Cancel"));
+            multiButton.addActionListener(l -> Dialog.show("Workout: " + id, "Created by: " + creator + "\n" + "Date: " + date + "\n" + evaluation, "OK", "Cancel"));
             logContainer.add(multiButton);
         }
         logForm.add(CENTER, logContainer);
+        logContainer.revalidate();
     }
     public void navBar() {
         navBar = new Container(BoxLayout.xCenter());
@@ -92,5 +100,9 @@ public class WorkoutLogFrame {
         navBar.add(settingsButton);
 
         logForm.add(SOUTH, navBar);
+    }
+
+    public Container getLogContainer() {
+        return logContainer;
     }
 }

@@ -54,7 +54,7 @@ public class Controller {
 
     public void connect(SocketConnection socketConnection){
         System.out.println("inne");
-        Socket.connect("192.168.56.1", 541, socketConnection);
+        Socket.connect("127.0.0.1", 541, socketConnection);
 
     }
 
@@ -93,6 +93,7 @@ public class Controller {
 
     public void openWorkoutLogFrame(){
         workoutLogFrame = new WorkoutLogFrame(this);
+        workoutLogFrame.getLogContainer().refreshTheme();
     }
 
     public Form getLoginForm() {
@@ -470,7 +471,8 @@ public class Controller {
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(11);
+                    dos.writeInt(3);
+                    dos.writeUTF("daniel.olsson@gmail.com");
                     dos.flush();
                     ArrayList<LogWorkout> arrayTemp = new ArrayList<>();
                     String[] strings;
@@ -480,13 +482,15 @@ public class Controller {
                         int logWorkoutId = Integer.parseInt(strings[i * 5]);
                         int workoutId = Integer.parseInt(strings[i * 5 + 1]);
                         String creatorEmail = strings[i * 5 + 2];
-                        Date date =  (Date) new SimpleDateFormat("dd/MM/yyyy").parse(strings[i * 5 + 3]);
+                        java.util.Date date = new SimpleDateFormat("yyyy-mm-dd").parse(strings[i * 5 + 3]);
                         String evaluation = strings[i * 5 + 4];
 
                         arrayTemp.add(new LogWorkout(logWorkoutId, workoutId, creatorEmail, date, evaluation));
                     }
                     logWorkoutList = arrayTemp;
-                } catch (IOException | ParseException e){
+                    System.out.println(arrayTemp);
+                    System.out.println(logWorkoutList);
+                } catch (Exception e){
                     e.printStackTrace();
                 }
             }
@@ -604,5 +608,9 @@ public class Controller {
 
     public String getLoggedInEmail() {
         return loggedInEmail;
+    }
+
+    public ArrayList<LogWorkout> getLogWorkoutList() {
+        return logWorkoutList;
     }
 }

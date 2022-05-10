@@ -534,7 +534,7 @@ public class Services {
         if(logWorkout.getCreator().equals(loggedInMail)){
             Connection con = this.getDatabaseConnection();
             PreparedStatement pstmt = con.prepareStatement("update training.logworkout set date = ?, evaluation = ? where logworkoutid = ?");
-            pstmt.setDate(1, logWorkout.getDate());
+            pstmt.setDate(1, (Date) logWorkout.getDate());
             pstmt.setString(2, logWorkout.getEvaluation());
             pstmt.setInt(3, logWorkout.getLogWorkoutId());
             pstmt.executeUpdate();

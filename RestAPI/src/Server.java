@@ -74,6 +74,7 @@ public class Server extends Thread {
                    case 0 -> login();
                    case 1 -> register();
                    case 2 -> insertNewWorkoutInfo();
+                   case 3 -> getLogWorkoutList();
                }
 
             } catch (Exception e) {
@@ -88,7 +89,7 @@ public class Server extends Thread {
         private void login() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
-            strings = temp.split("\n");
+            strings = temp.split("\0");
 
             String email = strings[0];
             String password = strings[1];
@@ -313,7 +314,7 @@ public class Server extends Thread {
 
             for (LogWorkout logWorkout : logWorkoutList){
                 temp.append(logWorkout.getLogWorkoutId() + "\0" + logWorkout.getWorkoutId() + "\0" +
-                        logWorkout.getCreator() + "\0" + logWorkout.getDate() + "\0" + logWorkout.getEvaluation() + "\0");
+                        logWorkout.getCreator() + "\0" + logWorkout.getDate() + "\0" + logWorkout.getEvaluation());
             }
 
             dos.writeUTF(temp.toString());
