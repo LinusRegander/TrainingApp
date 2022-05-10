@@ -24,4 +24,12 @@ public class Set {
     public void setWeight(double weight) {
         this.weight = weight;
     }
+
+    @Override
+    public String toString() {
+        return "Set{" +
+                "reps=" + reps +
+                ", weight=" + weight +
+                '}';
+    }
 }
