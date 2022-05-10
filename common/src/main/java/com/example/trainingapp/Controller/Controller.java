@@ -14,8 +14,8 @@ import com.codename1.io.SocketConnection;
 
 import java.io.*;
 import java.sql.*;
-import java.util.*;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 
 public class Controller {
@@ -198,7 +198,7 @@ public class Controller {
                         temp += "\0" + exerciseInfo.getPrimary();
                         temp += "\0" + exerciseInfo.getSecondary();
                     }
-                    dos.writeInt(2);
+                    dos.writeInt(5);
                     dos.writeUTF(temp);
                     dos.flush();
                 } catch (IOException e) {
@@ -222,7 +222,7 @@ public class Controller {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
                     String temp = email + "\0" + workoutId + "\0" + date + "\0" + evaluation;
-                    dos.writeInt(4);
+                    dos.writeInt(6);
                     dos.writeUTF(temp);
                     dos.flush();
                 } catch (IOException e){
@@ -490,6 +490,8 @@ public class Controller {
                         arrayTemp.add(new LogWorkout(logWorkoutId, workoutId, creatorEmail, date, evaluation));
                     }
                     logWorkoutList = arrayTemp;
+                    System.out.println(arrayTemp);
+                    System.out.println(logWorkoutList);
                 } catch (Exception e){
                     e.printStackTrace();
                 }
@@ -519,10 +521,10 @@ public class Controller {
                         int logProgramId = Integer.parseInt(strings[i * 5]);
                         String email = strings[i * 5 + 1];
                         int programId = Integer.parseInt(strings[i * 5 + 2]);
-                        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(strings[i * 5 + 3]);
+                        Date date = (Date) new SimpleDateFormat("dd/MM/yyyy").parse(strings[i * 5 + 3]);
                         String evaluation = strings[i * 5 + 4];
 
-                        arrayTemp.add(new LogProgram(logProgramId, email, programId, (java.sql.Date) date, evaluation));
+                        arrayTemp.add(new LogProgram(logProgramId, email, programId, date, evaluation));
                     }
                     logProgramList = arrayTemp;
                 } catch (IOException | ParseException e){
