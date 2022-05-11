@@ -37,6 +37,7 @@ public class Controller {
     private ProfileFrame profileFrame;
     private WorkoutLogFrame workoutLogFrame;
     private RegisterFrame registerFrame;
+    private ExerciseSelectFrame exerciseSelectFrame;
     private Services services;
     private SettingsFrame settingsFrame;
     private String loggedInEmail;
@@ -95,6 +96,11 @@ public class Controller {
 
     public void openWorkoutLogFrame(){
         workoutLogFrame = new WorkoutLogFrame(this);
+    }
+    public void openExerciseSelectFrame(){
+        updateExerciseList();
+        ArrayList<ExerciseInfo> temp = getExerciseList();
+        exerciseSelectFrame = new ExerciseSelectFrame(this, temp);
     }
 
     public Form getLoginForm() {
@@ -322,7 +328,7 @@ public class Controller {
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(4);
+                    dos.writeInt(7);
                     System.out.println("hej");
                     dos.flush();
                     ArrayList<ExerciseInfo> arrayTemp = new ArrayList<>();

@@ -160,8 +160,8 @@ public class CreateFrame {
         Container addExerciseContainer = new Container(BoxLayout.xCenter());
         Button addExerciseButton = new Button("+ Add exercise");
         addExerciseButton.setUIID("CAchievementButton");
+        addExerciseButton.addActionListener(l -> controller.openExerciseSelectFrame());
         //TODO: change button functionality
-        addExerciseButton.addActionListener(l -> addExercise("Squat", 2));
         addExerciseContainer.add(addExerciseButton);
 
         workoutContainer.add(addExerciseContainer);

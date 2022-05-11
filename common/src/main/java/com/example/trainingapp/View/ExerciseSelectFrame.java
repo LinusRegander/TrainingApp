@@ -22,12 +22,15 @@ public class ExerciseSelectFrame {
     private Container navBar;
     private Container topBar;
     private List<ExerciseInfo> exercises = new List<>();
+    private ArrayList<ExerciseInfo> exerciseInfos;
 
 
 
-    public ExerciseSelectFrame(Controller controller) {
+    public ExerciseSelectFrame(Controller controller, ArrayList<ExerciseInfo> exerciseInfos) {
         this.controller = controller;
+        this.exerciseInfos = exerciseInfos;
         startExerciseSelectForm();
+        exerciseSelectForm.revalidate();
     }
     public void startExerciseSelectForm(){
         exerciseSelectForm = new Form(new BorderLayout());
@@ -54,19 +57,12 @@ public class ExerciseSelectFrame {
     public void exerciseSelector(){
         exerciseSelectContainer = new Container(BoxLayout.y());
         exerciseSelectContainer.setScrollableY(true);
-        controller.updateExerciseList();
-        ArrayList<ExerciseInfo> temp = controller.getExerciseList();
 
-        for(ExerciseInfo a : temp){
+        for(ExerciseInfo a : exerciseInfos){
             exercises.addItem(a);
         }
         exerciseSelectContainer.add(exercises);
         exerciseSelectForm.add(CENTER, exerciseSelectContainer);
-        exerciseSelectForm.revalidate();
-        exerciseSelectForm.repaint();
-        exerciseSelectContainer.revalidate();
-        exerciseSelectContainer.repaint();
-
     }
     public void navBar() {
         navBar = new Container(BoxLayout.xCenter());
