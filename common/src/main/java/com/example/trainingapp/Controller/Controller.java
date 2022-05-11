@@ -6,6 +6,7 @@ import com.codename1.io.BufferedOutputStream;
 import com.codename1.io.BufferedInputStream;
 import com.codename1.l10n.ParseException;
 import com.codename1.l10n.SimpleDateFormat;
+import com.codename1.ui.Container;
 import com.codename1.ui.Form;
 import com.example.trainingapp.View.*;
 import dbcon.Services;
@@ -47,6 +48,7 @@ public class Controller {
 
     //Setup constructor.
     public void Setup() {
+        updateLogWorkoutList();
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
        //loginFrame = new LoginFrame(this);
@@ -54,7 +56,7 @@ public class Controller {
 
     public void connect(SocketConnection socketConnection){
         System.out.println("inne");
-        Socket.connect("192.168.56.1", 541, socketConnection);
+        Socket.connect("127.0.0.1", 541, socketConnection);
 
     }
 
@@ -208,7 +210,7 @@ public class Controller {
         connect(sc);
     }
 
-    public void addLogWorkout(String email, int workoutId, Date date, String evaluation){
+    public void addLogWorkout(String email, int workoutId, java.util.Date date, String evaluation){
         SocketConnection sc = new SocketConnection() {
             @Override
             public void connectionError(int i, String s) {
@@ -320,11 +322,13 @@ public class Controller {
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(7);
+                    dos.writeInt(4);
+                    System.out.println("hej");
                     dos.flush();
                     ArrayList<ExerciseInfo> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
+                    System.out.println(temp);
                     strings = split(temp);
                     for(int i = 0; i < strings.length / 5; i++){
                         int id = Integer.parseInt(strings[i * 5]);
@@ -470,7 +474,8 @@ public class Controller {
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(11);
+                    dos.writeInt(3);
+                    dos.writeUTF("daniel.olsson@gmail.com");
                     dos.flush();
                     ArrayList<LogWorkout> arrayTemp = new ArrayList<>();
                     String[] strings;
@@ -480,13 +485,15 @@ public class Controller {
                         int logWorkoutId = Integer.parseInt(strings[i * 5]);
                         int workoutId = Integer.parseInt(strings[i * 5 + 1]);
                         String creatorEmail = strings[i * 5 + 2];
-                        Date date =  (Date) new SimpleDateFormat("dd/MM/yyyy").parse(strings[i * 5 + 3]);
+                        java.util.Date date = new SimpleDateFormat("yyyy-mm-dd").parse(strings[i * 5 + 3]);
                         String evaluation = strings[i * 5 + 4];
 
                         arrayTemp.add(new LogWorkout(logWorkoutId, workoutId, creatorEmail, date, evaluation));
                     }
                     logWorkoutList = arrayTemp;
-                } catch (IOException | ParseException e){
+                    System.out.println(arrayTemp);
+                    System.out.println(logWorkoutList);
+                } catch (Exception e){
                     e.printStackTrace();
                 }
             }
@@ -536,6 +543,9 @@ public class Controller {
         while(arr.hasMoreTokens())
             splitArray.add(arr.nextToken());
         return splitArray.toArray(new String[splitArray.size()]);
+    }
+    public ArrayList<ExerciseInfo> getExerciseList(){
+        return exerciseList;
     }
 
     public void updatePlanExercise(){
@@ -604,5 +614,9 @@ public class Controller {
 
     public String getLoggedInEmail() {
         return loggedInEmail;
+    }
+
+    public ArrayList<LogWorkout> getLogWorkoutList() {
+        return logWorkoutList;
     }
 }

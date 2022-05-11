@@ -1,19 +1,19 @@
 package com.example.trainingapp.View;
 
-import HelperClasses.LogWorkout;
-import com.codename1.components.MultiButton;
+import HelperClasses.ExerciseInfo;
 import com.codename1.ui.*;
-import com.codename1.ui.layouts.*;
+import com.codename1.ui.layouts.BorderLayout;
+import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.Controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
-public class WorkoutLogFrame {
+public class ExerciseSelectFrame {
     private Controller controller;
-    private Form logForm;
+    private Form exerciseSelectForm;
+    private Container exerciseSelectContainer;
     private Button homeButton;
     private Button achievementButton;
     private Button programsButton;
@@ -21,22 +21,20 @@ public class WorkoutLogFrame {
     private Button workoutButton;
     private Container navBar;
     private Container topBar;
-    private Container logContainer;
-    private ArrayList<LogWorkout> workouts = new ArrayList<>();
+    private List<ExerciseInfo> exercises = new List<>();
 
-    public WorkoutLogFrame(Controller controller){
+
+
+    public ExerciseSelectFrame(Controller controller) {
         this.controller = controller;
-        startLogForm();
+        startExerciseSelectForm();
     }
-
-    public void startLogForm(){
-        workouts = controller.getLogWorkoutList();
-        logForm = new Form(new BorderLayout());
-        logForm.setUIID("LogForm");
+    public void startExerciseSelectForm(){
+        exerciseSelectForm = new Form(new BorderLayout());
         topBar();
-        workoutLog();
+        exerciseSelector();
         navBar();
-        logForm.show();
+        exerciseSelectForm.show();
     }
 
     public void topBar(){
@@ -51,23 +49,24 @@ public class WorkoutLogFrame {
         icon.addActionListener(l -> controller.openProfileFrame());
         topBar.add(icon);
 
-        logForm.add(NORTH, topBar);
+        exerciseSelectForm.add(NORTH, topBar);
     }
-    public void workoutLog(){
-        logContainer = new Container(BoxLayout.y());
-        logContainer.setScrollableY(true);
-        for(int i = 0; i < workouts.size(); i++){
-            int id = workouts.get(i).getWorkoutId();
-            String creator = workouts.get(i).getCreator();
-            Date date = workouts.get(i).getDate();
-            String evaluation = workouts.get(i).getEvaluation();
-            MultiButton multiButton = new MultiButton("Workout: " + id);
-            multiButton.setTextLine2("Click to see more");
-            multiButton.addActionListener(l -> Dialog.show("Workout: " + id, "Created by: " + creator + "\n" + "Date: " + date + "\n" + evaluation, "OK", "Cancel"));
-            logContainer.add(multiButton);
+    public void exerciseSelector(){
+        exerciseSelectContainer = new Container(BoxLayout.y());
+        exerciseSelectContainer.setScrollableY(true);
+        controller.updateExerciseList();
+        ArrayList<ExerciseInfo> temp = controller.getExerciseList();
+
+        for(ExerciseInfo a : temp){
+            exercises.addItem(a);
         }
-        logForm.add(CENTER, logContainer);
-        logForm.forceRevalidate();
+        exerciseSelectContainer.add(exercises);
+        exerciseSelectForm.add(CENTER, exerciseSelectContainer);
+        exerciseSelectForm.revalidate();
+        exerciseSelectForm.repaint();
+        exerciseSelectContainer.revalidate();
+        exerciseSelectContainer.repaint();
+
     }
     public void navBar() {
         navBar = new Container(BoxLayout.xCenter());
@@ -98,6 +97,6 @@ public class WorkoutLogFrame {
         settingsButton.addActionListener(l -> controller.openSettingsFrame());
         navBar.add(settingsButton);
 
-        logForm.add(SOUTH, navBar);
+        exerciseSelectForm.add(SOUTH, navBar);
     }
 }

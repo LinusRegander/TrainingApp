@@ -1,6 +1,8 @@
 package HelperClasses;
 
-import java.sql.Date;
+import com.codename1.l10n.SimpleDateFormat;
+
+import java.util.Date;
 
 public class LogWorkout {
     private int logWorkoutId;

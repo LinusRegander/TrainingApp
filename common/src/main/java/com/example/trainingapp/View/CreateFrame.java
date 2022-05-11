@@ -1,15 +1,20 @@
 package com.example.trainingapp.View;
 
+import HelperClasses.Exercise;
 import HelperClasses.ExerciseInfo;
+import HelperClasses.Set;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.DataChangedListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.GridBagConstraints;
+import com.codename1.ui.layouts.GridBagLayout;
 import com.codename1.ui.table.TableLayout;
 import com.example.trainingapp.Controller.Controller;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Date;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
@@ -26,6 +31,7 @@ public class CreateFrame {
     private Container temp;
     private Container topbar;
     private Container workoutContainer;
+    private Container exercisesContainer;
     private Controller controller;
     private Form form;
     private int exerciseID = 0;
@@ -41,7 +47,8 @@ public class CreateFrame {
     private TextField workout;
     private ArrayList<ExerciseInfo> exerciseInfo = new ArrayList<>();
     private ArrayList<Container> containers = new ArrayList<>();
-    private TableLayout tableLayout = new TableLayout(1, 3);
+    private ArrayList<Exercise> exercises = new ArrayList<>();
+    private GridBagLayout gridBagLayout = new GridBagLayout();
 
     public CreateFrame(Controller controller) {
         this.controller = controller;
@@ -49,7 +56,7 @@ public class CreateFrame {
     }
 
     public void createForm() {
-        form = new Form(null, new BoxLayout(BoxLayout.Y_AXIS));
+        form = new Form(null, new BorderLayout());
         form.setScrollableY(true);
         form.setUIID("CreateForm");
         topbar();
@@ -95,95 +102,7 @@ public class CreateFrame {
         Label time = new Label("PlaceHolder Time");
         bottom.add(time);
 
-        form.add(topbar);
-    }
-
-    public void workoutContainer() {
-        workoutContainer = new Container(BoxLayout.y());
-        workoutContainer.setScrollableY(true);
-        workoutContainer.setUIID("WorkoutContainer");
-
-        a = new Container(BoxLayout.y());
-        containers.add(a);
-        a.setUIID("a");
-        workoutContainer.add(a);
-
-        Label name = new Label("ID (Number): ");
-        a.add(name);
-
-        workout = new TextField();
-        a.add(workout);
-
-        temp = new Container(BoxLayout.y());
-        a.add(temp);
-
-        Label set = new Label("Sets:");
-        temp.add(set);
-
-        textArea = new TextArea();
-        temp.add(textArea);
-
-        Label reps = new Label("Reps:");
-        temp.add(reps);
-
-        textArea2 = new TextArea();
-        temp.add(textArea2);
-
-        Label lblWeight = new Label("Weight:");
-        temp.add(lblWeight);
-
-        textAreaWeight = new TextArea();
-        temp.add(textAreaWeight);
-
-        Container b = new Container(BoxLayout.yCenter());
-        containers.add(b);
-        b.setUIID("b");
-        a.add(b);
-
-        addSet = new Button("+ Add Set");
-        addSet.addActionListener(l -> temp.add(new TextArea()));
-        b.add(addSet);
-
-        Container c = new Container(BoxLayout.y());
-        containers.add(c);
-        a.add(c);
-
-        Label weight = new Label("Total Weight");
-        c.add(weight);
-
-        totalWeight = new Label("0");
-        c.add(totalWeight);
-
-        Container d = new Container(BoxLayout.y());
-        containers.add(d);
-        a.add(d);
-
-        Label average = new Label("Average Weight");
-        d.add(average);
-
-        averageWeight = new Label("0");
-        d.add(averageWeight);
-
-        Container e = new Container(BoxLayout.yCenter());
-        containers.add(e);
-        workoutContainer.add(e);
-
-        addExercise = new Button("+ Add Exercise");
-        try {
-            addExercise.addActionListener(l -> controller.addExercise(Integer.parseInt(workout.getText()), exerciseID++, Integer.parseInt(textArea.getText()), Integer.parseInt(textArea2.getText()), Integer.parseInt(textArea2.getText())));
-            addExercise.addActionListener(l -> addedExercise());
-        } catch (NumberFormatException exception) {
-            exception.printStackTrace();
-        }
-        d.add(addExercise);
-
-        setAmount = new Label("Total Sets");
-        e.add(setAmount);
-
-        repAmount = new Label("Total Reps");
-        e.add(repAmount);
-
-        form.add(CENTER, workoutContainer);
+        form.add(NORTH, topbar);
     }
 
     public void workoutContainerReworked(){
@@ -191,39 +110,58 @@ public class CreateFrame {
         workoutContainer.setScrollableY(true);
         workoutContainer.setUIID("WorkoutContainer");
 
-        Container exerciseContainer = new Container(BoxLayout.y());
+        exercisesContainer = new Container(BoxLayout.y());
         Container testExerciseContainer = new Container(BoxLayout.y());
         testExerciseContainer.setUIID("a");
 
-        Label exerciseName = new Label("Test exercise");
+        Exercise exercise = new Exercise("Deadlift", 1);
+        exercises.add(exercise);
+        Label exerciseName = new Label(exercise.getName());
         testExerciseContainer.add(exerciseName);
 
         Container setsContainer = new Container(BoxLayout.y());
-        Container setContainer = new Container(tableLayout);
+        TableLayout layout = new TableLayout(1, 3);
+        Container setContainer = new Container(layout);
+        Set set = new Set(0, 0.0);
+        exercise.getSets().add(set);
         int[] setCount = new int[]{1};
         Button setButton = new Button(Integer.toString(setCount[0]));
         setButton.setUIID("AchievementButton");
-        setContainer.add(tableLayout.createConstraint().widthPercentage(10), setButton);
+        setContainer.add(layout.createConstraint().widthPercentage(10), setButton);
 
         TextField weightTextField = new TextField("","Weight");
-        setContainer.add(tableLayout.createConstraint().widthPercentage(45), weightTextField);
+        weightTextField.addDataChangedListener(new DataChangedListener() {
+            @Override
+            public void dataChanged(int i, int i1) {
+                set.setWeight(Double.parseDouble(weightTextField.getText()));
+            }
+        });
+        setContainer.add(layout.createConstraint().widthPercentage(45), weightTextField);
         TextField repTextField = new TextField("", "Reps");
-        setContainer.add(tableLayout.createConstraint().widthPercentage(45), repTextField);
+        repTextField.addDataChangedListener(new DataChangedListener() {
+            @Override
+            public void dataChanged(int i, int i1) {
+                set.setReps(Integer.parseInt(repTextField.getText()));
+            }
+        });
+        setContainer.add(layout.createConstraint().widthPercentage(45), repTextField);
 
         setsContainer.add(setContainer);
         testExerciseContainer.add(setsContainer);
 
         Button addSetButton = new Button("+ Add set");
         addSetButton.setUIID("AchievementButton");
-        addSetButton.addActionListener(l -> addSet(setsContainer, ++setCount[0]));
+        addSetButton.addActionListener(l -> addSet(setsContainer, ++setCount[0], exercise.getSets()));
         testExerciseContainer.add(addSetButton);
-        exerciseContainer.add(testExerciseContainer);
+        exercisesContainer.add(testExerciseContainer);
 
-        workoutContainer.add(exerciseContainer);
+        workoutContainer.add(exercisesContainer);
 
         Container addExerciseContainer = new Container(BoxLayout.xCenter());
         Button addExerciseButton = new Button("+ Add exercise");
         addExerciseButton.setUIID("CAchievementButton");
+        //TODO: change button functionality
+        addExerciseButton.addActionListener(l -> addExercise("Squat", 2));
         addExerciseContainer.add(addExerciseButton);
 
         workoutContainer.add(addExerciseContainer);
@@ -231,27 +169,83 @@ public class CreateFrame {
 
         form.add(CENTER, workoutContainer);
     }
-    public void newContainer() {
-        TextArea newArea = new TextArea();
-        temp.add(newArea);
 
-        TextArea newArea2 = new TextArea();
-        temp.add(newArea2);
-    }
-
-    public void addSet(Container setsContainer, int setCount){
-        Container setContainer = new Container(tableLayout);
+    public void addSet(Container setsContainer, int setCount, ArrayList<Set> sets){
+        TableLayout layout = new TableLayout(1, 3);
+        Container setContainer = new Container(layout);
         Button setButton = new Button(Integer.toString(setCount));
         setButton.setUIID("AchievementButton");
-        setContainer.add(tableLayout.createConstraint().widthPercentage(10), setButton);
+        setContainer.add(layout.createConstraint().widthPercentage(10), setButton);
 
+
+        Set set = new Set(0, 0.0);
+        sets.add(set);
         TextField weightTextField = new TextField("","Weight");
-        setContainer.add(tableLayout.createConstraint().widthPercentage(45), weightTextField);
+        weightTextField.addDataChangedListener(new DataChangedListener() {
+            @Override
+            public void dataChanged(int i, int i1) {
+                set.setWeight(Double.parseDouble(weightTextField.getText()));
+            }
+        });
+        setContainer.add(layout.createConstraint().widthPercentage(45), weightTextField);
         TextField repTextField = new TextField("", "Reps");
-        setContainer.add(tableLayout.createConstraint().widthPercentage(45), repTextField);
+        repTextField.addDataChangedListener(new DataChangedListener() {
+            @Override
+            public void dataChanged(int i, int i1) {
+                set.setReps(Integer.parseInt(repTextField.getText()));
+            }
+        });
+        setContainer.add(layout.createConstraint().widthPercentage(45), repTextField);
 
         setsContainer.add(setContainer);
-        setsContainer.revalidate();
+        workoutContainer.revalidate();
+    }
+    public void addExercise(String name, int id){
+        Container exerciseContainer = new Container(BoxLayout.y());
+        exerciseContainer.setUIID("a");
+
+        Exercise exercise = new Exercise(name, id);
+        exercises.add(exercise);
+        Label exerciseName = new Label(exercise.getName());
+        exerciseContainer.add(exerciseName);
+
+        Container setsContainer = new Container(BoxLayout.y());
+        TableLayout layout = new TableLayout(1, 3);
+        Container setContainer = new Container(layout);
+        Set set = new Set(0, 0);
+        exercise.getSets().add(set);
+        int[] setCount = new int[]{1};
+        Button setButton = new Button(Integer.toString(setCount[0]));
+        setButton.setUIID("AchievementButton");
+        setContainer.add(layout.createConstraint().widthPercentage(10), setButton);
+
+        TextField weightTextField = new TextField("","Weight");
+        weightTextField.addDataChangedListener(new DataChangedListener() {
+            @Override
+            public void dataChanged(int i, int i1) {
+                set.setWeight(Double.parseDouble(weightTextField.getText()));
+            }
+        });
+        setContainer.add(layout.createConstraint().widthPercentage(45), weightTextField);
+        TextField repTextField = new TextField("", "Reps");
+        repTextField.addDataChangedListener(new DataChangedListener() {
+            @Override
+            public void dataChanged(int i, int i1) {
+                set.setReps(Integer.parseInt(repTextField.getText()));
+            }
+        });
+        setContainer.add(layout.createConstraint().widthPercentage(45), repTextField);
+
+        setsContainer.add(setContainer);
+        exerciseContainer.add(setsContainer);
+
+        Button addSetButton = new Button("+ Add set");
+        addSetButton.setUIID("AchievementButton");
+        addSetButton.addActionListener(l -> addSet(setsContainer, ++setCount[0], exercise.getSets()));
+        exerciseContainer.add(addSetButton);
+
+        exercisesContainer.add(exerciseContainer);
+        exercisesContainer.revalidate();
     }
 
     public void navbar() {
@@ -283,58 +277,7 @@ public class CreateFrame {
         settings.addActionListener(l -> controller.openSettingsFrame());
         navbar.add(settings);
 
-        form.add(navbar);
-    }
-
-    public void addedExercise() {
-        Container nExerciseContainer = new Container(BoxLayout.y());
-        workoutContainer.add(nExerciseContainer);
-
-        Label exercise = new Label("Exercise " + workout.getText() + " Sets: " + textArea.getText() + " Reps: " + textArea2.getText() + " Weight: " + textAreaWeight.getText());
-        //TODO: Fixa denna: exerciseInfo.add(exercise.getText());
-        nExerciseContainer.add(exercise);
-
-        calculateTotal();
-        calculateAverage();
-
-        workout.setText("");
-
-        textArea.setText("");
-
-        textArea2.setText("");
-
-        textAreaWeight.setText("");
-    }
-
-    public void calculateTotal() {
-        double temp = 0;
-        double total = Double.parseDouble(textAreaWeight.getText());
-
-        ArrayList<Double> totalList = new ArrayList<>();
-        totalList.add(total);
-
-        for (int i = 0; i < totalList.size(); i++) {
-            temp += totalList.get(i);
-        }
-
-        totalWeight.setText(String.valueOf(temp));
-    }
-
-    public void calculateAverage() {
-        double weight = Double.parseDouble(textAreaWeight.getText());
-
-        ArrayList<Double> weightList = new ArrayList<>();
-        weightList.add(weight);
-
-        float sum = 0;
-
-        for (int i = 0; i < weightList.size(); i++) {
-            sum += weightList.get(i);
-        }
-
-        float average = (sum / weightList.size());
-
-        averageWeight.setText(String.valueOf(average));
+        form.add(SOUTH, navbar);
     }
 
     public void getWorkoutInfo() {
@@ -392,8 +335,10 @@ public class CreateFrame {
         tempA.add(tag3);
 
         Button finished = new Button("Finished");
-        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
-        finished.addActionListener(l -> controller.openProgramFrame());
+        //TODO: Fixa mailen och addLogWorkout
+        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), "daniel.olsson@gmail.com", tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
+        finished.addActionListener(l -> controller.addLogWorkout("daniel.olsson@gmail.com", 1, null, null));
+        finished.addActionListener(l -> controller.openMainFrame());
         tempA.add(finished);
 
         tempForm.add(CENTER, tempA);

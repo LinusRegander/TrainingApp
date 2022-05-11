@@ -1,4 +1,4 @@
-import HelperClasses.WorkoutInfo;
+import HelperClasses.*;
 import com.codename1.io.ConnectionRequest;
 import dbcon.Services;
 
@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Date;
+import java.util.ArrayList;
 
 import static com.codename1.ui.CN.*;
 
@@ -73,6 +74,10 @@ public class Server extends Thread {
                    case 0 -> login();
                    case 1 -> register();
                    case 2 -> insertNewWorkoutInfo();
+                   case 3 -> getLogWorkoutList();
+
+                   case 5 -> insertNewWorkoutInfo();
+                   case 6 -> insertLogWorkout();
                }
 
             } catch (Exception e) {
@@ -87,7 +92,7 @@ public class Server extends Thread {
         private void login() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
-            strings = temp.split("\n");
+            strings = temp.split("\0");
 
             String email = strings[0];
             String password = strings[1];
@@ -246,6 +251,91 @@ public class Server extends Thread {
             String tag3 = strings[5];
 
             services.insertNewProgram(name, creatorEmail, description, tag1, tag2, tag3);
+        }
+
+        // TODO: 2022-05-08 Kolla upp om sista "\0" ska vara med eller inte, funderar på om man ska ha en vanlig
+        //  for loop så att på sista index inte inkludera "\0".
+        private void getExerciseList() throws Exception{
+            ArrayList<ExerciseInfo> exerciseInfoList = services.selectExercises();
+
+            StringBuilder temp = new StringBuilder();
+            for(ExerciseInfo exercise : exerciseInfoList){
+                temp.append(exercise.getId() + "\0" + exercise.getName() + "\0" + exercise.getDescription() + "\0"
+                        + exercise.getPrimary() + "\0" + exercise.getSecondary() + "\0");
+            }
+
+            dos.writeUTF(temp.toString());
+            dos.flush();
+        }
+
+        private void getWorkoutList() throws Exception{
+            ArrayList<WorkoutInfo> workoutInfoList = services.selectWorkoutInfo();
+            StringBuilder temp = new StringBuilder();
+
+            for (WorkoutInfo workoutInfo : workoutInfoList){
+                temp.append(workoutInfo.getId() + "\0" + workoutInfo.getName() + "\0" + workoutInfo.getCreatorEmail()
+                        + "\0" + workoutInfo.getDescription() + "\0" + workoutInfo.getTag1() + "\0" + workoutInfo.getTag2()
+                        + "\0" + workoutInfo.getTag3() + "\0" + workoutInfo.getCreatorUsername() + "\0");
+            }
+
+            dos.writeUTF(temp.toString());
+            dos.flush();
+        }
+
+        private void getProgramList() throws Exception{
+            ArrayList<ProgramInfo> programInfoList = services.selectProgramInfo();
+            StringBuilder temp = new StringBuilder();
+
+            for (ProgramInfo programInfo : programInfoList){
+                temp.append(programInfo.getId() + "\0" + programInfo.getName() + "\0" + programInfo.getCreatorEmail()
+                        + "\0" + programInfo.getDescription() + "\0" + programInfo.getTag1() + "\0" + programInfo.getTag2()
+                        + "\0" + programInfo.getTag3() + "\0" + programInfo.getCreatorUsername() + "\0");
+            }
+            dos.writeUTF(temp.toString());
+            dos.flush();
+        }
+
+        private void getLogExerciseSetList() throws Exception{
+            String loggedInMail = dis.readUTF();
+            ArrayList<LogExerciseSet> logExerciseSetList = services.selectLogExerciseSet(loggedInMail);
+            StringBuilder temp = new StringBuilder();
+
+            for(LogExerciseSet logExerciseSet : logExerciseSetList){
+                temp.append(logExerciseSet.getLogExerciseId() + "\0" + logExerciseSet.getExerciseId() + "\0" +
+                        logExerciseSet.getLogWorkoutId() + "\0" + logExerciseSet.getEmail() + "\0" +
+                        logExerciseSet.getSet() + "\0" + logExerciseSet.getReps() + "\0" + logExerciseSet.getWeight() + "\0");
+            }
+
+            dos.writeUTF(temp.toString());
+            dos.flush();
+        }
+
+        private void getLogWorkoutList() throws Exception{
+            String loggedInMail = dis.readUTF();
+            ArrayList<LogWorkout> logWorkoutList = services.selectLogWorkout(loggedInMail);
+            StringBuilder temp = new StringBuilder();
+
+            for (LogWorkout logWorkout : logWorkoutList){
+                temp.append(logWorkout.getLogWorkoutId() + "\0" + logWorkout.getWorkoutId() + "\0" +
+                        logWorkout.getCreator() + "\0" + logWorkout.getDate() + "\0" + logWorkout.getEvaluation());
+            }
+
+            dos.writeUTF(temp.toString());
+            dos.flush();
+        }
+
+        private void getLogProgramList() throws Exception{
+            String loggedInMail = dis.readUTF();
+            ArrayList<LogProgram> logProgramList = services.selectLogProgram(loggedInMail);
+            StringBuilder temp = new StringBuilder();
+
+            for (LogProgram logProgram : logProgramList){
+                temp.append(logProgram.getLogProgramId() + "\0" + logProgram.getEmail() + "\0" + logProgram.getProgramId()
+                        + "\0" + logProgram.getDate() + "\0" + logProgram.getEvaluation() + "\0");
+            }
+
+            dos.writeUTF(temp.toString());
+            dos.flush();
         }
 
 
