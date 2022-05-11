@@ -1,7 +1,10 @@
 package com.example.trainingapp.View;
 
+import HelperClasses.Exercise;
 import HelperClasses.ExerciseInfo;
+import com.codename1.components.SpanLabel;
 import com.codename1.ui.*;
+import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.Controller;
@@ -24,6 +27,7 @@ public class ExerciseSelectFrame {
     private List<ExerciseInfo> exercises = new List<>();
     private ArrayList<ExerciseInfo> exerciseInfos;
     private CreateFrame createFrame;
+    private ArrayList<String> workoutExercises;
 
 
 
@@ -31,6 +35,7 @@ public class ExerciseSelectFrame {
         this.controller = controller;
         this.exerciseInfos = exerciseInfos;
         this.createFrame = createFrame;
+        workoutExercises = createFrame.getExerciseNames();
         startExerciseSelectForm();
         exerciseSelectForm.revalidate();
     }
@@ -45,6 +50,20 @@ public class ExerciseSelectFrame {
     public void topBar(){
         topBar = new Container(BoxLayout.xCenter());
         topBar.setUIID("TopBar");
+        Button back = new Button();
+        back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
+        back.addActionListener((e) -> {
+            Form createForm = createFrame.getForm();
+            createForm.setToolbar(new Toolbar());
+            createForm.setBackCommand(new Command("Back") {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    exerciseSelectForm.showBack();
+                }
+            });
+            createForm.show();
+        });
+        topBar.add(back);
 
         Label title = new Label("FitHub");
         topBar.add(title);
@@ -60,11 +79,17 @@ public class ExerciseSelectFrame {
         Container bigContainer = new Container(BoxLayout.y());
         exerciseSelectContainer = new Container(BoxLayout.y());
         exerciseSelectContainer.setScrollableY(true);
-
+        SpanLabel descriptionText = new SpanLabel("");
         for(ExerciseInfo a : exerciseInfos){
-            exercises.addItem(a);
+            if(!workoutExercises.contains(a.getName())) {
+                exercises.addItem(a);
+            }
         }
-        //exercises.addActionListener(l -> Dialog.show("Description", exercises.getSelectedItem().getDescription(), "OK", "Cancel"));
+        exercises.addActionListener(l -> {
+            descriptionText.setText(exercises.getSelectedItem().getDescription());
+            descriptionText.revalidate();
+            exerciseSelectForm.revalidate();
+        });
         exerciseSelectContainer.add(exercises);
         bigContainer.add(exerciseSelectContainer);
         Container buttonContainer = new Container(BoxLayout.xCenter());
@@ -76,6 +101,11 @@ public class ExerciseSelectFrame {
         });
         buttonContainer.add(addButton);
         bigContainer.add(buttonContainer);
+        Container descriptionContainer = new Container(BoxLayout.yBottom());
+        Label description = new Label("Description:");
+        descriptionContainer.add(description);
+        descriptionContainer.add(descriptionText);
+        bigContainer.add(descriptionContainer);
         exerciseSelectForm.add(CENTER, bigContainer);
     }
     public void navBar() {

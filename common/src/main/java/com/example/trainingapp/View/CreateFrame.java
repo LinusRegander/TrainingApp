@@ -111,7 +111,7 @@ public class CreateFrame {
         workoutContainer.setUIID("WorkoutContainer");
 
         exercisesContainer = new Container(BoxLayout.y());
-        Container testExerciseContainer = new Container(BoxLayout.y());
+        /*Container testExerciseContainer = new Container(BoxLayout.y());
         testExerciseContainer.setUIID("a");
 
         Exercise exercise = new Exercise("Deadlift", 1);
@@ -154,14 +154,13 @@ public class CreateFrame {
         addSetButton.addActionListener(l -> addSet(setsContainer, ++setCount[0], exercise.getSets()));
         testExerciseContainer.add(addSetButton);
         exercisesContainer.add(testExerciseContainer);
-
+        */
         workoutContainer.add(exercisesContainer);
 
         Container addExerciseContainer = new Container(BoxLayout.xCenter());
         Button addExerciseButton = new Button("+ Add exercise");
         addExerciseButton.setUIID("CAchievementButton");
         addExerciseButton.addActionListener(l -> controller.openExerciseSelectFrame(this));
-        //TODO: change button functionality
         addExerciseContainer.add(addExerciseButton);
 
         workoutContainer.add(addExerciseContainer);
@@ -346,5 +345,12 @@ public class CreateFrame {
     }
     public Form getForm(){
         return form;
+    }
+    public ArrayList<String> getExerciseNames(){
+        ArrayList<String> names = new ArrayList<>();
+        for(Exercise exercise : exercises){
+            names.add(exercise.getName());
+        }
+        return names;
     }
 }
