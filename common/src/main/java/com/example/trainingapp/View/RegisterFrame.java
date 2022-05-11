@@ -1,5 +1,6 @@
 package com.example.trainingapp.View;
 
+import com.codename1.components.SpanLabel;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
@@ -19,6 +20,7 @@ public class RegisterFrame implements ActionListener {
     private TextField eTextField;
     private TextField pTextField;
     private TextField uTextField;
+    private SpanLabel error;
 
     public RegisterFrame(Controller controller) {
         this.controller = controller;
@@ -55,6 +57,9 @@ public class RegisterFrame implements ActionListener {
         rButton.setUIID("RegisterB");
         rButton.addActionListener(this);
         registerContainer .add(rButton);
+
+        error = new SpanLabel("");
+        registerContainer.add(error);
     }
 
     public String getUserName() {
@@ -69,19 +74,15 @@ public class RegisterFrame implements ActionListener {
         return eTextField.getText();
     }
 
-    public Label getuLabel(){
-        return uLabel;
-    }
-
-    public Label geteLabel(){
-        return eLabel;
+    public SpanLabel getError(){
+        return error;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == rButton) {
             controller.register(uTextField.getText(), eTextField.getText(), pTextField.getText());
-            controller.openLoginFrame();
+            registerForm.revalidate();
         }
     }
 }

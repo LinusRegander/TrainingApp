@@ -116,21 +116,25 @@ public class Server extends Thread {
 
             if(services.checkIfEmailExists(email) && services.checkIfUsernameExists(username)){
                 dos.writeInt(3);
+                dos.flush();
                 return;
             }
 
             if(services.checkIfUsernameExists(username)){
                 dos.writeInt(2);
+                dos.flush();
                 return;
             }
 
             if (services.checkIfEmailExists(email)){
                 dos.writeInt(1);
+                dos.flush();
                 return;
             }
 
-            dos.writeInt(0);
             services.insertNewUser(email, username, password);
+            dos.writeInt(0);
+            dos.flush();
 
         }
 

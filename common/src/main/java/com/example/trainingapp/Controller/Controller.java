@@ -132,17 +132,24 @@ public class Controller {
                     dos.flush();
 
                     int reply = dis.readInt();
+                    System.out.println(reply);
                     switch(reply){
                         case 0:
                             System.out.println("det gick");
                             openLoginFrame();
+                            break;
                         case 1:
                             System.out.println("email");
-                            registerFrame.geteLabel().setText("Email is already in use");
+                            registerFrame.getError().setText("Email is already in use");
+                            break;
                         case 2:
                             System.out.println("användarnamn");
+                            registerFrame.getError().setText("Username is already in use");
+                            break;
                         case 3:
                             System.out.println("båda");
+                            registerFrame.getError().setText("Both username and email are already in use");
+                            break;
                     }
 
                 } catch (IOException e) {
@@ -155,7 +162,7 @@ public class Controller {
     }
 
     //write int talar om för servern vilken metod det är som ska anropas
-    //writeUTF är själva datan som ska skickas till servern och det är server sidan som hanterar det. 
+    //writeUTF är själva datan som ska skickas till servern och det är server sidan som hanterar det.
     public void login(String email, String password){
         SocketConnection sc = new SocketConnection() {
             @Override
