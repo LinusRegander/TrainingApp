@@ -727,7 +727,7 @@ public class Services {
     public int getWorkoutId(String email) throws SQLException {
         int id = 0;
         Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("select MAX(workoutid) from training.workoutinfo where email = ?");
+        PreparedStatement pstmt = con.prepareStatement("select MAX(workoutid) from training.workoutinfo where creatoremail = ?");
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
         while(rs.next()) {

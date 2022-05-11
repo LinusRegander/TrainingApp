@@ -80,7 +80,7 @@ public class Server extends Thread {
                    case 6 -> insertLogWorkout();
                    case 7 -> getExerciseList();
                }
-
+               services.terminateIdle();
             } catch (Exception e) {
                 e.printStackTrace();
             }
