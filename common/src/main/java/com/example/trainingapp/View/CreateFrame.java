@@ -160,7 +160,7 @@ public class CreateFrame {
         Container addExerciseContainer = new Container(BoxLayout.xCenter());
         Button addExerciseButton = new Button("+ Add exercise");
         addExerciseButton.setUIID("CAchievementButton");
-        addExerciseButton.addActionListener(l -> controller.openExerciseSelectFrame());
+        addExerciseButton.addActionListener(l -> controller.openExerciseSelectFrame(this));
         //TODO: change button functionality
         addExerciseContainer.add(addExerciseButton);
 
@@ -343,5 +343,8 @@ public class CreateFrame {
 
         tempForm.add(CENTER, tempA);
         tempForm.show();
+    }
+    public Form getForm(){
+        return form;
     }
 }

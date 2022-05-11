@@ -45,4 +45,7 @@ public class ExerciseInfo {
     public void setSecondary(String secondary) {
         this.secondary = secondary;
     }
+    public String toString(){
+        return name;
+    }
 }

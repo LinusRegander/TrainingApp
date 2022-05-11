@@ -23,12 +23,14 @@ public class ExerciseSelectFrame {
     private Container topBar;
     private List<ExerciseInfo> exercises = new List<>();
     private ArrayList<ExerciseInfo> exerciseInfos;
+    private CreateFrame createFrame;
 
 
 
-    public ExerciseSelectFrame(Controller controller, ArrayList<ExerciseInfo> exerciseInfos) {
+    public ExerciseSelectFrame(Controller controller, ArrayList<ExerciseInfo> exerciseInfos, CreateFrame createFrame) {
         this.controller = controller;
         this.exerciseInfos = exerciseInfos;
+        this.createFrame = createFrame;
         startExerciseSelectForm();
         exerciseSelectForm.revalidate();
     }
@@ -55,6 +57,7 @@ public class ExerciseSelectFrame {
         exerciseSelectForm.add(NORTH, topBar);
     }
     public void exerciseSelector(){
+        Container bigContainer = new Container(BoxLayout.y());
         exerciseSelectContainer = new Container(BoxLayout.y());
         exerciseSelectContainer.setScrollableY(true);
 
@@ -62,7 +65,16 @@ public class ExerciseSelectFrame {
             exercises.addItem(a);
         }
         exerciseSelectContainer.add(exercises);
-        exerciseSelectForm.add(CENTER, exerciseSelectContainer);
+        bigContainer.add(exerciseSelectContainer);
+        Container buttonContainer = new Container(BoxLayout.xCenter());
+        Button addButton = new Button("Choose exercise");
+        addButton.addActionListener(l -> {
+            createFrame.addExercise(exercises.getSelectedItem().getName(), exercises.getSelectedItem().getId());
+            createFrame.getForm().show();
+        });
+        buttonContainer.add(addButton);
+        bigContainer.add(buttonContainer);
+        exerciseSelectForm.add(CENTER, bigContainer);
     }
     public void navBar() {
         navBar = new Container(BoxLayout.xCenter());

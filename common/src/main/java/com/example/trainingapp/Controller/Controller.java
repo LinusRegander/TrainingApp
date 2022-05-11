@@ -50,6 +50,7 @@ public class Controller {
     //Setup constructor.
     public void Setup() {
         updateLogWorkoutList();
+        updateExerciseList();
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
        //loginFrame = new LoginFrame(this);
@@ -97,10 +98,9 @@ public class Controller {
     public void openWorkoutLogFrame(){
         workoutLogFrame = new WorkoutLogFrame(this);
     }
-    public void openExerciseSelectFrame(){
-        updateExerciseList();
+    public void openExerciseSelectFrame(CreateFrame createFrame){
         ArrayList<ExerciseInfo> temp = getExerciseList();
-        exerciseSelectFrame = new ExerciseSelectFrame(this, temp);
+        exerciseSelectFrame = new ExerciseSelectFrame(this, temp, createFrame);
     }
 
     public Form getLoginForm() {
