@@ -73,9 +73,9 @@ public class Server extends Thread {
                switch (choice){
                    case 0 -> login();
                    case 1 -> register();
-                   case 2 -> insertNewWorkoutInfo();
+                   case 2 -> getLogExerciseSetList();
                    case 3 -> getLogWorkoutList();
-
+                   case 4 -> getLogProgramList();
                    case 5 -> insertNewWorkoutInfo();
                    case 6 -> insertLogWorkout();
                }
@@ -113,10 +113,24 @@ public class Server extends Thread {
             String username = strings[1];
             String password = strings[2];
 
-            if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {
-                services.insertNewUser(email, username, password);
+            if(services.checkIfEmailExists(email) && services.checkIfUsernameExists(username)){
+                dos.writeInt(3);
+                return;
             }
-            // TODO: 2022-05-05 Lägg till så att ifall ifsatsen failas så ska den svara till klienten vad som failar.
+
+            if(services.checkIfUsernameExists(username)){
+                dos.writeInt(2);
+                return;
+            }
+
+            if (services.checkIfEmailExists(email)){
+                dos.writeInt(1);
+                return;
+            }
+
+            dos.writeInt(0);
+            services.insertNewUser(email, username, password);
+
         }
 
         private void insertNewWorkoutInfo() throws Exception{
