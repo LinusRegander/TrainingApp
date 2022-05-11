@@ -118,11 +118,26 @@ public class Controller {
 
                 try {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
 
                     String temp = username + "\0" + email + "\0" + password;
                     dos.writeInt(1);
                     dos.writeUTF(temp);
                     dos.flush();
+
+                    int reply = dis.readInt();
+                    switch(reply){
+                        case 0:
+                            System.out.println("det gick");
+                            openLoginFrame();
+                        case 1:
+                            System.out.println("email");
+                            registerFrame.geteLabel().setText("Email is already in use");
+                        case 2:
+                            System.out.println("användarnamn");
+                        case 3:
+                            System.out.println("båda");
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
