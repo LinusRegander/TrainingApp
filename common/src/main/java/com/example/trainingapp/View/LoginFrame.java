@@ -56,7 +56,7 @@ public class LoginFrame {
         tl.setFgColor(10);
         loginContainer.add(testLabel);
 
-        uLabel = new Label("Username/Email:");
+        uLabel = new Label("Email:");
         loginContainer.add(uLabel);
         uTextField = new TextField();
         loginContainer.add(uTextField);

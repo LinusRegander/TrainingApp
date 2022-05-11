@@ -64,10 +64,12 @@ public class ExerciseSelectFrame {
         for(ExerciseInfo a : exerciseInfos){
             exercises.addItem(a);
         }
+        //exercises.addActionListener(l -> Dialog.show("Description", exercises.getSelectedItem().getDescription(), "OK", "Cancel"));
         exerciseSelectContainer.add(exercises);
         bigContainer.add(exerciseSelectContainer);
         Container buttonContainer = new Container(BoxLayout.xCenter());
         Button addButton = new Button("Choose exercise");
+        addButton.setUIID("CAchievementButton");
         addButton.addActionListener(l -> {
             createFrame.addExercise(exercises.getSelectedItem().getName(), exercises.getSelectedItem().getId());
             createFrame.getForm().show();

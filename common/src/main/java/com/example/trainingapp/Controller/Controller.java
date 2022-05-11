@@ -53,7 +53,7 @@ public class Controller {
         updateExerciseList();
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
-       //loginFrame = new LoginFrame(this);
+        loginFrame = new LoginFrame(this);
     }
 
     public void connect(SocketConnection socketConnection){
@@ -125,7 +125,7 @@ public class Controller {
                 try {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
-                    String temp = username + "\0" + email + "\0" + password;
+                    String temp = email + "\0" + username + "\0" + password;
                     dos.writeInt(1);
                     dos.writeUTF(temp);
                     dos.flush();
