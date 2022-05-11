@@ -69,6 +69,14 @@ public class RegisterFrame implements ActionListener {
         return eTextField.getText();
     }
 
+    public Label getuLabel(){
+        return uLabel;
+    }
+
+    public Label geteLabel(){
+        return eLabel;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == rButton) {
