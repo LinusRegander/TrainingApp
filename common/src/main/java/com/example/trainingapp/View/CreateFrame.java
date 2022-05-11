@@ -3,12 +3,13 @@ package com.example.trainingapp.View;
 import HelperClasses.Exercise;
 import HelperClasses.ExerciseInfo;
 import HelperClasses.Set;
+import com.codename1.l10n.ParseException;
+import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.DataChangedListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.layouts.GridBagConstraints;
 import com.codename1.ui.layouts.GridBagLayout;
 import com.codename1.ui.table.TableLayout;
 import com.example.trainingapp.Controller.Controller;
@@ -335,13 +336,27 @@ public class CreateFrame {
         tempA.add(tag3);
 
         Button finished = new Button("Finished");
-        //TODO: Fixa mailen och addLogWorkout
-        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), "daniel.olsson@gmail.com", tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
-        finished.addActionListener(l -> controller.addLogWorkout("daniel.olsson@gmail.com", 1, null, null));
-        finished.addActionListener(l -> controller.openMainFrame());
-        tempA.add(finished);
+        finished.setUIID("FinishedButton");
 
+
+        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), "daniel.olsson@gmail.com", tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
+        finished.addActionListener(l -> controller.addLogWorkout("daniel.olsson@gmail.com", 1, setDate(), null));
+        finished.addActionListener(l -> controller.openMainFrame());
+
+        tempA.add(finished);
         tempForm.add(CENTER, tempA);
         tempForm.show();
+    }
+
+    public Date setDate() {
+        Date date = new Date();
+
+        try {
+            date = new SimpleDateFormat("yyyy-mm-dd").parse("2022-05-11");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
     }
 }

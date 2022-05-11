@@ -48,6 +48,7 @@ public class Controller {
 
     //Setup constructor.
     public void Setup() {
+        updateWorkoutList();
         updateLogWorkoutList();
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
@@ -223,6 +224,7 @@ public class Controller {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
                     String temp = email + "\0" + workoutId + "\0" + date + "\0" + evaluation;
+                    System.out.println(date);
                     dos.writeInt(6);
                     dos.writeUTF(temp);
                     dos.flush();
@@ -360,7 +362,7 @@ public class Controller {
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(8);
+                    dos.writeInt(7);
                     dos.flush();
                     ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
                     String[] strings;
@@ -618,5 +620,9 @@ public class Controller {
 
     public ArrayList<LogWorkout> getLogWorkoutList() {
         return logWorkoutList;
+    }
+
+    public ArrayList<WorkoutInfo> getWorkoutInfoList() {
+        return workoutList;
     }
 }
