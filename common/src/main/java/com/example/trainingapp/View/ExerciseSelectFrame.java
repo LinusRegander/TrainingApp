@@ -1,7 +1,10 @@
 package com.example.trainingapp.View;
 
+import HelperClasses.Exercise;
 import HelperClasses.ExerciseInfo;
+import com.codename1.components.SpanLabel;
 import com.codename1.ui.*;
+import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.Controller;
@@ -22,12 +25,19 @@ public class ExerciseSelectFrame {
     private Container navBar;
     private Container topBar;
     private List<ExerciseInfo> exercises = new List<>();
+    private ArrayList<ExerciseInfo> exerciseInfos;
+    private CreateFrame createFrame;
+    private ArrayList<String> workoutExercises;
 
 
 
-    public ExerciseSelectFrame(Controller controller) {
+    public ExerciseSelectFrame(Controller controller, ArrayList<ExerciseInfo> exerciseInfos, CreateFrame createFrame) {
         this.controller = controller;
+        this.exerciseInfos = exerciseInfos;
+        this.createFrame = createFrame;
+        workoutExercises = createFrame.getExerciseNames();
         startExerciseSelectForm();
+        exerciseSelectForm.revalidate();
     }
     public void startExerciseSelectForm(){
         exerciseSelectForm = new Form(new BorderLayout());
@@ -40,6 +50,20 @@ public class ExerciseSelectFrame {
     public void topBar(){
         topBar = new Container(BoxLayout.xCenter());
         topBar.setUIID("TopBar");
+        Button back = new Button();
+        back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
+        back.addActionListener((e) -> {
+            Form createForm = createFrame.getForm();
+            createForm.setToolbar(new Toolbar());
+            createForm.setBackCommand(new Command("Back") {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    exerciseSelectForm.showBack();
+                }
+            });
+            createForm.show();
+        });
+        topBar.add(back);
 
         Label title = new Label("FitHub");
         topBar.add(title);
@@ -52,21 +76,37 @@ public class ExerciseSelectFrame {
         exerciseSelectForm.add(NORTH, topBar);
     }
     public void exerciseSelector(){
+        Container bigContainer = new Container(BoxLayout.y());
         exerciseSelectContainer = new Container(BoxLayout.y());
         exerciseSelectContainer.setScrollableY(true);
-        controller.updateExerciseList();
-        ArrayList<ExerciseInfo> temp = controller.getExerciseList();
-
-        for(ExerciseInfo a : temp){
-            exercises.addItem(a);
+        SpanLabel descriptionText = new SpanLabel("");
+        for(ExerciseInfo a : exerciseInfos){
+            if(!workoutExercises.contains(a.getName())) {
+                exercises.addItem(a);
+            }
         }
+        exercises.addActionListener(l -> {
+            descriptionText.setText(exercises.getSelectedItem().getDescription());
+            descriptionText.revalidate();
+            exerciseSelectForm.revalidate();
+        });
         exerciseSelectContainer.add(exercises);
-        exerciseSelectForm.add(CENTER, exerciseSelectContainer);
-        exerciseSelectForm.revalidate();
-        exerciseSelectForm.repaint();
-        exerciseSelectContainer.revalidate();
-        exerciseSelectContainer.repaint();
-
+        bigContainer.add(exerciseSelectContainer);
+        Container buttonContainer = new Container(BoxLayout.xCenter());
+        Button addButton = new Button("Choose exercise");
+        addButton.setUIID("CAchievementButton");
+        addButton.addActionListener(l -> {
+            createFrame.addExercise(exercises.getSelectedItem().getName(), exercises.getSelectedItem().getId());
+            createFrame.getForm().show();
+        });
+        buttonContainer.add(addButton);
+        bigContainer.add(buttonContainer);
+        Container descriptionContainer = new Container(BoxLayout.yBottom());
+        Label description = new Label("Description:");
+        descriptionContainer.add(description);
+        descriptionContainer.add(descriptionText);
+        bigContainer.add(descriptionContainer);
+        exerciseSelectForm.add(CENTER, bigContainer);
     }
     public void navBar() {
         navBar = new Container(BoxLayout.xCenter());

@@ -37,6 +37,7 @@ public class Controller {
     private ProfileFrame profileFrame;
     private WorkoutLogFrame workoutLogFrame;
     private RegisterFrame registerFrame;
+    private ExerciseSelectFrame exerciseSelectFrame;
     private Services services;
     private SettingsFrame settingsFrame;
     private String loggedInEmail;
@@ -49,9 +50,10 @@ public class Controller {
     //Setup constructor.
     public void Setup() {
         updateLogWorkoutList();
+        updateExerciseList();
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
-       //loginFrame = new LoginFrame(this);
+        loginFrame = new LoginFrame(this);
     }
 
     public void connect(SocketConnection socketConnection){
@@ -96,6 +98,10 @@ public class Controller {
     public void openWorkoutLogFrame(){
         workoutLogFrame = new WorkoutLogFrame(this);
     }
+    public void openExerciseSelectFrame(CreateFrame createFrame){
+        ArrayList<ExerciseInfo> temp = getExerciseList();
+        exerciseSelectFrame = new ExerciseSelectFrame(this, temp, createFrame);
+    }
 
     public Form getLoginForm() {
         return loginFrame.getLoginForm();
@@ -120,7 +126,7 @@ public class Controller {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
 
-                    String temp = username + "\0" + email + "\0" + password;
+                    String temp = email + "\0" + username + "\0" + password;
                     dos.writeInt(1);
                     dos.writeUTF(temp);
                     dos.flush();
@@ -337,7 +343,7 @@ public class Controller {
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(4);
+                    dos.writeInt(7);
                     System.out.println("hej");
                     dos.flush();
                     ArrayList<ExerciseInfo> arrayTemp = new ArrayList<>();
