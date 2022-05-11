@@ -89,7 +89,7 @@ public class Server extends Thread {
 
         //services.login() retunerar "" om de inte lyckades logga in
         //Om man lyckas retuneras en String som är emailen på inloggningen
-        // TODO: 2022-05-05 Hantera login på klient sidan
+
         private void login() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
