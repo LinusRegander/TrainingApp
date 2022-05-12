@@ -110,4 +110,8 @@ public class SettingsFrame {
 
         form.add(SOUTH, container);
     }
+
+    public Form getForm() {
+        return form;
+    }
 }

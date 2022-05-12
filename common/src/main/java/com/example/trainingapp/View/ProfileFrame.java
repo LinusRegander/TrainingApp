@@ -106,4 +106,8 @@ public class ProfileFrame {
 
         profileForm.add(SOUTH, container);
     }
+
+    public Form getProfileForm() {
+        return profileForm;
+    }
 }

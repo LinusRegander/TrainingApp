@@ -58,13 +58,11 @@ public class CreateFrame {
 
     public void createForm() {
         form = new Form(null, new BorderLayout());
-        form.setScrollableY(true);
         form.setUIID("CreateForm");
         topbar();
-        //workoutContainer();
         workoutContainerReworked();
         navbar();
-        form.show();
+
     }
 
     public void topbar() {
@@ -86,6 +84,7 @@ public class CreateFrame {
                 }
             });
             mainForm.show();
+            controller.newCreateFrame();
         });
         top.add(back);
 
@@ -341,7 +340,7 @@ public class CreateFrame {
         finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), "daniel.olsson@gmail.com", tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
         finished.addActionListener(l -> controller.addLogWorkout("daniel.olsson@gmail.com", 1, setDate(), null));
         finished.addActionListener(l -> controller.openMainFrame());
-
+        finished.addActionListener(l -> controller.newCreateFrame());
         tempA.add(finished);
         tempForm.add(CENTER, tempA);
         tempForm.show();
