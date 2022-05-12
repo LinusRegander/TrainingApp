@@ -390,7 +390,7 @@ public class Controller {
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(7);
+                    dos.writeInt(8);
                     dos.flush();
                     ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
                     String[] strings;
