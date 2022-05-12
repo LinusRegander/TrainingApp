@@ -79,6 +79,7 @@ public class Server extends Thread {
                    case 5 -> insertNewWorkoutInfo();
                    case 6 -> insertLogWorkout();
                    case 7 -> getExerciseList();
+                   case 8 -> getWorkoutList();
                }
                services.terminateIdle();
             } catch (Exception e) {

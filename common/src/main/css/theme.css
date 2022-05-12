@@ -168,6 +168,22 @@ CAchievementButton {
     border-color: black;
 }
 
+FinishedButton {
+    background-color: #7092be;
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+    text-align: center;
+}
+
+AddButton {
+    background-color: #7092be;
+    border-radius: 25px;
+    border-style: solid;
+    border-color: black;
+    text-align: center;
+}
+
 LoginButton {
     background-color: #7092be;
     border-radius: 25px;

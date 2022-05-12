@@ -1,5 +1,7 @@
 package com.example.trainingapp.View;
 
+import HelperClasses.WorkoutInfo;
+import com.codename1.components.MultiButton;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.layouts.BorderLayout;
@@ -7,6 +9,8 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.example.trainingapp.Controller.Controller;
+
+import java.util.ArrayList;
 
 import static com.codename1.ui.FontImage.setMaterialIcon;
 import static com.codename1.ui.layouts.BorderLayout.*;
@@ -27,6 +31,15 @@ public class ProgramFrame {
     private Container mainContainer;
     private Controller controller;
     private Form form;
+    private ArrayList<WorkoutInfo> workoutInfoList = new ArrayList<>();
+    private int id;
+    private String name;
+    private String description;
+    private String tag1;
+    private String tag2;
+    private String tag3;
+    private String username;
+    private String email;
 
     public ProgramFrame (Controller controller) {
         this.controller = controller;
@@ -34,7 +47,9 @@ public class ProgramFrame {
     }
 
     public void programForm() {
+        workoutInfoList = controller.getWorkoutInfoList();
         form = new Form(null, new BorderLayout());
+        form.setScrollableY(true);
         form.setUIID("ProgramForm");
         topbar();
         searchBar();
@@ -88,18 +103,85 @@ public class ProgramFrame {
         c.add(mine);
 
         Container d = new Container(BoxLayout.y());
+        d.setScrollableY(true);
         d.setUIID("ProgramContainer2");
         mainContainer.add(d);
 
-        Label temporary = new Label("My Workout 1");
-        d.add(temporary);
+        for (int i = 0; i < workoutInfoList.size(); i++) {
+            id = workoutInfoList.get(i).getId();
+            name = workoutInfoList.get(i).getName();
+            username = workoutInfoList.get(i).getCreatorUsername();
+            email = workoutInfoList.get(i).getCreatorEmail();
+            description = workoutInfoList.get(i).getDescription();
+            tag1 = workoutInfoList.get(i).getTag1();
+            tag2 = workoutInfoList.get(i).getTag2();
+            tag3 = workoutInfoList.get(i).getTag3();
+            MultiButton add = new MultiButton(name + " " + id);
+            add.setTextLine2("Click to see more");
+            add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
+            d.add(add);
+        }
 
-        addProgram = new Button();
-        addProgram.setUIID("AddProgram");
-        addProgram.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, addProgram.getUnselectedStyle()));
-        mainContainer.add(addProgram);
+        Button add = new Button("Add New");
+        add.setUIID("AddButton");
+        add.addActionListener(l -> controller.openCreateFrame());
+        d.add(add);
 
         form.add(CENTER, mainContainer);
+    }
+
+    public void openWorkoutInfo(String name, String username, String email, String description, String tag1, String tag2, String tag3) {
+        Form tempForm = new Form(BoxLayout.y());
+        tempForm.setScrollableY(true);
+
+        topbar = new Container(BoxLayout.y());
+        topbar.setUIID("Topbar");
+
+        Container top = new Container(BoxLayout.xCenter());
+        topbar.add(top);
+
+        Button back = new Button();
+        back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
+        back.addActionListener((e) -> {
+            form.setToolbar(new Toolbar());
+            form.setBackCommand(new Command("Back") {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    tempForm.showBack();
+                }
+            });
+            form.show();
+        });
+        top.add(back);
+
+        tempForm.add(topbar);
+
+        Label title = new Label("FitHub");
+        top.add(title);
+
+        Container workoutContainer = new Container(BoxLayout.y());
+
+        Label lblName = new Label("Name: " + name);
+        workoutContainer.add(lblName);
+
+        Label lblCreated = new Label("Created by:");
+        workoutContainer.add(lblCreated);
+
+        Label lblUsername = new Label(username);
+        workoutContainer.add(lblUsername);
+
+        Label lblEmail = new Label(email);
+        workoutContainer.add(lblEmail);
+
+        Label lblDescription = new Label("Description: " + description);
+        workoutContainer.add(lblDescription);
+
+        Label lblTags = new Label("Tags: " + tag1 + " " + tag2 + " " + tag3);
+        workoutContainer.add(lblTags);
+
+
+        tempForm.add(workoutContainer);
+        tempForm.show();
     }
 
     public void searchBar() {
