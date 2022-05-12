@@ -182,4 +182,7 @@ public class AchievementFrame {
 
         form.add(SOUTH, container);
     }
+    public Form getForm(){
+        return form;
+    }
 }

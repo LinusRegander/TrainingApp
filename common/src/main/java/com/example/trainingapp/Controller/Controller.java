@@ -54,7 +54,7 @@ public class Controller {
         updateExerciseList();
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
-        loginFrame = new LoginFrame(this);
+        //loginFrame = new LoginFrame(this);
     }
 
     public void connect(SocketConnection socketConnection){
@@ -69,7 +69,11 @@ public class Controller {
     }
 
     public void openMainFrame() {
-        mainFrame = new MainFrame(this);
+        if(mainFrame == null) {
+            mainFrame = new MainFrame(this);
+        } else {
+            mainFrame.getMainForm().show();
+        }
     }
 
     public void openRegFrame() {
@@ -77,11 +81,20 @@ public class Controller {
     }
 
     public void openAchievementFrame() {
-        achievementFrame = new AchievementFrame(this);
+        if(achievementFrame == null) {
+            achievementFrame = new AchievementFrame(this);
+        } else {
+            achievementFrame.getForm().show();
+        }
     }
 
     public void openCreateFrame() {
-        createFrame = new CreateFrame(this);
+        if(createFrame == null) {
+            createFrame = new CreateFrame(this);
+            createFrame.getForm().show();
+        } else {
+            createFrame.getForm().show();
+        }
     }
 
     public void openProgramFrame() {
@@ -89,11 +102,19 @@ public class Controller {
     }
 
     public void openSettingsFrame() {
-        settingsFrame = new SettingsFrame(this);
+        if(settingsFrame == null) {
+            settingsFrame = new SettingsFrame(this);
+        } else {
+            settingsFrame.getForm().show();
+        }
     }
 
     public void openProfileFrame() {
-        profileFrame = new ProfileFrame(this);
+        if(profileFrame == null) {
+            profileFrame = new ProfileFrame(this);
+        } else {
+            profileFrame.getProfileForm().show();
+        }
     }
 
     public void openWorkoutLogFrame(){
@@ -102,6 +123,9 @@ public class Controller {
     public void openExerciseSelectFrame(CreateFrame createFrame){
         ArrayList<ExerciseInfo> temp = getExerciseList();
         exerciseSelectFrame = new ExerciseSelectFrame(this, temp, createFrame);
+    }
+    public void newCreateFrame(){
+        createFrame = new CreateFrame(this);
     }
 
     public Form getLoginForm() {
