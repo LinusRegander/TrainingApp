@@ -78,6 +78,10 @@ public class RegisterFrame implements ActionListener {
         return error;
     }
 
+    public void showSuccess(){
+        Dialog.show("Success", "Account was registered successfully", "OK", "");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == rButton) {

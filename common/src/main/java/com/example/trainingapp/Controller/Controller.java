@@ -137,6 +137,7 @@ public class Controller {
                     switch(reply){
                         case 0:
                             System.out.println("det gick");
+                            registerFrame.showSuccess();
                             openLoginFrame();
                             break;
                         case 1:
