@@ -116,7 +116,7 @@ public class ProgramFrame {
             tag1 = workoutInfoList.get(i).getTag1();
             tag2 = workoutInfoList.get(i).getTag2();
             tag3 = workoutInfoList.get(i).getTag3();
-            MultiButton add = new MultiButton(name + " " + id);
+            MultiButton add = new MultiButton(name);
             add.setTextLine2("Click to see more");
             add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
             d.add(add);

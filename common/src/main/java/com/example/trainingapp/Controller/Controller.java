@@ -49,9 +49,6 @@ public class Controller {
 
     //Setup constructor.
     public void Setup() {
-        updateWorkoutList();
-        updateLogWorkoutList();
-        updateExerciseList();
         services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
         //loginFrame = new LoginFrame(this);
@@ -212,13 +209,15 @@ public class Controller {
                     System.out.println(response);
                     if(!response.isEmpty()){
                         String[] loggedIn = split(response);
+                        System.out.println(loggedIn[0]);
                         loggedInEmail = loggedIn[0];
                         username = loggedIn[1];
-                        // TODO: 2022-05-06 BYT PANEL TILL NÄR MAN ÄR INLOGGAD
                         openMainFrame();
                         System.out.println("du är inloggad!");
+                        updateWorkoutList();
+                        updateLogWorkoutList();
+                        updateExerciseList();
                     } else {
-                        // TODO: 2022-05-06 Error meddelande som säger login failed
                         loginFrame.failedLogin();
                         System.out.println("du kom inte in!");
                     }
@@ -243,6 +242,7 @@ public class Controller {
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
 
                     String temp = name + "\0" + creatorEmail + "\0" + description + "\0" + tag1 + "\0" + tag2 + "\0" + tag3;
 
@@ -256,6 +256,10 @@ public class Controller {
                     dos.writeInt(5);
                     dos.writeUTF(temp);
                     dos.flush();
+
+                    int id = dis.readInt();
+                    workoutList.add(new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, username));
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -264,7 +268,7 @@ public class Controller {
         connect(sc);
     }
 
-    public void addLogWorkout(String email, int workoutId, java.util.Date date, String evaluation){
+    public void addLogWorkout(String email, int workoutId, String date, String evaluation){
         SocketConnection sc = new SocketConnection() {
             @Override
             public void connectionError(int i, String s) {
@@ -530,11 +534,15 @@ public class Controller {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
                     dos.writeInt(3);
-                    dos.writeUTF("daniel.olsson@gmail.com");
+                    dos.flush();
+                    System.out.println("öööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööö");
+                    System.out.println("hejhallå" + loggedInEmail);
+                    dos.writeUTF(loggedInEmail);
                     dos.flush();
                     ArrayList<LogWorkout> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
+                    System.out.println(temp);
                     strings = split(temp);
                     for(int i = 0; i < strings.length / 5; i++){
                         int logWorkoutId = Integer.parseInt(strings[i * 5]);
