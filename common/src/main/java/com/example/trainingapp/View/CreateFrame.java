@@ -338,8 +338,8 @@ public class CreateFrame {
         finished.setUIID("FinishedButton");
 
 
-        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), "daniel.olsson@gmail.com", tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
-        finished.addActionListener(l -> controller.addLogWorkout("daniel.olsson@gmail.com", 1, setDate(), null));
+        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
+        finished.addActionListener(l -> controller.addLogWorkout(controller.getLoggedInEmail(), controller.getWorkoutInfoList().get(controller.getWorkoutInfoList().size()).getId(), setDate(), null));
         finished.addActionListener(l -> controller.openMainFrame());
 
         tempA.add(finished);
@@ -359,7 +359,7 @@ public class CreateFrame {
         return names;
     }
 
-    public Date setDate() {
+    public String setDate() {
         Date date = new Date();
 
         try {
@@ -368,6 +368,6 @@ public class CreateFrame {
             e.printStackTrace();
         }
 
-        return date;
+        return "2022-05-12";
     }
 }

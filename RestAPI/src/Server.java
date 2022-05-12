@@ -337,7 +337,7 @@ public class Server extends Thread {
 
             for (LogWorkout logWorkout : logWorkoutList){
                 temp.append(logWorkout.getLogWorkoutId() + "\0" + logWorkout.getWorkoutId() + "\0" +
-                        logWorkout.getCreator() + "\0" + logWorkout.getDate() + "\0" + logWorkout.getEvaluation());
+                        logWorkout.getCreator() + "\0" + logWorkout.getDate() + "\0" + logWorkout.getEvaluation() + "\0");
             }
 
             dos.writeUTF(temp.toString());

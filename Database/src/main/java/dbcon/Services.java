@@ -57,8 +57,8 @@ public class Services {
         ResultSet rs = pstmt.executeQuery();
 
         while (rs.next()){
-            loginMailAndUsername = rs.getString("email");
-            loginMailAndUsername += '\0';
+            loginMailAndUsername += rs.getString("email");
+            loginMailAndUsername += "\0";
             loginMailAndUsername += rs.getString("username");
 
         }
@@ -711,11 +711,11 @@ public class Services {
     public String getUsername(String email) throws SQLException{
         String username = null;
         Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("select name from training.users where email = ?");
+        PreparedStatement pstmt = con.prepareStatement("select username from training.users where email = ?");
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
         while(rs.next()){
-            username = rs.getString("name");
+            username = rs.getString("username");
         }
 
         rs.close();
@@ -731,7 +731,7 @@ public class Services {
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
         while(rs.next()) {
-            id = rs.getInt("workoutid");
+            id = rs.getInt("max");
         }
         rs.close();
         pstmt.close();
