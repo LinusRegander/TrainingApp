@@ -64,24 +64,35 @@ public class Server extends Thread {
 
         @Override
         public void run() {
-            System.out.println("Connected blablabla");
+            System.out.println(socket.getInetAddress().getHostName() + "Connected to server");
 
             int choice;
             try {
                 choice = dis.readInt();
+                switch (choice){
+                    case 0 -> login();
+                    case 1 -> register();
+                    case 2 -> getLogExerciseSetList();
+                    case 3 -> getLogWorkoutList();
+                    case 4 -> getLogProgramList();
 
-               switch (choice){
-                   case 0 -> login();
-                   case 1 -> register();
-                   case 2 -> getLogExerciseSetList();
-                   case 3 -> getLogWorkoutList();
-                   case 4 -> getLogProgramList();
-                   case 5 -> insertNewWorkoutInfo();
-                   case 6 -> insertLogWorkout();
-                   case 7 -> getExerciseList();
-                   case 8 -> getWorkoutList();
-               }
-               services.terminateIdle();
+                    case 7 -> getExerciseList();
+                    case 8 -> getWorkoutList();
+                    case 9 -> getProgramList();
+
+                    case 5 -> insertNewWorkoutInfo();
+                    case 13 -> insertExerciseIntoWorkout();
+                    case 12 -> insertWorkoutIntoProgram();
+
+                    case 10 -> insertLogExerciseSet();
+                    case 6 -> insertLogWorkout();
+                    case 11 -> insertLogProgram();
+
+                    // TODO: 2022-05-17 Alla över 9 används inte av client just nu
+                    // TODO: 2022-05-17 Ändra indexen i server o klient så att de är snygga
+                }
+
+                services.terminateIdle();
             } catch (Exception e) {
                 e.printStackTrace();
             }

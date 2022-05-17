@@ -325,6 +325,29 @@ public class Services {
         con.close();
     }
 
+    public void insertNewAchievementsInfo(String name, String description) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Call training.insertAchievementsInfo(?,?)");
+        pstmt.setString(1, name);
+        pstmt.setString(2, description);
+
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+
+    public void insertCompleteAchievement(int achievementId, String loggedInMail, Date date) throws SQLException{
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("Call training.insertCompletedAchievement(?,?,?)");
+        pstmt.setInt(1, achievementId);
+        pstmt.setString(2, loggedInMail);
+        pstmt.setDate(3, date);
+
+        pstmt.execute();
+        pstmt.close();
+        con.close();
+    }
+
 // ovanför är alla inserts, sedan remove sedan update
 
     public void removeLoggedExerciseSet(String logExerciseId) throws SQLException{
