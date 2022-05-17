@@ -1,17 +1,20 @@
 package com.example.trainingapp.View;
 
-import HelperClasses.Exercise;
-import HelperClasses.ExerciseInfo;
+import HelperClasses.*;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
-import com.example.trainingapp.Controller.Controller;
+import com.example.trainingapp.Controller.*;
 
 import java.util.ArrayList;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
+
+/**
+ @author Daniel Olsson
+ */
 
 public class ExerciseSelectFrame {
     private Controller controller;

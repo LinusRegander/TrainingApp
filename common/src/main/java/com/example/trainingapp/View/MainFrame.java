@@ -1,5 +1,6 @@
 package com.example.trainingapp.View;
 
+import HelperClasses.*;
 import com.codename1.capture.Capture;
 import com.codename1.components.ImageViewer;
 import com.codename1.io.FileSystemStorage;
@@ -19,9 +20,14 @@ import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 import static com.codename1.ui.Image.createImage;
 import static com.codename1.ui.layouts.BorderLayout.*;
+
+/**
+ @author Linus Regander, Daniel Olsson, William Dock, Yun-Bo Chow
+ */
 
 public class MainFrame {
     private Button home;
@@ -40,22 +46,27 @@ public class MainFrame {
     private Label statistics;
     private Label totalWeight;
     private Label workouts;
-
+    private ArrayList<LogWorkout> logWorkoutList = new ArrayList<>();
+    private ArrayList<LogExerciseSet> logExerciseSets = new ArrayList<>();
     public MainFrame(Controller controller) {
         this.controller = controller;
         mainForm();
     }
 
     public void mainForm() {
+        logWorkoutList = controller.getLogWorkoutList();
+        logExerciseSets = controller.getLogExerciseSetList();
         mainForm = new Form(new BorderLayout());
         mainForm.setUIID("MainForm");
         topbar();
         homeArea();
         navbar();
         mainForm.show();
+        mainForm.revalidate();
     }
 
     public void topbar() {
+
         topbar = new Container(BoxLayout.xCenter());
         topbar.setUIID("Topbar");
 
@@ -95,8 +106,16 @@ public class MainFrame {
         workouts = new Label("Workouts");
         b.add(workouts);
 
+        Label workoutCount = new Label("0");
+        workoutCount.setText(String.valueOf(logWorkoutList.size()));
+        b.add(workoutCount);
+
         sets = new Label("Sets");
         b.add(sets);
+
+        Label setCount = new Label("0");
+        setCount.setText(String.valueOf(logExerciseSets.size()));
+        b.add(setCount);
 
         Container c = new Container(BoxLayout.xCenter());
         c.setUIID("mainTS");
@@ -104,9 +123,6 @@ public class MainFrame {
 
         totalWeight = new Label("Total Weight");
         c.add(totalWeight);
-
-        something = new Label("Something");
-        c.add(something);
 
         trainingLog = new Button("Training Log >");
         trainingLog.setUIID("TrainingLog");

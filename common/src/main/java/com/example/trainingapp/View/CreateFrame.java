@@ -1,8 +1,6 @@
 package com.example.trainingapp.View;
 
-import HelperClasses.Exercise;
-import HelperClasses.ExerciseInfo;
-import HelperClasses.Set;
+import HelperClasses.*;
 import com.codename1.l10n.ParseException;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.*;
@@ -16,6 +14,10 @@ import com.example.trainingapp.Controller.Controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+/**
+ @author Linus Regander, Daniel Olsson, Yun-Bo Chow, William Dock
+ */
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 

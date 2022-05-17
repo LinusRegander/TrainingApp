@@ -9,6 +9,10 @@ import com.example.trainingapp.Controller.Controller;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
+/**
+    @author Linus Regander, Daniel Olsson
+ */
+
 public class AchievementFrame {
     private Button achievement;
     /*private Button bAchievement1;

@@ -16,28 +16,40 @@ RegisterForm {
     background-color: white;
 }
 
+Statistics {
+    font-size: medium;
+}
+
 AchievementContainer {
     border-radius: 25px;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 StatisticsContainer {
     border-radius: 25px;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 ProfileContainer {
     border-radius: 25px;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 SettingsContainer {
     border-radius: 25px;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 ProgramContainer2 {
@@ -45,6 +57,8 @@ ProgramContainer2 {
     border-radius: 25px;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 Settings1 {
@@ -52,6 +66,8 @@ Settings1 {
     border-radius: 25px;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 SettingsProfile {
@@ -71,14 +87,20 @@ SettingsLight {
 
 mainSC {
     background-color: #7092be;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 mainTS {
     border-radius: 25px;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 mainWS {
     border-radius: 25px;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 a {
@@ -86,6 +108,8 @@ a {
     background-color: #7092be;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 b {
@@ -93,6 +117,8 @@ b {
     background-color: #7092be;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 c {
@@ -100,6 +126,8 @@ c {
     background-color: #7092be;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 d {
@@ -107,6 +135,8 @@ d {
     background-color: #7092be;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 e {
@@ -114,6 +144,8 @@ e {
     background-color: #7092be;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 f {
@@ -121,6 +153,8 @@ f {
     background-color: #7092be;
     border-style: solid;
     border-color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 Navbar {
@@ -129,30 +163,44 @@ Navbar {
 
 ProgramForm {
     background-color: white;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 ProfileForm {
     background-color: white;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 AchievementForm {
     background-color: white;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 CreateForm {
     background-color: white;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 MainForm {
     background-color: white;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 SettingsForm {
     background-color: white;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 Label {
     color: black;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 AchievementButton {

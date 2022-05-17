@@ -8,6 +8,10 @@ import com.example.trainingapp.Controller.Controller;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
+/**
+ @author Linus Regander
+ */
+
 public class SettingsFrame {
     private Button home;
     private Button achievement;

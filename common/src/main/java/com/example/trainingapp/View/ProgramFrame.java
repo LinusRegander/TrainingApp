@@ -1,6 +1,6 @@
 package com.example.trainingapp.View;
 
-import HelperClasses.WorkoutInfo;
+import HelperClasses.*;
 import com.codename1.components.MultiButton;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import static com.codename1.ui.FontImage.setMaterialIcon;
 import static com.codename1.ui.layouts.BorderLayout.*;
 
+/**
+ @author Linus Regander, Daniel Olsson
+ */
+
 public class ProgramFrame {
     private Button achievement;
     private Button addProgram;
@@ -26,13 +30,16 @@ public class ProgramFrame {
     private Button programs;
     private Button settings;
     private Button workout;
+    private Container d;
     private Container navbar;
     private Container topbar;
     private Container mainContainer;
     private Controller controller;
     private Form form;
     private ArrayList<WorkoutInfo> workoutInfoList = new ArrayList<>();
+    private ArrayList<ProgramInfo> programInfoList = new ArrayList<>();
     private int id;
+    private MultiButton add;
     private String name;
     private String description;
     private String tag1;
@@ -88,9 +95,11 @@ public class ProgramFrame {
         a.add(b);
 
         workout = new Button("Workout");
+        workout.addActionListener(l -> allWorkouts());
         b.add(workout);
 
         program = new Button("Program");
+        workout.addActionListener(l -> allPrograms());
         b.add(program);
 
         Container c = new Container(BoxLayout.xCenter());
@@ -100,32 +109,23 @@ public class ProgramFrame {
         c.add(community);
 
         mine = new Button("Mine");
+        mine.addActionListener(l -> myWorkout());
         c.add(mine);
 
-        Container d = new Container(BoxLayout.y());
+        d = new Container(BoxLayout.y());
         d.setScrollableY(true);
         d.setUIID("ProgramContainer2");
         mainContainer.add(d);
 
-        for (int i = 0; i < workoutInfoList.size(); i++) {
-            id = workoutInfoList.get(i).getId();
-            name = workoutInfoList.get(i).getName();
-            username = workoutInfoList.get(i).getCreatorUsername();
-            email = workoutInfoList.get(i).getCreatorEmail();
-            description = workoutInfoList.get(i).getDescription();
-            tag1 = workoutInfoList.get(i).getTag1();
-            tag2 = workoutInfoList.get(i).getTag2();
-            tag3 = workoutInfoList.get(i).getTag3();
-            MultiButton add = new MultiButton(name);
-            add.setTextLine2("Click to see more");
-            add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
-            d.add(add);
-        }
+        allWorkouts();
+
+        Container e = new Container(BoxLayout.y());
+        mainContainer.add(e);
 
         Button add = new Button("Add New");
         add.setUIID("AddButton");
         add.addActionListener(l -> controller.openCreateFrame());
-        d.add(add);
+        e.add(add);
 
         form.add(CENTER, mainContainer);
     }
@@ -182,6 +182,62 @@ public class ProgramFrame {
 
         tempForm.add(workoutContainer);
         tempForm.show();
+    }
+
+    public void allWorkouts() {
+        for (int i = 0; i < workoutInfoList.size(); i++) {
+            id = workoutInfoList.get(i).getId();
+            name = workoutInfoList.get(i).getName();
+            username = workoutInfoList.get(i).getCreatorUsername();
+            email = workoutInfoList.get(i).getCreatorEmail();
+            description = workoutInfoList.get(i).getDescription();
+            tag1 = workoutInfoList.get(i).getTag1();
+            tag2 = workoutInfoList.get(i).getTag2();
+            tag3 = workoutInfoList.get(i).getTag3();
+            add = new MultiButton(name);
+            add.setTextLine2("Click to see more");
+            add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
+            d.add(add);
+        }
+    }
+
+    public void allPrograms() {
+        for (int i = 0; i < programInfoList.size(); i++) {
+            id = programInfoList.get(i).getId();
+            name = programInfoList.get(i).getName();
+            username = programInfoList.get(i).getCreatorUsername();
+            email = programInfoList.get(i).getCreatorEmail();
+            description = programInfoList.get(i).getDescription();
+            tag1 = programInfoList.get(i).getTag1();
+            tag2 = programInfoList.get(i).getTag2();
+            tag3 = programInfoList.get(i).getTag3();
+            add = new MultiButton(name);
+            add.setTextLine2("Click to see more");
+            add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
+            d.add(add);
+        }
+    }
+
+    public void myWorkout() {
+        d.removeAll();
+
+        for (int i = 0; i < workoutInfoList.size(); i++) {
+            id = workoutInfoList.get(i).getId();
+            name = workoutInfoList.get(i).getName();
+            username = workoutInfoList.get(i).getCreatorUsername();
+            email = workoutInfoList.get(i).getCreatorEmail();
+            description = workoutInfoList.get(i).getDescription();
+            tag1 = workoutInfoList.get(i).getTag1();
+            tag2 = workoutInfoList.get(i).getTag2();
+            tag3 = workoutInfoList.get(i).getTag3();
+
+            if (workoutInfoList.get(i).getCreatorEmail().equals(controller.getLoggedInEmail())) {
+                add = new MultiButton(name);
+                add.setTextLine2("Click to see more");
+                add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
+                d.add(add);
+            }
+        }
     }
 
     public void searchBar() {

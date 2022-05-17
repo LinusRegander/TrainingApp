@@ -1,6 +1,6 @@
 import HelperClasses.*;
 import com.codename1.io.ConnectionRequest;
-import dbcon.Services;
+import dbcon.*;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -9,6 +9,11 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import static com.codename1.ui.CN.*;
+
+/**
+ @author William Dock, Yun-Bo Chow
+ */
+
 
 public class Server extends Thread {
     private Services services = new Services();

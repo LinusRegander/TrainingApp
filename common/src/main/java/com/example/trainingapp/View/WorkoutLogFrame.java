@@ -1,7 +1,6 @@
 package com.example.trainingapp.View;
 
-import HelperClasses.LogWorkout;
-import HelperClasses.WorkoutInfo;
+import HelperClasses.*;
 import com.codename1.components.MultiButton;
 import com.codename1.ui.*;
 import com.codename1.ui.layouts.*;
@@ -11,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
+
+/**
+ @author Linus Regander, Daniel Olsson
+ */
 
 public class WorkoutLogFrame {
     private Controller controller;

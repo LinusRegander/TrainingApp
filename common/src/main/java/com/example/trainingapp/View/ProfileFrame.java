@@ -7,6 +7,10 @@ import com.example.trainingapp.Controller.Controller;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
+/**
+ @author Linus Regander
+ */
+
 public class ProfileFrame {
     private Button home;
     private Button achievement;
@@ -18,9 +22,19 @@ public class ProfileFrame {
     private Container profileContainer;
     private Container topbar;
     private Form profileForm;
+    private int workoutCount = 0;
+    private int repCount = 0;
+    private int setCount = 0;
+    private int finishedWorkouts = 0;
+    private int programCount = 0;
     private Label email;
     private Label icon;
     private Label username;
+    private Label workout;
+    private Label rep;
+    private Label set;
+    private Label finished;
+    private Label programs;
 
     public ProfileFrame(Controller controller) {
         this.controller = controller;
@@ -65,12 +79,36 @@ public class ProfileFrame {
         profileContainer.add(b);
 
         username = new Label();
-        username.setText("Place Holder");
+        username.setText("Username: " + controller.getUsername());
         b.add(username);
 
         email = new Label();
-        email.setText("Place Holder");
+        email.setText("Email: " + controller.getLoggedInEmail());
         b.add(email);
+
+        Label statistics = new Label("Statistics: ");
+        statistics.setUIID("Statistics");
+        b.add(statistics);
+
+        workout = new Label();
+        workout.setText("Created Workouts: " + workoutCount);
+        b.add(workout);
+
+        set = new Label();
+        set.setText("Sets: " + setCount);
+        b.add(set);
+
+        rep = new Label();
+        rep.setText("Reps: " + repCount);
+        b.add(rep);
+
+        finished = new Label();
+        finished.setText("Finished Workouts: " + finishedWorkouts);
+        b.add(finished);
+
+        programs = new Label();
+        programs.setText("Programs: " + programCount);
+        b.add(programs);
 
         profileForm.add(CENTER, profileContainer);
     }

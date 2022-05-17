@@ -16,6 +16,10 @@ import jdk.tools.jmod.Main;
 
 import java.awt.*;
 
+/**
+ @author Linus Regander, William Dock
+ */
+
 public class LoginFrame {
     private Button lButton;
     private Button rButton;

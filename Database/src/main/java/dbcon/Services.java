@@ -14,6 +14,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ @author William Dock, Yun-Bo Chow
+ */
+
 public class Services {
 
     public ConnectionRequest getDatabaseConnectionTest() {

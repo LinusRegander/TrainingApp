@@ -18,6 +18,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+/**
+    @author Linus Regander, Daniel Olsson, William Dock, Yun-Bo Chow, Francis Jonsson
+ */
 
 public class Controller {
     private ArrayList<ExerciseInfo> exerciseList = new ArrayList<>();
@@ -48,7 +51,7 @@ public class Controller {
     //Setup constructor.
     public void Setup() {
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
-        //loginFrame = new LoginFrame(this);
+        loginFrame = new LoginFrame(this);
     }
 
     public void connect(SocketConnection socketConnection){
@@ -658,11 +661,19 @@ public class Controller {
         return loggedInEmail;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public ArrayList<LogWorkout> getLogWorkoutList() {
         return logWorkoutList;
     }
 
     public ArrayList<WorkoutInfo> getWorkoutInfoList() {
         return workoutList;
+    }
+
+    public ArrayList<LogExerciseSet> getLogExerciseSetList() {
+        return logExerciseSetList;
     }
 }
