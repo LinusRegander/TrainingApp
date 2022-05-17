@@ -30,7 +30,6 @@ public class Controller {
     private ArrayList<LogProgram> logProgramList = new ArrayList<>();
     private AchievementFrame achievementFrame;
     private CreateFrame createFrame;
-    private Database database;
     private LoginFrame loginFrame;
     private MainFrame mainFrame;
     private ProgramFrame programFrame;
@@ -38,7 +37,6 @@ public class Controller {
     private WorkoutLogFrame workoutLogFrame;
     private RegisterFrame registerFrame;
     private ExerciseSelectFrame exerciseSelectFrame;
-    private Services services;
     private SettingsFrame settingsFrame;
     private String loggedInEmail;
     private String username;
@@ -49,13 +47,11 @@ public class Controller {
 
     //Setup constructor.
     public void Setup() {
-        services = new Services(); //Creates a new Database object, containing the Services class.
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
         //loginFrame = new LoginFrame(this);
     }
 
     public void connect(SocketConnection socketConnection){
-        System.out.println("inne");
         Socket.connect("127.0.0.1", 541, socketConnection);
 
     }
@@ -154,23 +150,18 @@ public class Controller {
                     dos.flush();
 
                     int reply = dis.readInt();
-                    System.out.println(reply);
                     switch(reply){
                         case 0:
-                            System.out.println("det gick");
                             registerFrame.showSuccess();
                             openLoginFrame();
                             break;
                         case 1:
-                            System.out.println("email");
                             registerFrame.getError().setText("Email is already in use");
                             break;
                         case 2:
-                            System.out.println("användarnamn");
                             registerFrame.getError().setText("Username is already in use");
                             break;
                         case 3:
-                            System.out.println("båda");
                             registerFrame.getError().setText("Both username and email are already in use");
                             break;
                     }
@@ -195,7 +186,6 @@ public class Controller {
 
             @Override
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
-                System.out.println("hej");
                 try {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
@@ -206,20 +196,16 @@ public class Controller {
                     dos.flush();
 
                     String response = dis.readUTF();
-                    System.out.println(response);
                     if(!response.isEmpty()){
                         String[] loggedIn = split(response);
-                        System.out.println(loggedIn[0]);
                         loggedInEmail = loggedIn[0];
                         username = loggedIn[1];
                         openMainFrame();
-                        System.out.println("du är inloggad!");
                         updateWorkoutList();
                         updateLogWorkoutList();
                         updateExerciseList();
                     } else {
                         loginFrame.failedLogin();
-                        System.out.println("du kom inte in!");
                     }
 
                 } catch (IOException e) {
@@ -281,7 +267,6 @@ public class Controller {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
                     String temp = email + "\0" + workoutId + "\0" + date + "\0" + evaluation;
-                    System.out.println(date);
                     dos.writeInt(6);
                     dos.writeUTF(temp);
                     dos.flush();
@@ -382,12 +367,10 @@ public class Controller {
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
                     dos.writeInt(7);
-                    System.out.println("hej");
                     dos.flush();
                     ArrayList<ExerciseInfo> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
-                    System.out.println(temp);
                     strings = split(temp);
                     for(int i = 0; i < strings.length / 5; i++){
                         int id = Integer.parseInt(strings[i * 5]);
@@ -535,14 +518,12 @@ public class Controller {
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
                     dos.writeInt(3);
                     dos.flush();
-                    System.out.println("öööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööööö");
-                    System.out.println("hejhallå" + loggedInEmail);
                     dos.writeUTF(loggedInEmail);
                     dos.flush();
+
                     ArrayList<LogWorkout> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
-                    System.out.println(temp);
                     strings = split(temp);
                     for(int i = 0; i < strings.length / 5; i++){
                         int logWorkoutId = Integer.parseInt(strings[i * 5]);
@@ -554,8 +535,6 @@ public class Controller {
                         arrayTemp.add(new LogWorkout(logWorkoutId, workoutId, creatorEmail, date, evaluation));
                     }
                     logWorkoutList = arrayTemp;
-                    System.out.println(arrayTemp);
-                    System.out.println(logWorkoutList);
                 } catch (Exception e){
                     e.printStackTrace();
                 }
