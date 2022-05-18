@@ -38,6 +38,7 @@ public class AchievementFrame {
         form.show();
     }
     public String[] testAchievments(){
+        String[] testAchievments = new String[]{"1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3"};
         return testAchievments;
     }
 
