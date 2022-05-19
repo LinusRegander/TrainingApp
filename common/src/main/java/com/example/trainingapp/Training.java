@@ -22,6 +22,5 @@ public class Training extends Lifecycle {
     @Override
     public void runApp() {
         controller = new Controller();
-        //CreateFrame createFrame = new CreateFrame(new Controller());
     }
 }

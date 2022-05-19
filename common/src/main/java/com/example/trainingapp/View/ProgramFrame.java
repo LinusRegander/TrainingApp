@@ -16,18 +16,17 @@ import static com.codename1.ui.FontImage.setMaterialIcon;
 import static com.codename1.ui.layouts.BorderLayout.*;
 
 /**
+ * The ProgramFrame class where you will be able to see workouts and programs.
  @author Linus Regander, Daniel Olsson
  */
 
-public class ProgramFrame {
+public class ProgramFrame{
     private Button achievement;
-    private Button addProgram;
     private Button create;
     private Button community;
     private Button home;
     private Button mine;
     private Button program;
-    private Button programs;
     private Button settings;
     private Button workout;
     private Container d;
@@ -48,24 +47,32 @@ public class ProgramFrame {
     private String username;
     private String email;
 
-    public ProgramFrame (Controller controller) {
+    /**
+     * Constructor
+     */
+    public ProgramFrame (Controller controller){
         this.controller = controller;
         programForm();
     }
 
-    public void programForm() {
+    /**
+     * Creates the main form
+     * Initalizes objects, arrays and builds the frame.
+     */
+    public void programForm(){
         workoutInfoList = controller.getWorkoutInfoList();
         form = new Form(null, new BorderLayout());
         form.setScrollableY(true);
-        form.setUIID("ProgramForm");
-        topbar();
-        searchBar();
+        topBar();
         mainContainer();
-        navbar();
+        navBar();
         form.show();
     }
 
-    public void topbar() {
+    /**
+     * Creates the topbar
+     */
+    public void topBar(){
         topbar = new Container(BoxLayout.xCenter());
         topbar.setUIID("Topbar");
 
@@ -83,12 +90,15 @@ public class ProgramFrame {
         form.add(NORTH, topbar);
     }
 
-    public void mainContainer() {
+    /**
+     * Creates the central page
+     */
+    public void mainContainer(){
         mainContainer = new Container(BoxLayout.y());
         mainContainer.setUIID("ProgramContainer1");
 
         Container a = new Container(BoxLayout.y());
-        a.setUIID("ProgramContainer2");
+        a.setUIID("Container2");
         mainContainer.add(a);
 
         Container b = new Container(BoxLayout.xCenter());
@@ -130,7 +140,10 @@ public class ProgramFrame {
         form.add(CENTER, mainContainer);
     }
 
-    public void openWorkoutInfo(String name, String username, String email, String description, String tag1, String tag2, String tag3) {
+    /**
+     * Creates a new form where you can input information and create a workout
+     */
+    public void openWorkoutInfo(String name, String username, String email, String description, String tag1, String tag2, String tag3){
         Form tempForm = new Form(BoxLayout.y());
         tempForm.setScrollableY(true);
 
@@ -184,7 +197,7 @@ public class ProgramFrame {
         tempForm.show();
     }
 
-    public void allWorkouts() {
+    public void allWorkouts(){
         for (int i = 0; i < workoutInfoList.size(); i++) {
             id = workoutInfoList.get(i).getId();
             name = workoutInfoList.get(i).getName();
@@ -201,7 +214,7 @@ public class ProgramFrame {
         }
     }
 
-    public void allPrograms() {
+    public void allPrograms(){
         for (int i = 0; i < programInfoList.size(); i++) {
             id = programInfoList.get(i).getId();
             name = programInfoList.get(i).getName();
@@ -218,7 +231,7 @@ public class ProgramFrame {
         }
     }
 
-    public void myWorkout() {
+    public void myWorkout(){
         d.removeAll();
 
         for (int i = 0; i < workoutInfoList.size(); i++) {
@@ -240,21 +253,10 @@ public class ProgramFrame {
         }
     }
 
-    public void searchBar() {
-        Toolbar.setGlobalToolbar(true);
-        form.getToolbar().addSearchCommand(e -> {
-            String text = (String) e.getSource();
-            if (text == null || text.length() == 0) {
-                for (Component cmp : form.getContentPane()) {
-                    cmp.setHidden(false);
-                    cmp.setVisible(true);
-                }
-                form.getContentPane().animateLayout(150);
-            }
-        });
-    }
-
-    public void navbar() {
+    /**
+     * Creates the navbar.
+     */
+    public void navBar(){
         navbar = new Container(BoxLayout.xCenter());
         navbar.setUIID("Navbar");
 
@@ -274,7 +276,7 @@ public class ProgramFrame {
         navbar.add(create);
 
         program = new Button ();
-        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
+        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_VIEW_LIST, program.getUnselectedStyle()));
         program.addActionListener(l -> controller.openProgramFrame());
         navbar.add(program);
 

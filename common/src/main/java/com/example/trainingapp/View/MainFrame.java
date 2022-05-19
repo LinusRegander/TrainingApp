@@ -26,6 +26,7 @@ import static com.codename1.ui.Image.createImage;
 import static com.codename1.ui.layouts.BorderLayout.*;
 
 /**
+ * MainFrame class for the main page you will be taken to after having logged in to the application.
  @author Linus Regander, Daniel Olsson, William Dock, Yun-Bo Chow
  */
 
@@ -42,31 +43,34 @@ public class MainFrame {
     private Container topbar;
     private Form mainForm;
     private Label sets;
-    private Label something;
     private Label statistics;
-    private Label totalWeight;
     private Label workouts;
-    private ArrayList<LogWorkout> logWorkoutList = new ArrayList<>();
-    private ArrayList<LogExerciseSet> logExerciseSets = new ArrayList<>();
-    public MainFrame(Controller controller) {
+
+    /**
+     * Constructor
+     */
+    public MainFrame(Controller controller){
         this.controller = controller;
         mainForm();
     }
 
-    public void mainForm() {
-        logWorkoutList = controller.getLogWorkoutList();
-        logExerciseSets = controller.getLogExerciseSetList();
+    /**
+     * Creates the main form.
+     * Initializes objects, lists and builds the frame.
+     */
+    public void mainForm(){
         mainForm = new Form(new BorderLayout());
-        mainForm.setUIID("MainForm");
-        topbar();
+        topBar();
         homeArea();
-        navbar();
+        navBar();
         mainForm.show();
         mainForm.revalidate();
     }
 
-    public void topbar() {
-
+    /**
+     * Creates the Topbar.
+     */
+    public void topBar() {
         topbar = new Container(BoxLayout.xCenter());
         topbar.setUIID("Topbar");
 
@@ -84,45 +88,32 @@ public class MainFrame {
         mainForm.add(NORTH, topbar);
     }
 
+    /**
+     * Creates the central page.
+     */
     public void homeArea() {
         mainContainer = new Container(BoxLayout.y());
         mainForm.add(CENTER, mainContainer);
 
         Container statisticsContainer = new Container(BoxLayout.y());
-        statisticsContainer.setUIID("StatisticsContainer");
         mainContainer.add(statisticsContainer);
 
         Container a = new Container(BoxLayout.y());
-        a.setUIID("mainSC");
+        a.setUIID("mainC");
         statisticsContainer.add(a);
 
         statistics = new Label("Statistics from last 7 days:");
         a.add(statistics);
 
         Container b = new Container(BoxLayout.xCenter());
-        b.setUIID("mainWS");
-        statisticsContainer.add(b);
+        b.setUIID("mainC");
+        a.add(b);
 
-        workouts = new Label("Workouts");
+        workouts = new Label("Workouts: " + controller.workoutCount());
         b.add(workouts);
 
-        Label workoutCount = new Label("0");
-        workoutCount.setText(String.valueOf(logWorkoutList.size()));
-        b.add(workoutCount);
-
-        sets = new Label("Sets");
+        sets = new Label("Sets: " + 0);
         b.add(sets);
-
-        Label setCount = new Label("0");
-        setCount.setText(String.valueOf(logExerciseSets.size()));
-        b.add(setCount);
-
-        Container c = new Container(BoxLayout.xCenter());
-        c.setUIID("mainTS");
-        statisticsContainer.add(c);
-
-        totalWeight = new Label("Total Weight");
-        c.add(totalWeight);
 
         trainingLog = new Button("Training Log >");
         trainingLog.setUIID("TrainingLog");
@@ -130,7 +121,10 @@ public class MainFrame {
         mainContainer.add(trainingLog);
     }
 
-    public void navbar() {
+    /**
+     * Creates the navbar
+     */
+    public void navBar() {
         container = new Container(BoxLayout.xCenter());
         container.setUIID("Navbar");
 
@@ -150,7 +144,7 @@ public class MainFrame {
         container.add(create);
 
         program = new Button ();
-        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
+        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_VIEW_LIST, program.getUnselectedStyle()));
         program.addActionListener(l -> controller.openProgramFrame());
         container.add(program);
 

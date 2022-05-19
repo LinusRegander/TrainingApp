@@ -4,70 +4,37 @@
     defaultSourceDPIInt: "0";
 }
 
-LoginForm {
+Form{
     background-color: white;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
-LogForm {
-    background-color: white;
+Navbar {
+    background-color: #7092be;
+    font-size: 6mm;
 }
 
-RegisterForm {
-    background-color: white;
+Container {
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: medium;
+}
+
+Container2 {
+    background-color: #7092be;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: medium;
+}
+
+mainC {
+    background-color: #7092be;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: medium;
+    text-align: center;
 }
 
 Statistics {
     font-size: medium;
-}
-
-AchievementContainer {
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-StatisticsContainer {
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-ProfileContainer {
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-SettingsContainer {
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-ProgramContainer2 {
-    background-color: #7092be;
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-Settings1 {
-    background-color: #7092be;
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
 }
 
 SettingsProfile {
@@ -83,118 +50,6 @@ SettingsDark {
 SettingsLight {
     border-style: solid;
     border-color: black;
-}
-
-mainSC {
-    background-color: #7092be;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-mainTS {
-    border-radius: 25px;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-mainWS {
-    border-radius: 25px;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-a {
-    border-radius: 25px;
-    background-color: #7092be;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-b {
-    border-radius: 25px;
-    background-color: #7092be;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-c {
-    border-radius: 25px;
-    background-color: #7092be;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-d {
-    border-radius: 25px;
-    background-color: #7092be;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-e {
-    border-radius: 25px;
-    background-color: #7092be;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-f {
-    border-radius: 25px;
-    background-color: #7092be;
-    border-style: solid;
-    border-color: black;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-Navbar {
-    background-color: #7092be;
-}
-
-ProgramForm {
-    background-color: white;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-ProfileForm {
-    background-color: white;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-AchievementForm {
-    background-color: white;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-CreateForm {
-    background-color: white;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-MainForm {
-    background-color: white;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
-}
-
-SettingsForm {
-    background-color: white;
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: small;
 }
 
 Label {

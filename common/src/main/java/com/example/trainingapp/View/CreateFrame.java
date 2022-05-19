@@ -8,7 +8,6 @@ import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.DataChangedListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.layouts.GridBagLayout;
 import com.codename1.ui.table.TableLayout;
 import com.example.trainingapp.Controller.Controller;
 
@@ -16,58 +15,47 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
+ * The CreateFrame class for the Create page where you create workouts.
  @author Linus Regander, Daniel Olsson, Yun-Bo Chow, William Dock
  */
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
-public class CreateFrame {
+public class CreateFrame{
     private Button achievement;
-    private Button addExercise;
-    private Button addSet;
     private Button create;
     private Button home;
     private Button program;
     private Button settings;
-    private Container a;
     private Container navbar;
-    private Container temp;
     private Container topbar;
     private Container workoutContainer;
     private Container exercisesContainer;
     private Controller controller;
     private Form form;
-    private int exerciseID = 0;
-    private Label averageWeight;
-    private Label repAmount;
-    private Label setAmount;
-    private Label totalWeight;
-    private Label weightAmount;
-    private String textFromArea;
-    private TextArea textArea;
-    private TextArea textArea2;
-    private TextArea textAreaWeight;
-    private TextField workout;
     private ArrayList<ExerciseInfo> exerciseInfo = new ArrayList<>();
-    private ArrayList<Container> containers = new ArrayList<>();
     private ArrayList<Exercise> exercises = new ArrayList<>();
-    private GridBagLayout gridBagLayout = new GridBagLayout();
 
-    public CreateFrame(Controller controller) {
+    /**
+     * Constructor
+     */
+    public CreateFrame(Controller controller){
         this.controller = controller;
         createForm();
     }
 
-    public void createForm() {
+    /**
+     * Creates the form
+     * Initializes objects and builds the page
+     */
+    public void createForm(){
         form = new Form(null, new BorderLayout());
-        form.setUIID("CreateForm");
-        topbar();
+        topBar();
         workoutContainerReworked();
-        navbar();
-
+        navBar();
     }
 
-    public void topbar() {
+    public void topBar(){
         topbar = new Container(BoxLayout.y());
         topbar.setUIID("Topbar");
 
@@ -201,9 +189,10 @@ public class CreateFrame {
         setsContainer.add(setContainer);
         workoutContainer.revalidate();
     }
+
     public void addExercise(String name, int id){
         Container exerciseContainer = new Container(BoxLayout.y());
-        exerciseContainer.setUIID("a");
+        exerciseContainer.setUIID("Container2");
 
         Exercise exercise = new Exercise(name, id);
         exercises.add(exercise);
@@ -249,7 +238,10 @@ public class CreateFrame {
         exercisesContainer.revalidate();
     }
 
-    public void navbar() {
+    /**
+     * Creates the navbar
+     */
+    public void navBar(){
         navbar = new Container(BoxLayout.xCenter());
         navbar.setUIID("Navbar");
 
@@ -269,7 +261,7 @@ public class CreateFrame {
         navbar.add(create);
 
         program = new Button();
-        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
+        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_VIEW_LIST, program.getUnselectedStyle()));
         program.addActionListener(l -> controller.openProgramFrame());
         navbar.add(program);
 
@@ -281,7 +273,10 @@ public class CreateFrame {
         form.add(SOUTH, navbar);
     }
 
-    public void getWorkoutInfo() {
+    /**
+     * Gets information about a workout
+     */
+    public void getWorkoutInfo(){
         Form tempForm = new Form(null, new BorderLayout());
 
         topbar = new Container(BoxLayout.y());
@@ -348,11 +343,17 @@ public class CreateFrame {
         tempForm.show();
     }
 
+    /**
+     * Gets the form
+     */
     public Form getForm(){
         return form;
     }
 
-    public ArrayList<String> getExerciseNames() {
+    /**
+     * Gets names of each exercise
+     */
+    public ArrayList<String> getExerciseNames(){
         ArrayList<String> names = new ArrayList<>();
         for (Exercise exercise : exercises) {
             names.add(exercise.getName());
@@ -360,7 +361,11 @@ public class CreateFrame {
         return names;
     }
 
-    public String setDate() {
+    /**
+     * Sets date to current date
+     */
+    //TODO: Remove or replace
+    public String setDate(){
         Date date = new Date();
 
         try {

@@ -9,10 +9,11 @@ import com.example.trainingapp.Controller.Controller;
 import static com.codename1.ui.layouts.BorderLayout.*;
 
 /**
+ * The SettingsFrame class for the Settings page.
  @author Linus Regander
  */
 
-public class SettingsFrame {
+public class SettingsFrame{
     private Button home;
     private Button achievement;
     private Button create;
@@ -27,21 +28,30 @@ public class SettingsFrame {
     private Controller controller;
     private Form form;
 
-    public SettingsFrame(Controller controller) {
+    /**
+     * Constructor
+     */
+    public SettingsFrame(Controller controller){
         this.controller = controller;
         settingsForm();
     }
 
-    public void settingsForm() {
+    /**
+     * Creates the form
+     * Initializes objects and builds the page
+     */
+    public void settingsForm(){
         form = new Form(null, new BorderLayout());
-        form.setUIID("SettingsForm");
-        topbar();
+        topBar();
         settingsFrame();
-        navbar();
+        navBar();
         form.show();
     }
 
-    public void topbar() {
+    /**
+     * Creates the topbar
+     */
+    public void topBar(){
         topbar = new Container(BoxLayout.xCenter());
         topbar.setUIID("Topbar");
 
@@ -59,12 +69,14 @@ public class SettingsFrame {
         form.add(NORTH, topbar);
     }
 
-    public void settingsFrame() {
+    /**
+     * Creates the central page
+     */
+    public void settingsFrame(){
         settingsContainer = new Container(BoxLayout.y());
-        settingsContainer.setUIID("SettingsContainer");
 
         Container a = new Container(BoxLayout.y());
-        a.setUIID("Settings1");
+        a.setUIID("Container2");
         settingsContainer.add(a);
 
         profile = new Button("Profile");
@@ -83,7 +95,10 @@ public class SettingsFrame {
         form.add(CENTER, settingsContainer);
     }
 
-    public void navbar() {
+    /**
+     * Creates the navbar
+     */
+    public void navBar(){
         container = new Container(BoxLayout.xCenter());
         container.setUIID("Navbar");
 
@@ -103,7 +118,7 @@ public class SettingsFrame {
         container.add(create);
 
         program = new Button();
-        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
+        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_VIEW_LIST, program.getUnselectedStyle()));
         program.addActionListener(l -> controller.openProgramFrame());
         container.add(program);
 
@@ -115,7 +130,10 @@ public class SettingsFrame {
         form.add(SOUTH, container);
     }
 
-    public Form getForm() {
+    /**
+     * Gets the form
+     */
+    public Form getForm(){
         return form;
     }
 }

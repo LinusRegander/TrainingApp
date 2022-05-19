@@ -1,21 +1,18 @@
 package com.example.trainingapp.Controller;
 
 import HelperClasses.*;
-import com.codename1.db.Database;
 import com.codename1.io.BufferedOutputStream;
 import com.codename1.io.BufferedInputStream;
 import com.codename1.l10n.ParseException;
 import com.codename1.l10n.SimpleDateFormat;
-import com.codename1.ui.Container;
 import com.codename1.ui.Form;
 import com.example.trainingapp.View.*;
-import dbcon.Services;
 import com.codename1.io.Socket;
 import com.codename1.io.SocketConnection;
 
 import java.io.*;
-import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 /**
@@ -45,18 +42,17 @@ public class Controller {
     private String username;
 
     public Controller() {
-        Setup();
+        setup();
     }
 
     //Setup constructor.
-    public void Setup() {
-        mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
+    public void setup() {
+        //mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
         loginFrame = new LoginFrame(this);
     }
 
     public void connect(SocketConnection socketConnection){
         Socket.connect("127.0.0.1", 541, socketConnection);
-
     }
 
     //The code below creates all of the GUI frames part of the application:
@@ -122,10 +118,6 @@ public class Controller {
     }
     public void newCreateFrame(){
         createFrame = new CreateFrame(this);
-    }
-
-    public Form getLoginForm() {
-        return loginFrame.getLoginForm();
     }
 
     public Form getMainForm() {
@@ -203,10 +195,10 @@ public class Controller {
                         String[] loggedIn = split(response);
                         loggedInEmail = loggedIn[0];
                         username = loggedIn[1];
-                        openMainFrame();
                         updateWorkoutList();
                         updateLogWorkoutList();
                         updateExerciseList();
+                        openMainFrame();
                     } else {
                         loginFrame.failedLogin();
                     }
@@ -349,13 +341,6 @@ public class Controller {
         };
     }
 
-    public void logout(){
-        loggedInEmail = "";
-        logExerciseSetList = new ArrayList<>();
-        logWorkoutList = new ArrayList<>();
-        logProgramList = new ArrayList<>();
-    }
-
     //todo: refresh knapp på gui som updaterar specifika listor.
     public void updateExerciseList(){
         SocketConnection sc = new SocketConnection() {
@@ -371,11 +356,12 @@ public class Controller {
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
                     dos.writeInt(7);
                     dos.flush();
+
                     ArrayList<ExerciseInfo> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
                     strings = split(temp);
-                    for(int i = 0; i < strings.length / 5; i++){
+                    for(int i = 0; i < strings.length / 5; i++) {
                         int id = Integer.parseInt(strings[i * 5]);
                         String name = strings[i * 5 + 1];
                         String description = strings[i * 5 + 2];
@@ -385,7 +371,7 @@ public class Controller {
                         arrayTemp.add(new ExerciseInfo(id, name, description, primary, secondary));
                     }
                     exerciseList = arrayTemp;
-                } catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -407,10 +393,9 @@ public class Controller {
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
                     dos.writeInt(8);
                     dos.flush();
+
                     ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
-                    String[] strings;
-                    String temp = dis.readUTF();
-                    strings = split(temp);
+                    String[] strings = split(dis.readUTF());
                     for(int i = 0; i < strings.length / 8; i++){
                         int id = Integer.parseInt(strings[i * 8]);
                         String name = strings[i * 8 + 1];
@@ -532,7 +517,7 @@ public class Controller {
                         int logWorkoutId = Integer.parseInt(strings[i * 5]);
                         int workoutId = Integer.parseInt(strings[i * 5 + 1]);
                         String creatorEmail = strings[i * 5 + 2];
-                        java.util.Date date = new SimpleDateFormat("yyyy-mm-dd").parse(strings[i * 5 + 3]);
+                        Date date = new SimpleDateFormat("yyyy-mm-dd").parse(strings[i * 5 + 3]);
                         String evaluation = strings[i * 5 + 4];
 
                         arrayTemp.add(new LogWorkout(logWorkoutId, workoutId, creatorEmail, date, evaluation));
@@ -567,7 +552,7 @@ public class Controller {
                         int logProgramId = Integer.parseInt(strings[i * 5]);
                         String email = strings[i * 5 + 1];
                         int programId = Integer.parseInt(strings[i * 5 + 2]);
-                        Date date = (Date) new SimpleDateFormat("dd/MM/yyyy").parse(strings[i * 5 + 3]);
+                        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(strings[i * 5 + 3]);
                         String evaluation = strings[i * 5 + 4];
 
                         arrayTemp.add(new LogProgram(logProgramId, email, programId, date, evaluation));
@@ -655,6 +640,22 @@ public class Controller {
             }
         };
         connect(sc);
+    }
+
+    public int workoutCount() {
+        updateWorkoutList();
+        int count = 0;
+
+        for (int i = 0; i < workoutList.size(); i++) {
+            if (workoutList.get(i).getCreatorEmail().equals(loggedInEmail)) {
+                count++;
+                System.out.println(workoutList.size());
+                System.out.println(workoutList.get(i));
+                System.out.println(count);
+            }
+        }
+
+        return count;
     }
 
     public String getLoggedInEmail() {

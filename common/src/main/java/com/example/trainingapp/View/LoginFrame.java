@@ -17,10 +17,11 @@ import jdk.tools.jmod.Main;
 import java.awt.*;
 
 /**
+ * The LoginFrame class for the Login page.
  @author Linus Regander, William Dock
  */
 
-public class LoginFrame {
+public class LoginFrame{
     private Button lButton;
     private Button rButton;
     private Container buttonContainer;
@@ -30,26 +31,33 @@ public class LoginFrame {
     private Label testLabel;
     private Label uLabel;
     private Label incorrectLabel;
-    private TextField eTextField;
     private TextField pTextField;
     private TextField uTextField;
     private Form loginForm;
-
     Style iL;
 
-    public LoginFrame(Controller controller) {
+    /**
+     * Constructor
+     */
+    public LoginFrame(Controller controller){
         this.controller = controller;
         loginFrame();
     }
 
-    public void loginFrame() {
-        loginForm = new Form(null, BoxLayout.y());
-        loginForm.setUIID("LoginForm");
+    /**
+     * Creates the form
+     * Initializes objects and builds the page
+     */
+    public void loginFrame(){
+        loginForm = new Form(null, BoxLayout.y());;
         userForm();
         loginForm.show();
     }
 
-    public void userForm() {
+    /**
+     * Creates the central page
+     */
+    public void userForm(){
         loginContainer = new Container(BoxLayout.y());
         loginForm.add(loginContainer);
 
@@ -89,14 +97,10 @@ public class LoginFrame {
         buttonContainer.add(rButton);
     }
 
-    public String getFieldContent() {
-        return uTextField.getText();
-    }
-
-    public Form getLoginForm() {
-        return loginForm;
-    }
-
+    /**
+     * For failed login
+     */
+    //TODO: Fixa till / Linus 2022-05-18
     public void failedLogin(){
         System.out.println("hallå");
         iL.setFgColor(16711680);

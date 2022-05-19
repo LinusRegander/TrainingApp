@@ -14,10 +14,11 @@ import static com.codename1.ui.layouts.BorderLayout.CENTER;
 import static com.codename1.ui.layouts.BorderLayout.NORTH;
 
 /**
+ * The RegisterFrame class for the Registration page.
  @author Linus Regander, Daniel Olsson, William Dock, Yun-Bo Chow
  */
 
-public class RegisterFrame implements ActionListener {
+public class RegisterFrame implements ActionListener{
     private Button rButton;
     private Container registerContainer;
     private Container topbar;
@@ -31,20 +32,29 @@ public class RegisterFrame implements ActionListener {
     private TextField uTextField;
     private SpanLabel error;
 
-    public RegisterFrame(Controller controller) {
+    /**
+     * Constructor
+     */
+    public RegisterFrame(Controller controller){
         this.controller = controller;
         registerFrame();
     }
 
-    public void registerFrame() {
+    /**
+     * Creates the form
+     * Initializes objects and builds the frame
+     */
+    public void registerFrame(){
         registerForm = new Form(null, new BorderLayout());
-        registerForm.setUIID("RegisterForm");
-        topbar();
+        topBar();
         registerForm();
         registerForm.show();
     }
 
-    public void topbar() {
+    /**
+     * Creates the topbar
+     */
+    public void topBar(){
         topbar = new Container(BoxLayout.xCenter());
         topbar.setUIID("Topbar");
 
@@ -62,7 +72,10 @@ public class RegisterFrame implements ActionListener {
         registerForm.add(NORTH, topbar);
     }
 
-    public void registerForm() {
+    /**
+     * The central page
+     */
+    public void registerForm(){
         registerContainer = new Container(BoxLayout.y());
         registerForm.add(CENTER, registerContainer);
 
@@ -90,28 +103,25 @@ public class RegisterFrame implements ActionListener {
         registerContainer.add(error);
     }
 
-    public String getUserName() {
-        return uTextField.getText();
-    }
-
-    public String getPassword() {
-        return pTextField.getText();
-    }
-
-    public String getEmail() {
-        return eTextField.getText();
-    }
-
+    /**
+     * Creates error message
+     */
     public SpanLabel getError(){
         return error;
     }
 
+    /**
+     * Creates a success message for a successful account registration
+     */
     public void showSuccess(){
         Dialog.show("Success", "Account was registered successfully", "OK", "");
     }
 
+    /**
+     * Button functionality
+     */
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e){
         if (e.getSource() == rButton) {
             controller.register(uTextField.getText(), eTextField.getText(), pTextField.getText());
             registerForm.revalidate();

@@ -59,11 +59,9 @@ public class Server extends Thread {
                 dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                 dos.flush();
                 dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             start();
         }
 
@@ -293,8 +291,8 @@ public class Server extends Thread {
         //  for loop så att på sista index inte inkludera "\0".
         private void getExerciseList() throws Exception{
             ArrayList<ExerciseInfo> exerciseInfoList = services.selectExercises();
-
             StringBuilder temp = new StringBuilder();
+
             for(ExerciseInfo exercise : exerciseInfoList){
                 temp.append(exercise.getId() + "\0" + exercise.getName() + "\0" + exercise.getDescription() + "\0"
                         + exercise.getPrimary() + "\0" + exercise.getSecondary() + "\0");

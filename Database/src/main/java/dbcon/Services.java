@@ -556,12 +556,13 @@ public class Services {
 
     }
 
+    //todo: Fixa date
     //SKA MAN ENDAST KUNNA ÄNDRA DATE OCH EVALUATION? ISÅFALL HADE VI KUNNAT TA BORT GETTERS OCH SETTERS I KLASSERNA
     public String updateLogWorkout(String loggedInMail, LogWorkout logWorkout) throws SQLException{
         if(logWorkout.getCreator().equals(loggedInMail)){
             Connection con = this.getDatabaseConnection();
             PreparedStatement pstmt = con.prepareStatement("update training.logworkout set date = ?, evaluation = ? where logworkoutid = ?");
-            pstmt.setDate(1, (Date) logWorkout.getDate());
+            //pstmt.setDate(1, logWorkout.getDate());
             pstmt.setString(2, logWorkout.getEvaluation());
             pstmt.setInt(3, logWorkout.getLogWorkoutId());
             pstmt.executeUpdate();
@@ -578,7 +579,7 @@ public class Services {
         if(logProgram.getEmail().equals(loggedInMail)){
             Connection con = this.getDatabaseConnection();
             PreparedStatement pstmt = con.prepareStatement("update training.logprogram set date = ?, evaluation = ? where logprogramid = ?");
-            pstmt.setDate(1, logProgram.getDate());
+            pstmt.setDate(1, (Date) logProgram.getDate());
             pstmt.setString(2, logProgram.getEvaluation());
             pstmt.setInt(3, logProgram.getLogProgramId());
             pstmt.executeUpdate();

@@ -12,10 +12,11 @@ import java.util.Date;
 import static com.codename1.ui.layouts.BorderLayout.*;
 
 /**
+ * The WorkoutLogFrame class for the log workout page.
  @author Linus Regander, Daniel Olsson
  */
 
-public class WorkoutLogFrame {
+public class WorkoutLogFrame{
     private Controller controller;
     private Form logForm;
     private Button homeButton;
@@ -29,22 +30,31 @@ public class WorkoutLogFrame {
     private ArrayList<LogWorkout> logWorkouts = new ArrayList<>();
     private ArrayList<WorkoutInfo> workouts = new ArrayList<>();
 
+    /**
+     * Constructor
+     */
     public WorkoutLogFrame(Controller controller){
         this.controller = controller;
         startLogForm();
     }
 
+    /**
+     * Creates the form
+     * Initializes objects, arrays and builds the page
+     */
     public void startLogForm(){
         logWorkouts = controller.getLogWorkoutList();
         workouts = controller.getWorkoutInfoList();
         logForm = new Form(new BorderLayout());
-        logForm.setUIID("LogForm");
         topBar();
         workoutLog();
         navBar();
         logForm.show();
     }
 
+    /**
+     * Creates the topbar
+     */
     public void topBar(){
         topBar = new Container(BoxLayout.xCenter());
         topBar.setUIID("TopBar");
@@ -59,6 +69,10 @@ public class WorkoutLogFrame {
 
         logForm.add(NORTH, topBar);
     }
+
+    /**
+     * Creates the central page
+     */
     public void workoutLog(){
         logContainer = new Container(BoxLayout.y());
         logContainer.setScrollableY(true);
@@ -83,7 +97,11 @@ public class WorkoutLogFrame {
         logForm.add(CENTER, logContainer);
         logForm.forceRevalidate();
     }
-    public void navBar() {
+
+    /**
+     * Creates the navbar
+     */
+    public void navBar(){
         navBar = new Container(BoxLayout.xCenter());
         navBar.setUIID("Navbar");
 
@@ -103,7 +121,7 @@ public class WorkoutLogFrame {
         navBar.add(workoutButton);
 
         programsButton = new Button ();
-        programsButton.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, programsButton.getUnselectedStyle()));
+        programsButton.setIcon(FontImage.createMaterial(FontImage.MATERIAL_VIEW_LIST, programsButton.getUnselectedStyle()));
         programsButton.addActionListener(l -> controller.openProgramFrame());
         navBar.add(programsButton);
 

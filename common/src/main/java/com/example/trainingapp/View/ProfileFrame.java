@@ -1,13 +1,19 @@
 package com.example.trainingapp.View;
 
+import com.codename1.components.ImageViewer;
+import com.codename1.io.Storage;
 import com.codename1.ui.*;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.Controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import static com.codename1.ui.layouts.BorderLayout.*;
 
 /**
+ * The ProfileFrame class for the page where you will be able to see your profile.
  @author Linus Regander
  */
 
@@ -36,21 +42,30 @@ public class ProfileFrame {
     private Label finished;
     private Label programs;
 
+    /**
+     * Constructor
+     */
     public ProfileFrame(Controller controller) {
         this.controller = controller;
         profileForm();
     }
 
+    /**
+     * Creates the form
+     * Initializes objects and builds the frame.
+     */
     public void profileForm() {
         profileForm = new Form(new BorderLayout());
-        profileForm.setUIID("ProfileForm");
-        topbar();
+        topBar();
         profileFrame();
-        navbar();
+        navBar();
         profileForm.show();
     }
 
-    public void topbar() {
+    /**
+     * Creates the topbar
+     */
+    public void topBar() {
         topbar = new Container(BoxLayout.y());
         topbar.setUIID("Topbar");
 
@@ -59,16 +74,17 @@ public class ProfileFrame {
 
         Label title = new Label("FitHub");
         top.add(title);
-
         profileForm.add(NORTH, topbar);
     }
 
+    /**
+     * Creates the central page.
+     */
     public void profileFrame() {
         profileContainer = new Container(BoxLayout.y());
-        profileContainer.setUIID("ProfileContainer");
 
         Container a = new Container(BoxLayout.xCenter());
-        a.setUIID("a");
+        a.setUIID("Container2");
         profileContainer.add(a);
 
         icon = new Label();
@@ -91,7 +107,7 @@ public class ProfileFrame {
         b.add(statistics);
 
         workout = new Label();
-        workout.setText("Created Workouts: " + workoutCount);
+        workout.setText("Created Workouts: " + controller.workoutCount());
         b.add(workout);
 
         set = new Label();
@@ -113,7 +129,10 @@ public class ProfileFrame {
         profileForm.add(CENTER, profileContainer);
     }
 
-    public void navbar() {
+    /**
+     * Creates the navbar
+     */
+    public void navBar() {
         container = new Container(BoxLayout.xCenter());
         container.setUIID("Navbar");
 
@@ -133,7 +152,7 @@ public class ProfileFrame {
         container.add(create);
 
         program = new Button();
-        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, program.getUnselectedStyle()));
+        program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_VIEW_LIST, program.getUnselectedStyle()));
         program.addActionListener(l -> controller.openProgramFrame());
         container.add(program);
 
