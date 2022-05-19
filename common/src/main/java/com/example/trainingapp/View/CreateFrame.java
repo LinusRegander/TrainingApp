@@ -334,10 +334,11 @@ public class CreateFrame{
 
         Button finished = new Button("Finished");
 
-        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
-        finished.addActionListener(l -> controller.addLogWorkout(controller.getLoggedInEmail(), controller.getWorkoutInfoList().get(controller.getWorkoutInfoList().size()).getId(), setDate(), null));
-        finished.addActionListener(l -> controller.openMainFrame());
-        finished.addActionListener(l -> controller.newCreateFrame());
+        finished.addActionListener(l -> {
+            controller.addLogWorkout(controller.getLoggedInEmail(), controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo), getDate(), null);
+            controller.openMainFrame();
+            controller.newCreateFrame();
+        });
         tempA.add(finished);
         tempForm.add(CENTER, tempA);
         tempForm.show();
@@ -365,15 +366,9 @@ public class CreateFrame{
      * Sets date to current date
      */
     //TODO: Remove or replace
-    public String setDate(){
+    public String getDate(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
-
-        try {
-            date = new SimpleDateFormat("yyyy-mm-dd").parse("2022-05-11");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return "2022-05-12";
+        return formatter.format(date);
     }
 }
