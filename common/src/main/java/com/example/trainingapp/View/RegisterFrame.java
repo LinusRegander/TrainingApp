@@ -65,6 +65,7 @@ public class RegisterFrame implements ActionListener{
         top.add(title);
 
         Button back = new Button();
+        back.setUIID("Button2");
         back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
         back.addActionListener(l -> controller.openLoginFrame());
         top.add(back);
@@ -95,7 +96,6 @@ public class RegisterFrame implements ActionListener{
         registerContainer .add(eTextField);
 
         rButton = new Button("Register");
-        rButton.setUIID("RegisterB");
         rButton.addActionListener(this);
         registerContainer .add(rButton);
 

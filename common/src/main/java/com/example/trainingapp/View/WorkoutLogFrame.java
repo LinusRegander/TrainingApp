@@ -63,6 +63,7 @@ public class WorkoutLogFrame{
         topBar.add(title);
 
         Button icon = new Button();
+        icon.setUIID("Button2");
         icon.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ACCOUNT_CIRCLE, icon.getUnselectedStyle()));
         icon.addActionListener(l -> controller.openProfileFrame());
         topBar.add(icon);

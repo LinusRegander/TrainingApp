@@ -33,99 +33,42 @@ mainC {
     text-align: center;
 }
 
-Statistics {
-    font-size: medium;
-}
-
-SettingsProfile {
-    border-style: solid;
-    border-color: black;
-}
-
-SettingsDark {
-    border-style: solid;
-    border-color: black;
-}
-
-SettingsLight {
-    border-style: solid;
-    border-color: black;
-}
-
 Label {
     color: black;
     font-family: 'Trebuchet MS', sans-serif;
     font-size: small;
 }
 
-AchievementButton {
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
+ErrorLabel {
+    color: red;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: small;
 }
 
 CAchievementButton {
     background-color: #7092be;
-    border-radius: 25px;
     border-style: solid;
-    border-color: black;
+    border-radius: 25px;
 }
 
-FinishedButton {
-    background-color: #7092be;
-    border-radius: 25px;
+AchievementButton {
+    color: black
     border-style: solid;
-    border-color: black;
-    text-align: center;
+    border-radius: 25px;
 }
 
-AddButton {
-    background-color: #7092be;
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-    text-align: center;
-}
-
-LoginButton {
-    background-color: #7092be;
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-}
-
-RegisterButton {
-    background-color: #7092be;
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-}
-
-AddProgram {
-    background-color: #7092be;
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-}
-
-RegisterB {
-    background-color: #7092be;
-    border-radius: 25px;
-    border-style: solid;
-    border-color: black;
-}
-
-/** Style for Button class */
 Button {
-    font-family: "native:MainLight";
-    font-size: 3mm;
-    color: black;
+    background-color: #7092be;
+    color: black
+    border-style: solid;
+    border-radius: 25px;
+    font-size: 6mm;
 }
 
-TrainingLog {
-    border-radius: 25px;
-    background-color: #7092be;
-    text-align: center;
+Button2 {
+   color: black
+   border-style: solid;
+   border-radius: 25px;
 }
 
 /** Style for App Title Bar Text */

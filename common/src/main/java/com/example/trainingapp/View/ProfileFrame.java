@@ -102,8 +102,7 @@ public class ProfileFrame {
         email.setText("Email: " + controller.getLoggedInEmail());
         b.add(email);
 
-        Label statistics = new Label("Statistics: ");
-        statistics.setUIID("Statistics");
+        Label statistics = new Label("Completed Achievements: " + 0);
         b.add(statistics);
 
         workout = new Label();

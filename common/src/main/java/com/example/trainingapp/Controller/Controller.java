@@ -649,9 +649,6 @@ public class Controller {
         for (int i = 0; i < workoutList.size(); i++) {
             if (workoutList.get(i).getCreatorEmail().equals(loggedInEmail)) {
                 count++;
-                System.out.println(workoutList.size());
-                System.out.println(workoutList.get(i));
-                System.out.println(count);
             }
         }
 

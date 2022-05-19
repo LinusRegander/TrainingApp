@@ -64,7 +64,6 @@ public class MainFrame {
         homeArea();
         navBar();
         mainForm.show();
-        mainForm.revalidate();
     }
 
     /**
@@ -81,6 +80,7 @@ public class MainFrame {
         top.add(title);
 
         Button icon = new Button();
+        icon.setUIID("Button2");
         icon.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ACCOUNT_CIRCLE, icon.getUnselectedStyle()));
         icon.addActionListener(l -> controller.openProfileFrame());
         topbar.add(icon);
@@ -98,27 +98,27 @@ public class MainFrame {
         Container statisticsContainer = new Container(BoxLayout.y());
         mainContainer.add(statisticsContainer);
 
-        Container a = new Container(BoxLayout.y());
+        Container a = new Container(BoxLayout.xCenter());
         a.setUIID("mainC");
         statisticsContainer.add(a);
+
+        Container b = new Container(BoxLayout.xCenter());
+        b.setUIID("mainC");
+        statisticsContainer.add(b);
 
         statistics = new Label("Statistics from last 7 days:");
         a.add(statistics);
 
-        Container b = new Container(BoxLayout.xCenter());
-        b.setUIID("mainC");
-        a.add(b);
-
-        workouts = new Label("Workouts: " + controller.workoutCount());
+        workouts = new Label();
+        workouts.setText("Workouts: " + controller.workoutCount());
         b.add(workouts);
 
         sets = new Label("Sets: " + 0);
         b.add(sets);
 
         trainingLog = new Button("Training Log >");
-        trainingLog.setUIID("TrainingLog");
         trainingLog.addActionListener(l -> controller.openWorkoutLogFrame());
-        mainContainer.add(trainingLog);
+        statisticsContainer.add(trainingLog);
     }
 
     /**

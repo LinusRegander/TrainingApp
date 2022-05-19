@@ -79,20 +79,18 @@ public class LoginFrame{
         loginContainer.add(pTextField);
 
         incorrectLabel = new Label("The username or password isn't correct!");
+        incorrectLabel.setUIID("ErrorLabel");
         iL = incorrectLabel.getStyle();
-        iL.setFgColor(16777215);
         loginContainer.add(incorrectLabel);
 
         buttonContainer = new Container(BoxLayout.xCenter());
         loginForm.add(buttonContainer);
 
         lButton = new Button("Login");
-        lButton.setUIID("LoginButton");
         lButton.addActionListener(l -> controller.login(uTextField.getText(), pTextField.getText()));
         buttonContainer.add(lButton);
 
         rButton = new Button("Register");
-        rButton.setUIID("RegisterButton");
         rButton.addActionListener(l -> controller.openRegFrame());
         buttonContainer.add(rButton);
     }

@@ -63,6 +63,7 @@ public class CreateFrame{
         topbar.add(top);
 
         Button back = new Button();
+        back.setUIID("Button2");
         back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
         back.addActionListener((e) -> {
             Form mainForm = controller.getMainForm();
@@ -82,6 +83,7 @@ public class CreateFrame{
         top.add(title);
 
         Button accept = new Button();
+        accept.setUIID("Button2");
         accept.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DONE, accept.getUnselectedStyle()));
         accept.addActionListener(l -> getWorkoutInfo());
         top.add(accept);
@@ -149,7 +151,6 @@ public class CreateFrame{
 
         Container addExerciseContainer = new Container(BoxLayout.xCenter());
         Button addExerciseButton = new Button("+ Add exercise");
-        addExerciseButton.setUIID("CAchievementButton");
         addExerciseButton.addActionListener(l -> controller.openExerciseSelectFrame(this));
         addExerciseContainer.add(addExerciseButton);
 
@@ -286,6 +287,7 @@ public class CreateFrame{
         topbar.add(top);
 
         Button back = new Button();
+        back.setUIID("Button2");
         back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
         back.addActionListener((e) -> {
             form.setToolbar(new Toolbar());
@@ -331,8 +333,6 @@ public class CreateFrame{
         tempA.add(tag3);
 
         Button finished = new Button("Finished");
-        finished.setUIID("FinishedButton");
-
 
         finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
         finished.addActionListener(l -> controller.addLogWorkout(controller.getLoggedInEmail(), controller.getWorkoutInfoList().get(controller.getWorkoutInfoList().size()).getId(), setDate(), null));

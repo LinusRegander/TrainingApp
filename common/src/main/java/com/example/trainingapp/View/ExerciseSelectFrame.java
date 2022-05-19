@@ -54,6 +54,7 @@ public class ExerciseSelectFrame {
         topBar = new Container(BoxLayout.xCenter());
         topBar.setUIID("TopBar");
         Button back = new Button();
+        back.setUIID("Button2");
         back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
         back.addActionListener((e) -> {
             Form createForm = createFrame.getForm();
@@ -72,6 +73,7 @@ public class ExerciseSelectFrame {
         topBar.add(title);
 
         Button icon = new Button();
+        icon.setUIID("Button2");
         icon.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ACCOUNT_CIRCLE, icon.getUnselectedStyle()));
         icon.addActionListener(l -> controller.openProfileFrame());
         topBar.add(icon);
@@ -97,7 +99,6 @@ public class ExerciseSelectFrame {
         bigContainer.add(exerciseSelectContainer);
         Container buttonContainer = new Container(BoxLayout.xCenter());
         Button addButton = new Button("Choose exercise");
-        addButton.setUIID("CAchievementButton");
         addButton.addActionListener(l -> {
             createFrame.addExercise(exercises.getSelectedItem().getName(), exercises.getSelectedItem().getId());
             createFrame.getForm().show();

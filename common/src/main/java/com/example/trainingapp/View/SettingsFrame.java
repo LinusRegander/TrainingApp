@@ -62,6 +62,7 @@ public class SettingsFrame{
         top.add(title);
 
         Button icon = new Button();
+        icon.setUIID("Button2");
         icon.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ACCOUNT_CIRCLE, icon.getUnselectedStyle()));
         icon.addActionListener(l -> controller.openProfileFrame());
         topbar.add(icon);
@@ -80,16 +81,13 @@ public class SettingsFrame{
         settingsContainer.add(a);
 
         profile = new Button("Profile");
-        profile.setUIID("ProfileProfile");
         profile.addActionListener(l -> controller.openProfileFrame());
         a.add(profile);
 
         darkMode = new Button("Dark Mode");
-        darkMode.setUIID("SettingsDark");
         a.add(darkMode);
 
         lightMode = new Button("Light Mode");
-        lightMode.setUIID("SettingsLight");
         a.add(lightMode);
 
         form.add(CENTER, settingsContainer);

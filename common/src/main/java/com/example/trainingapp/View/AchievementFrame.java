@@ -35,7 +35,6 @@ public class AchievementFrame {
 
     public void achievementForm() {
         form = new Form(null, new BorderLayout());
-        form.setUIID("AchievementForm");
         topbar();
         achievementFrame();
         navbar();
@@ -57,6 +56,7 @@ public class AchievementFrame {
         top.add(title);
 
         Button icon = new Button();
+        icon.setUIID("Button2");
         icon.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ACCOUNT_CIRCLE, icon.getUnselectedStyle()));
         icon.addActionListener(l -> controller.openProfileFrame());
         topbar.add(icon);
@@ -66,7 +66,6 @@ public class AchievementFrame {
 
     public void achievementFrame() {
         mainContainer = new Container(BoxLayout.y());
-        mainContainer.setUIID("AchievementContainer");
 
         Container a = new Container(BoxLayout.xCenter());
         mainContainer.add(a);
@@ -101,7 +100,6 @@ public class AchievementFrame {
         mainContainer.add(b);
 
         Container description = new Container(BoxLayout.y());
-        description.setUIID("DescriptionContainer");
         mainContainer.add(description);
 
         Container c = new Container(BoxLayout.x());

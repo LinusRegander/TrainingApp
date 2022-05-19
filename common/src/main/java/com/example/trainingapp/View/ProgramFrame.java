@@ -83,6 +83,7 @@ public class ProgramFrame{
         top.add(title);
 
         Button icon = new Button();
+        icon.setUIID("Button2");
         icon.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ACCOUNT_CIRCLE, icon.getUnselectedStyle()));
         icon.addActionListener(l -> controller.openProfileFrame());
         topbar.add(icon);
@@ -95,7 +96,6 @@ public class ProgramFrame{
      */
     public void mainContainer(){
         mainContainer = new Container(BoxLayout.y());
-        mainContainer.setUIID("ProgramContainer1");
 
         Container a = new Container(BoxLayout.y());
         a.setUIID("Container2");
@@ -124,7 +124,6 @@ public class ProgramFrame{
 
         d = new Container(BoxLayout.y());
         d.setScrollableY(true);
-        d.setUIID("ProgramContainer2");
         mainContainer.add(d);
 
         allWorkouts();
@@ -133,7 +132,6 @@ public class ProgramFrame{
         mainContainer.add(e);
 
         Button add = new Button("Add New");
-        add.setUIID("AddButton");
         add.addActionListener(l -> controller.openCreateFrame());
         e.add(add);
 
@@ -154,6 +152,7 @@ public class ProgramFrame{
         topbar.add(top);
 
         Button back = new Button();
+        back.setUIID("Button2");
         back.setIcon(FontImage.createMaterial(FontImage.MATERIAL_CLOSE, back.getUnselectedStyle()));
         back.addActionListener((e) -> {
             form.setToolbar(new Toolbar());
@@ -191,7 +190,6 @@ public class ProgramFrame{
 
         Label lblTags = new Label("Tags: " + tag1 + " " + tag2 + " " + tag3);
         workoutContainer.add(lblTags);
-
 
         tempForm.add(workoutContainer);
         tempForm.show();
