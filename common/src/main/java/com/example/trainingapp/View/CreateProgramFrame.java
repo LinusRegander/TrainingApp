@@ -77,7 +77,7 @@ public class CreateProgramFrame {
         mainContainer = new Container(BoxLayout.y());
 
         Container addProgramContainer = new Container(BoxLayout.xCenter());
-        Button addProgram = new Button("+ Add Program");
+        Button addProgram = new Button("+ Add workout");
         addProgram.addActionListener(l -> controller.openWorkoutSelectFrame(this));
         addProgramContainer.add(addProgram);
 

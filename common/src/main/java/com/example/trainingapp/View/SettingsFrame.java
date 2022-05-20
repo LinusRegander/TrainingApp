@@ -23,6 +23,7 @@ public class SettingsFrame{
     private Button profile;
     private Button program;
     private Button settings;
+    private Button logOut;
     private Container container;
     private Container settingsContainer;
     private Container topbar;
@@ -90,6 +91,12 @@ public class SettingsFrame{
 
         lightMode = new Button("Light Mode");
         a.add(lightMode);
+
+        logOut = new Button("Log out");
+        logOut.addActionListener(l -> {
+            controller = new Controller();
+        });
+        a.add(logOut);
 
         form.add(CENTER, settingsContainer);
     }

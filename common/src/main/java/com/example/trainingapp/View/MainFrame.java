@@ -64,7 +64,6 @@ public class MainFrame {
         topBar();
         homeArea();
         navBar();
-        mainForm.show();
     }
 
     /**
