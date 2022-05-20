@@ -772,7 +772,7 @@ public class Services {
     public int getLogWorkoutId(String email) throws SQLException {
         int id = 0;
         Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("select MAX(logworkoutid) from training.logworkout where creatoremail = ?");
+        PreparedStatement pstmt = con.prepareStatement("select MAX(logworkoutid) from training.logworkout where email = ?");
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
         while(rs.next()) {

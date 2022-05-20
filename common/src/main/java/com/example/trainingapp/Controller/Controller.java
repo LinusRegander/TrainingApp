@@ -280,7 +280,6 @@ public class Controller{
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-
                     String temp = email + "\0" + workoutId + "\0" + date + "\0" + evaluation;
                     dos.writeInt(6);
                     dos.writeUTF(temp);
