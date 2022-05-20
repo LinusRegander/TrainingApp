@@ -335,7 +335,7 @@ public class CreateFrame{
         Button finished = new Button("Finished");
 
         finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
-        finished.addActionListener(l -> controller.addLogWorkout(controller.getLoggedInEmail(), controller.getWorkoutInfoList().get(controller.getWorkoutInfoList().size()).getId(), setDate(), null));
+        finished.addActionListener(l -> controller.addLogWorkout(controller.getLoggedInEmail(), controller.getWorkoutId(), setDate(), null));
         finished.addActionListener(l -> controller.openMainFrame());
         finished.addActionListener(l -> controller.newCreateFrame());
         tempA.add(finished);

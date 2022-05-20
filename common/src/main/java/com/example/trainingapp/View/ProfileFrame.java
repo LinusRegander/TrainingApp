@@ -28,9 +28,6 @@ public class ProfileFrame {
     private Container profileContainer;
     private Container topbar;
     private Form profileForm;
-    private int workoutCount = 0;
-    private int repCount = 0;
-    private int setCount = 0;
     private int finishedWorkouts = 0;
     private int programCount = 0;
     private Label email;
@@ -102,7 +99,7 @@ public class ProfileFrame {
         email.setText("Email: " + controller.getLoggedInEmail());
         b.add(email);
 
-        Label statistics = new Label("Completed Achievements: " + 0);
+        Label statistics = new Label("Completed Achievements: " + controller.getCAchievements());
         b.add(statistics);
 
         workout = new Label();
@@ -110,11 +107,11 @@ public class ProfileFrame {
         b.add(workout);
 
         set = new Label();
-        set.setText("Sets: " + setCount);
+        set.setText("Sets: " + controller.setCount());
         b.add(set);
 
         rep = new Label();
-        rep.setText("Reps: " + repCount);
+        rep.setText("Reps: " + controller.repCount());
         b.add(rep);
 
         finished = new Label();

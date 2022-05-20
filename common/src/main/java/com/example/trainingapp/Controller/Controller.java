@@ -20,6 +20,7 @@ import java.util.StringTokenizer;
  */
 
 public class Controller {
+    private ArrayList<CompletedAchievement> completedAchievementsList = new ArrayList<>();
     private ArrayList<ExerciseInfo> exerciseList = new ArrayList<>();
     private ArrayList<WorkoutInfo> workoutList = new ArrayList<>();
     private ArrayList<ProgramInfo> programList = new ArrayList<>();
@@ -30,11 +31,13 @@ public class Controller {
     private ArrayList<LogProgram> logProgramList = new ArrayList<>();
     private AchievementFrame achievementFrame;
     private CreateFrame createFrame;
+    private CreateProgramFrame createProgramFrame;
     private LoginFrame loginFrame;
     private MainFrame mainFrame;
     private ProgramFrame programFrame;
     private ProfileFrame profileFrame;
     private WorkoutLogFrame workoutLogFrame;
+    private WorkoutSelectFrame workoutSelectFrame;
     private RegisterFrame registerFrame;
     private ExerciseSelectFrame exerciseSelectFrame;
     private SettingsFrame settingsFrame;
@@ -47,6 +50,7 @@ public class Controller {
 
     //Setup constructor.
     public void setup() {
+        //createProgramFrame = new CreateProgramFrame(this);
         //mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
         loginFrame = new LoginFrame(this);
     }
@@ -116,6 +120,12 @@ public class Controller {
         ArrayList<ExerciseInfo> temp = getExerciseList();
         exerciseSelectFrame = new ExerciseSelectFrame(this, temp, createFrame);
     }
+
+    public void openWorkoutSelectFrame(CreateProgramFrame createProgramFrame){
+        ArrayList<WorkoutInfo> temp = getWorkoutInfoList();
+        workoutSelectFrame = new WorkoutSelectFrame(this, temp, createProgramFrame);
+    }
+
     public void newCreateFrame(){
         createFrame = new CreateFrame(this);
     }
@@ -197,6 +207,7 @@ public class Controller {
                         username = loggedIn[1];
                         updateWorkoutList();
                         updateLogWorkoutList();
+                        updateLogExerciseSetList();
                         updateExerciseList();
                         openMainFrame();
                     } else {
@@ -646,10 +657,52 @@ public class Controller {
         updateWorkoutList();
         int count = 0;
 
-        for (int i = 0; i < workoutList.size(); i++) {
+        for(int i = 0; i < workoutList.size(); i++){
             if (workoutList.get(i).getCreatorEmail().equals(loggedInEmail)) {
                 count++;
             }
+        }
+
+        return count;
+    }
+
+    public int setCount(){
+        int count = 0;
+
+        for(int i = 0; i < logExerciseSetList.size(); i++){
+            if (logExerciseSetList.get(i).getEmail().equals(loggedInEmail)) {
+                count = logExerciseSetList.get(i).getSet();
+            }
+        }
+        return count;
+    }
+
+    public int repCount(){
+        int count = 0;
+
+        for(int i = 0; i < logExerciseSetList.size(); i++){
+            if (logExerciseSetList.get(i).getEmail().equals(loggedInEmail)) {
+                count = logExerciseSetList.get(i).getReps();
+            }
+        }
+        return count;
+    }
+
+    public int getWorkoutId(){
+        int id = 0;
+
+        for(WorkoutInfo w : workoutList){
+            id = w.getId();
+        }
+
+        return id;
+    }
+
+    public int getCAchievements(){
+        int count = 0;
+
+        for(int i = 0; i < completedAchievementsList.size(); i++) {
+            count++;
         }
 
         return count;
@@ -663,11 +716,11 @@ public class Controller {
         return username;
     }
 
-    public ArrayList<LogWorkout> getLogWorkoutList() {
+    public ArrayList<LogWorkout> getLogWorkoutList(){
         return logWorkoutList;
     }
 
-    public ArrayList<WorkoutInfo> getWorkoutInfoList() {
+    public ArrayList<WorkoutInfo> getWorkoutInfoList(){
         return workoutList;
     }
 

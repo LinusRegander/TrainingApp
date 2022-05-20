@@ -75,7 +75,7 @@ public class Server extends Thread {
                 switch (choice){
                     case 0 -> login();
                     case 1 -> register();
-                    case 2 -> getLogExerciseSetList();
+                    case 2 -> insertLogExerciseSet();
                     case 3 -> getLogWorkoutList();
                     case 4 -> getLogProgramList();
 
@@ -87,7 +87,7 @@ public class Server extends Thread {
                     case 13 -> insertExerciseIntoWorkout();
                     case 12 -> insertWorkoutIntoProgram();
 
-                    case 10 -> insertLogExerciseSet();
+                    case 10 -> getLogExerciseSetList();
                     case 6 -> insertLogWorkout();
                     case 11 -> insertLogProgram();
 
