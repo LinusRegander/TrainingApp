@@ -89,7 +89,15 @@ public class LoginFrame{
         loginForm.add(buttonContainer);
 
         lButton = new Button("Login");
-        lButton.addActionListener(l -> controller.login(uTextField.getText(), pTextField.getText()));
+        lButton.addActionListener(l -> {
+            if(!uTextField.getText().isEmpty() && !pTextField.getText().isEmpty()){
+                controller.login(uTextField.getText(), pTextField.getText());
+            } else{
+                System.out.println("test");
+                incorrectLabel.setText("Username and password \n can't be empty!");
+                iL.setFgColor(16711680);
+            }
+        });
         buttonContainer.add(lButton);
 
         rButton = new Button("Register");
@@ -102,7 +110,7 @@ public class LoginFrame{
      */
     //TODO: Fixa till / Linus 2022-05-18
     public void failedLogin(){
-        System.out.println("hallå");
+        incorrectLabel.setText("The username or password \n isn't correct!");
         iL.setFgColor(16711680);
         loginForm.refreshTheme();
     }

@@ -123,8 +123,12 @@ public class RegisterFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e){
         if (e.getSource() == rButton) {
-            controller.register(uTextField.getText(), eTextField.getText(), pTextField.getText());
-            registerForm.revalidate();
+            if(!uTextField.getText().isEmpty() && !eTextField.getText().isEmpty() && !pTextField.getText().isEmpty()){
+                controller.register(uTextField.getText(), eTextField.getText(), pTextField.getText());
+                registerForm.revalidate();
+            } else{
+                error.setText("The fields can't be blank!");
+            }
         }
     }
 }
