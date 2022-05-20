@@ -19,7 +19,7 @@ import java.util.StringTokenizer;
     @author Linus Regander, Daniel Olsson, William Dock, Yun-Bo Chow, Francis Jonsson
  */
 
-public class Controller {
+public class Controller{
     private ArrayList<CompletedAchievement> completedAchievementsList = new ArrayList<>();
     private ArrayList<ExerciseInfo> exerciseList = new ArrayList<>();
     private ArrayList<WorkoutInfo> workoutList = new ArrayList<>();
@@ -45,12 +45,12 @@ public class Controller {
     private String username;
     private ICallback informee;
 
-    public Controller() {
+    public Controller(){
         setup();
     }
 
-    //Setup constructor.
-    public void setup() {
+    //Setup constructor
+    public void setup(){
         //createProgramFrame = new CreateProgramFrame(this);
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
         loginFrame = new LoginFrame(this);
@@ -60,57 +60,55 @@ public class Controller {
         Socket.connect("127.0.0.1", 541, socketConnection);
     }
 
-    //The code below creates all of the GUI frames part of the application:
-    public void openLoginFrame() {
+    //The code below creates all the GUI frames part of the application:
+    public void openLoginFrame(){
         loginFrame = new LoginFrame(this);
     }
 
-    public void openMainFrame() {
-        if(mainFrame == null) {
+    public void openMainFrame(){
+        if(mainFrame == null){
             mainFrame = new MainFrame(this);
-        } else {
+        } else{
             mainFrame.getMainForm().show();
         }
     }
 
-    public void openRegFrame() {
+    public void openRegFrame(){
         registerFrame = new RegisterFrame(this);
     }
 
-    public void openAchievementFrame() {
-        if(achievementFrame == null) {
+    public void openAchievementFrame(){
+        if(achievementFrame == null){
             achievementFrame = new AchievementFrame(this);
-        } else {
+        } else{
             achievementFrame.getForm().show();
         }
     }
 
-    public void openCreateFrame() {
+    public void openCreateFrame(){
         System.out.println(logWorkoutList);
-        if(createFrame == null) {
+        if(createFrame == null){
             createFrame = new CreateFrame(this);
-            createFrame.getForm().show();
-        } else {
-            createFrame.getForm().show();
         }
+        createFrame.getForm().show();
     }
 
-    public void openProgramFrame() {
+    public void openProgramFrame(){
         programFrame = new ProgramFrame(this);
     }
 
-    public void openSettingsFrame() {
-        if(settingsFrame == null) {
+    public void openSettingsFrame(){
+        if(settingsFrame == null){
             settingsFrame = new SettingsFrame(this);
-        } else {
+        } else{
             settingsFrame.getForm().show();
         }
     }
 
-    public void openProfileFrame() {
-        if(profileFrame == null) {
+    public void openProfileFrame(){
+        if(profileFrame == null){
             profileFrame = new ProfileFrame(this);
-        } else {
+        } else{
             profileFrame.getProfileForm().show();
         }
     }
@@ -137,22 +135,22 @@ public class Controller {
         createProgramFrame = new CreateProgramFrame(this);
     }
 
-    public Form getMainForm() {
+    public Form getMainForm(){
         return mainFrame.getMainForm();
     }
 
     //todo: Everything below will be used later:
-    public boolean register(String username, String email, String password) {
-        SocketConnection sc = new SocketConnection() {
+    public boolean register(String username, String email, String password){
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
 
-                try {
+                try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
 
@@ -161,8 +159,8 @@ public class Controller {
                     dos.writeUTF(temp);
                     dos.flush();
 
-                    int reply = dis.readInt();
-                    switch(reply){
+                    int response = dis.readInt();
+                    switch(response){
                         case 0:
                             registerFrame.showSuccess();
                             openLoginFrame();
@@ -178,7 +176,7 @@ public class Controller {
                             break;
                     }
 
-                } catch (IOException e) {
+                } catch (IOException e){
                     e.printStackTrace();
                 }
             }
@@ -187,18 +185,18 @@ public class Controller {
         return false;
     }
 
-    //write int talar om för servern vilken metod det är som ska anropas
-    //writeUTF är själva datan som ska skickas till servern och det är server sidan som hanterar det.
+    //write int tells the server about what method it is calling
+    //writeUTF is the data that gets sent to the server which also handles it server-sided.
     public void login(String email, String password){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
-                try {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
+                try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
 
@@ -217,11 +215,11 @@ public class Controller {
                         updateLogExerciseSetList();
                         updateExerciseList();
                         openMainFrame();
-                    } else {
+                    } else{
                         loginFrame.failedLogin();
                     }
 
-                } catch (IOException e) {
+                } catch (IOException e){
                     e.printStackTrace();
                 }
 
@@ -232,36 +230,36 @@ public class Controller {
 
     public int addWorkoutInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<ExerciseInfo> exerciseInfos){
         final int[] id = new int[1];
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
 
-                    String temp = name + "\0" + creatorEmail + "\0" + description + "\0" + tag1 + "\0" + tag2 + "\0" + tag3;
+                    StringBuilder temp = new StringBuilder(name + "\0" + creatorEmail + "\0" + description + "\0" + tag1 + "\0" + tag2 + "\0" + tag3);
 
                     for(ExerciseInfo exerciseInfo : exerciseInfos){
-                        temp += "\0" + exerciseInfo.getId();
-                        temp += "\0" + exerciseInfo.getName();
-                        temp += "\0" + exerciseInfo.getDescription();
-                        temp += "\0" + exerciseInfo.getPrimary();
-                        temp += "\0" + exerciseInfo.getSecondary();
+                        temp.append("\0").append(exerciseInfo.getId());
+                        temp.append("\0").append(exerciseInfo.getName());
+                        temp.append("\0").append(exerciseInfo.getDescription());
+                        temp.append("\0").append(exerciseInfo.getPrimary());
+                        temp.append("\0").append(exerciseInfo.getSecondary());
                     }
                     dos.writeInt(5);
-                    dos.writeUTF(temp);
+                    dos.writeUTF(temp.toString());
                     dos.flush();
 
                     id[0] = dis.readInt();
                     workoutList.add(new WorkoutInfo(id[0], name, creatorEmail, description, tag1, tag2, tag3, username));
                     informee.inform(id[0]);
 
-                } catch (IOException e) {
+                } catch (IOException e){
                     e.printStackTrace();
                 }
             }
@@ -271,21 +269,22 @@ public class Controller {
     }
 
     public void addLogWorkout(String email, int workoutId, String date, String evaluation){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
-                try {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
+                try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
                     String temp = email + "\0" + workoutId + "\0" + date + "\0" + evaluation;
                     dos.writeInt(6);
                     dos.writeUTF(temp);
                     dos.flush();
+                    
                 } catch (IOException e){
                     e.printStackTrace();
                 }
@@ -297,22 +296,23 @@ public class Controller {
 
     // TODO: 2022-05-08 PlanWorkoutId finns inte förens efter den har insertats till databasen
     public void addPlanWorkout(int planWorkoutId, int workoutId, String creator, Date date){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
 
-                try {
+                try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
                     String temp = planWorkoutId + "\0" + workoutId + "\0" + creator + "\0" + date;
                     dos.writeInt(22);
                     dos.writeUTF(temp);
                     dos.flush();
+                    
                 } catch (IOException e){
                     e.printStackTrace();
                 }
@@ -322,23 +322,24 @@ public class Controller {
         connect(sc);
     }
 
-    // TODO: 2022-05-08 planExerciseId finns inte förens första har lagts till i databasen.
+    // TODO: 2022-05-08 planExerciseId does not exist until the first data gets added into the database.
     public void addPlanExerciseSet(int planExerciseId, int exerciseId, int set, int reps, double weight, String email, int planWorkoutId){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
-                try {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
+                try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
                     String temp = planExerciseId + "\0" + exerciseId + "\0" + set + "\0" + reps + "\0" + weight + "\0" + email + "\0" + planWorkoutId;
                     dos.writeInt(69);
                     dos.writeUTF(temp);
                     dos.flush();
+                    
                 } catch (IOException e){
                     e.printStackTrace();
                 }
@@ -349,29 +350,29 @@ public class Controller {
     }
 
     public void addProgramInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<WorkoutInfo> workoutInfos){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
 
             }
         };
     }
 
-    //todo: refresh knapp på gui som updaterar specifika listor.
+    //todo: refresh button in GUI that updates specific lists
     public void updateExerciseList(){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
@@ -382,7 +383,8 @@ public class Controller {
                     String[] strings;
                     String temp = dis.readUTF();
                     strings = split(temp);
-                    for(int i = 0; i < strings.length / 5; i++) {
+                    
+                    for(int i = 0; i < strings.length / 5; i++){
                         int id = Integer.parseInt(strings[i * 5]);
                         String name = strings[i * 5 + 1];
                         String description = strings[i * 5 + 2];
@@ -392,7 +394,7 @@ public class Controller {
                         arrayTemp.add(new ExerciseInfo(id, name, description, primary, secondary));
                     }
                     exerciseList = arrayTemp;
-                } catch (IOException e) {
+                } catch (IOException e){
                     e.printStackTrace();
                 }
             }
@@ -401,14 +403,14 @@ public class Controller {
     }
 
     public void updateWorkoutList(){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
@@ -417,6 +419,7 @@ public class Controller {
 
                     ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
                     String[] strings = split(dis.readUTF());
+                    
                     for(int i = 0; i < strings.length / 8; i++){
                         int id = Integer.parseInt(strings[i * 8]);
                         String name = strings[i * 8 + 1];
@@ -439,23 +442,25 @@ public class Controller {
     }
 
     public void updateProgramList(){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
                     dos.writeInt(9);
                     dos.flush();
+                    
                     ArrayList<ProgramInfo> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
                     strings = split(temp);
+                    
                     for(int i = 0; i < strings.length / 8; i++){
                         int id = Integer.parseInt(strings[i * 8]);
                         String name = strings[i * 8 + 1];
@@ -477,23 +482,25 @@ public class Controller {
         connect(sc);
     }
     public void updateLogExerciseSetList(){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
                     dos.writeInt(10);
                     dos.flush();
+                    
                     ArrayList<LogExerciseSet> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
                     strings = split(temp);
+                    
                     for(int i = 0; i < strings.length / 7; i++){
                         int logExerciseid = Integer.parseInt(strings[i * 7]);
                         int exerciseId = Integer.parseInt(strings[i * 7 + 1]);
@@ -514,14 +521,14 @@ public class Controller {
         connect(sc);
     }
     public void updateLogWorkoutList(){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
@@ -534,6 +541,7 @@ public class Controller {
                     String[] strings;
                     String temp = dis.readUTF();
                     strings = split(temp);
+                    
                     for(int i = 0; i < strings.length / 5; i++){
                         int logWorkoutId = Integer.parseInt(strings[i * 5]);
                         int workoutId = Integer.parseInt(strings[i * 5 + 1]);
@@ -552,23 +560,25 @@ public class Controller {
         connect(sc);
     }
     public void updateLogProgramList(){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
                     dos.writeInt(12);
                     dos.flush();
+                    
                     ArrayList<LogProgram> arrayTemp = new ArrayList<>();
                     String[] strings;
                     String temp = dis.readUTF();
                     strings = split(temp);
+                    
                     for(int i = 0; i < strings.length / 5; i++){
                         int logProgramId = Integer.parseInt(strings[i * 5]);
                         String email = strings[i * 5 + 1];
@@ -587,8 +597,7 @@ public class Controller {
         connect(sc);
     }
 
-    public String[] split(String str)
-    {
+    public String[] split(String str){
         ArrayList<String> splitArray = new ArrayList<>();
         StringTokenizer arr = new StringTokenizer(str, "\0");//split by commas
         while(arr.hasMoreTokens())
@@ -600,23 +609,24 @@ public class Controller {
     }
 
     public void updatePlanExercise(){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
                     dos.writeInt(8);
                     dos.flush();
+
                     ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
-                    String[] strings;
                     String temp = dis.readUTF();
-                    strings = temp.split("\0");
+                    String[] strings = temp.split("\0");
+
                     for(int i = 0; i < strings.length / 8; i++){
                         int id = Integer.parseInt(strings[i * 8]);
                         String name = strings[i * 8 + 1];
@@ -639,21 +649,22 @@ public class Controller {
     }
 
     public void addExercise(int workoutId, int exerciseId, int sets, int reps, double weight){
-        SocketConnection sc = new SocketConnection() {
+        SocketConnection sc = new SocketConnection(){
             @Override
-            public void connectionError(int i, String s) {
+            public void connectionError(int i, String s){
 
             }
 
             @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
-                try {
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
+                try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
                     String temp = workoutId + "\0" + exerciseId + "\0" + sets + "\0" + reps + "\0" + weight + "\0";
                     dos.writeInt(13);
                     dos.writeUTF(temp);
                     dos.flush();
+                    
                 } catch (IOException e){
                     e.printStackTrace();
                 }
@@ -663,12 +674,12 @@ public class Controller {
         connect(sc);
     }
 
-    public int workoutCount() {
+    public int workoutCount(){
         updateWorkoutList();
         int count = 0;
 
         for(int i = 0; i < workoutList.size(); i++){
-            if (workoutList.get(i).getCreatorEmail().equals(loggedInEmail)) {
+            if (workoutList.get(i).getCreatorEmail().equals(loggedInEmail)){
                 count++;
             }
         }
@@ -680,7 +691,7 @@ public class Controller {
         int count = 0;
 
         for(int i = 0; i < logExerciseSetList.size(); i++){
-            if (logExerciseSetList.get(i).getEmail().equals(loggedInEmail)) {
+            if (logExerciseSetList.get(i).getEmail().equals(loggedInEmail)){
                 count = logExerciseSetList.get(i).getSet();
             }
         }
@@ -691,7 +702,7 @@ public class Controller {
         int count = 0;
 
         for(int i = 0; i < logExerciseSetList.size(); i++){
-            if (logExerciseSetList.get(i).getEmail().equals(loggedInEmail)) {
+            if (logExerciseSetList.get(i).getEmail().equals(loggedInEmail)){
                 count = logExerciseSetList.get(i).getReps();
             }
         }
@@ -711,18 +722,18 @@ public class Controller {
     public int getCAchievements(){
         int count = 0;
 
-        for(int i = 0; i < completedAchievementsList.size(); i++) {
+        for(int i = 0; i < completedAchievementsList.size(); i++){
             count++;
         }
 
         return count;
     }
 
-    public String getLoggedInEmail() {
+    public String getLoggedInEmail(){
         return loggedInEmail;
     }
 
-    public String getUsername() {
+    public String getUsername(){
         return username;
     }
 
@@ -734,7 +745,7 @@ public class Controller {
         return workoutList;
     }
 
-    public ArrayList<LogExerciseSet> getLogExerciseSetList() {
+    public ArrayList<LogExerciseSet> getLogExerciseSetList(){
         return logExerciseSetList;
     }
 

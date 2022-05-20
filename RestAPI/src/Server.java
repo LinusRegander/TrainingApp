@@ -1,21 +1,21 @@
 import HelperClasses.*;
-import com.codename1.io.ConnectionRequest;
-import dbcon.*;
+import dbcon.Services;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Date;
 import java.util.ArrayList;
-
-import static com.codename1.ui.CN.*;
 
 /**
  @author William Dock, Yun-Bo Chow
  */
 
 
-public class Server extends Thread {
+public class Server extends Thread{
     private Services services = new Services();
 
     public Server(int port){
@@ -35,7 +35,7 @@ public class Server extends Thread {
         }
 
         @Override
-        public void run() {
+        public void run(){
             while (true){
                 try{
                     Socket socket = serverSocket.accept();
@@ -48,29 +48,29 @@ public class Server extends Thread {
     }
 
     private class ClientHandler extends Thread{
-        //User eller email variabel
+        //User eller email variable
         private Socket socket;
         private DataOutputStream dos;
         private DataInputStream dis;
 
-        public ClientHandler(Socket socket) {
+        public ClientHandler(Socket socket){
             this.socket = socket;
-            try {
+            try{
                 dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                 dos.flush();
                 dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            } catch (Exception e) {
+            } catch (Exception e){
                 e.printStackTrace();
             }
             start();
         }
 
         @Override
-        public void run() {
+        public void run(){
             System.out.println(socket.getInetAddress().getHostName() + "Connected to server");
 
             int choice;
-            try {
+            try{
                 choice = dis.readInt();
                 switch (choice){
                     case 0 -> login();
@@ -96,15 +96,14 @@ public class Server extends Thread {
                 }
 
                 services.terminateIdle();
-            } catch (Exception e) {
+            } catch (Exception e){
                 e.printStackTrace();
             }
 
         }
 
-        //services.login() retunerar "" om de inte lyckades logga in
-        //Om man lyckas retuneras en String som är emailen på inloggningen
-
+        //services.login() returns "" if login is unsuccessful
+        //If you successfully log in, return a String that is the email of the log in attempt
         private void login() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
@@ -217,9 +216,8 @@ public class Server extends Thread {
         }
 
         private void insertLogWorkout() throws Exception{
-            String[] strings;
             String temp = dis.readUTF();
-            strings = temp.split("\0");
+            String[] strings = temp.split("\0");
 
             String email = strings[0];
             int workoutId = Integer.parseInt(strings[1]);
@@ -230,9 +228,8 @@ public class Server extends Thread {
         }
 
         private void insertLogProgram() throws Exception{
-            String[] strings;
             String temp = dis.readUTF();
-            strings = temp.split("\0");
+            String[] strings = temp.split("\0");
 
             String loggedInMail = strings[0];
             int programId = Integer.parseInt(strings[1]);
@@ -244,9 +241,8 @@ public class Server extends Thread {
 
         // TODO: 2022-05-08 Uppdatera indexen för att matcha outputen från controller
         private void insertPlanWorkout() throws Exception{
-            String[] strings;
             String temp = dis.readUTF();
-            strings = temp.split("\0");
+            String[] strings = temp.split("\0");
 
             int workoutId = Integer.parseInt(strings[0]);
             String email = strings[1];
@@ -257,9 +253,8 @@ public class Server extends Thread {
 
         // TODO: 2022-05-08 Uppdatera indexen för att matcha output från controller.
         private void insertPlanExerciseSet() throws Exception{
-            String[] strings;
             String temp = dis.readUTF();
-            strings = temp.split("\0");
+            String[] strings = temp.split("\0");
 
             int planExerciseId = Integer.parseInt(strings[0]);
             int exerciseId = Integer.parseInt(strings[1]);
@@ -294,8 +289,11 @@ public class Server extends Thread {
             StringBuilder temp = new StringBuilder();
 
             for(ExerciseInfo exercise : exerciseInfoList){
-                temp.append(exercise.getId() + "\0" + exercise.getName() + "\0" + exercise.getDescription() + "\0"
-                        + exercise.getPrimary() + "\0" + exercise.getSecondary() + "\0");
+                temp.append(exercise.getId()).append("\0")
+                        .append(exercise.getName()).append("\0")
+                        .append(exercise.getDescription()).append("\0")
+                        .append(exercise.getPrimary()).append("\0")
+                        .append(exercise.getSecondary()).append("\0");
             }
 
             dos.writeUTF(temp.toString());
@@ -307,9 +305,14 @@ public class Server extends Thread {
             StringBuilder temp = new StringBuilder();
 
             for (WorkoutInfo workoutInfo : workoutInfoList){
-                temp.append(workoutInfo.getId() + "\0" + workoutInfo.getName() + "\0" + workoutInfo.getCreatorEmail()
-                        + "\0" + workoutInfo.getDescription() + "\0" + workoutInfo.getTag1() + "\0" + workoutInfo.getTag2()
-                        + "\0" + workoutInfo.getTag3() + "\0" + workoutInfo.getCreatorUsername() + "\0");
+                temp.append(workoutInfo.getId()).append("\0")
+                        .append(workoutInfo.getName()).append("\0")
+                        .append(workoutInfo.getCreatorEmail()).append("\0")
+                        .append(workoutInfo.getDescription()).append("\0")
+                        .append(workoutInfo.getTag1()).append("\0")
+                        .append(workoutInfo.getTag2()).append("\0")
+                        .append(workoutInfo.getTag3()).append("\0")
+                        .append(workoutInfo.getCreatorUsername()).append("\0");
             }
 
             dos.writeUTF(temp.toString());
@@ -321,10 +324,16 @@ public class Server extends Thread {
             StringBuilder temp = new StringBuilder();
 
             for (ProgramInfo programInfo : programInfoList){
-                temp.append(programInfo.getId() + "\0" + programInfo.getName() + "\0" + programInfo.getCreatorEmail()
-                        + "\0" + programInfo.getDescription() + "\0" + programInfo.getTag1() + "\0" + programInfo.getTag2()
-                        + "\0" + programInfo.getTag3() + "\0" + programInfo.getCreatorUsername() + "\0");
+                temp.append(programInfo.getId()).append("\0")
+                        .append(programInfo.getName()).append("\0")
+                        .append(programInfo.getCreatorEmail()).append("\0")
+                        .append(programInfo.getDescription()).append("\0")
+                        .append(programInfo.getTag1()).append("\0")
+                        .append(programInfo.getTag2()).append("\0")
+                        .append(programInfo.getTag3()).append("\0")
+                        .append(programInfo.getCreatorUsername()).append("\0");
             }
+
             dos.writeUTF(temp.toString());
             dos.flush();
         }
@@ -335,9 +344,13 @@ public class Server extends Thread {
             StringBuilder temp = new StringBuilder();
 
             for(LogExerciseSet logExerciseSet : logExerciseSetList){
-                temp.append(logExerciseSet.getLogExerciseId() + "\0" + logExerciseSet.getExerciseId() + "\0" +
-                        logExerciseSet.getLogWorkoutId() + "\0" + logExerciseSet.getEmail() + "\0" +
-                        logExerciseSet.getSet() + "\0" + logExerciseSet.getReps() + "\0" + logExerciseSet.getWeight() + "\0");
+                temp.append(logExerciseSet.getLogExerciseId()).append("\0")
+                        .append(logExerciseSet.getExerciseId()).append("\0")
+                        .append(logExerciseSet.getLogWorkoutId()).append("\0")
+                        .append(logExerciseSet.getEmail()).append("\0")
+                        .append(logExerciseSet.getSet()).append("\0")
+                        .append(logExerciseSet.getReps()).append("\0")
+                        .append(logExerciseSet.getWeight()).append("\0");
             }
 
             dos.writeUTF(temp.toString());
@@ -350,8 +363,11 @@ public class Server extends Thread {
             StringBuilder temp = new StringBuilder();
 
             for (LogWorkout logWorkout : logWorkoutList){
-                temp.append(logWorkout.getLogWorkoutId() + "\0" + logWorkout.getWorkoutId() + "\0" +
-                        logWorkout.getCreator() + "\0" + logWorkout.getDate() + "\0" + logWorkout.getEvaluation() + "\0");
+                temp.append(logWorkout.getLogWorkoutId()).append("\0")
+                        .append(logWorkout.getWorkoutId()).append("\0")
+                        .append(logWorkout.getCreator()).append("\0")
+                        .append(logWorkout.getDate()).append("\0")
+                        .append(logWorkout.getEvaluation()).append("\0");
             }
 
             dos.writeUTF(temp.toString());
@@ -364,29 +380,19 @@ public class Server extends Thread {
             StringBuilder temp = new StringBuilder();
 
             for (LogProgram logProgram : logProgramList){
-                temp.append(logProgram.getLogProgramId() + "\0" + logProgram.getEmail() + "\0" + logProgram.getProgramId()
-                        + "\0" + logProgram.getDate() + "\0" + logProgram.getEvaluation() + "\0");
+                temp.append(logProgram.getLogProgramId()).append("\0")
+                        .append(logProgram.getEmail()).append("\0")
+                        .append(logProgram.getProgramId()).append("\0")
+                        .append(logProgram.getDate()).append("\0")
+                        .append(logProgram.getEvaluation()).append("\0");
             }
 
             dos.writeUTF(temp.toString());
             dos.flush();
         }
-
-
-        /*private void register() throws Exception{
-            String email = dis.readUTF();
-            String username = dis.readUTF();
-            String password = dis.readUTF();
-
-            if (!services.checkIfEmailExists(email) && !services.checkIfUsernameExists(username)) {
-                services.insertNewUser(email, username, password);
-            }
-        }*/
-
-
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         Server server = new Server(541);
     }
 }
