@@ -40,6 +40,7 @@ public class Controller {
     private SettingsFrame settingsFrame;
     private String loggedInEmail;
     private String username;
+    private ICallback informee;
 
     public Controller() {
         setup();
@@ -243,6 +244,7 @@ public class Controller {
 
                     id[0] = dis.readInt();
                     workoutList.add(new WorkoutInfo(id[0], name, creatorEmail, description, tag1, tag2, tag3, username));
+                    informee.inform(id[0]);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -677,5 +679,9 @@ public class Controller {
 
     public ArrayList<LogExerciseSet> getLogExerciseSetList() {
         return logExerciseSetList;
+    }
+
+    public void setInformee(ICallback informee){
+        this.informee = informee;
     }
 }
