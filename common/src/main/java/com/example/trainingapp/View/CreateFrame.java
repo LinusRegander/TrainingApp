@@ -5,6 +5,7 @@ import com.codename1.l10n.ParseException;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.events.DataChangedListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
@@ -87,12 +88,6 @@ public class CreateFrame{
         accept.setIcon(FontImage.createMaterial(FontImage.MATERIAL_DONE, accept.getUnselectedStyle()));
         accept.addActionListener(l -> getWorkoutInfo());
         top.add(accept);
-
-        Container bottom = new Container(BoxLayout.xCenter());
-        topbar.add(bottom);
-
-        Label time = new Label("PlaceHolder Time");
-        bottom.add(time);
 
         form.add(NORTH, topbar);
     }
@@ -258,8 +253,20 @@ public class CreateFrame{
 
         create = new Button();
         create.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, create.getUnselectedStyle()));
-        create.addActionListener(l -> controller.openCreateFrame());
         navbar.add(create);
+        create.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                Dialog d = new Dialog();
+                d.setLayout(BoxLayout.xCenter());
+                Button workout = new Button("Create Workout");
+                workout.addActionListener(l -> controller.openCreateFrame());
+                d.addComponent(workout);
+                Button program = new Button("Create Program");
+                program.addActionListener(l -> controller.openCreateProgramFrame());
+                d.addComponent(program);
+                d.showPopupDialog(create);
+            }
+        });
 
         program = new Button();
         program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_VIEW_LIST, program.getUnselectedStyle()));

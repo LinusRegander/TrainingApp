@@ -51,7 +51,7 @@ public class Controller {
     //Setup constructor.
     public void setup() {
         //createProgramFrame = new CreateProgramFrame(this);
-        //mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
+        mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
         loginFrame = new LoginFrame(this);
     }
 
@@ -128,6 +128,10 @@ public class Controller {
 
     public void newCreateFrame(){
         createFrame = new CreateFrame(this);
+    }
+
+    public void openCreateProgramFrame(){
+        createProgramFrame = new CreateProgramFrame(this);
     }
 
     public Form getMainForm() {

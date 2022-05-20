@@ -2,6 +2,7 @@ package com.example.trainingapp.View;
 
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.Controller;
@@ -112,8 +113,20 @@ public class SettingsFrame{
 
         create = new Button();
         create.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, create.getUnselectedStyle()));
-        create.addActionListener(l -> controller.openCreateFrame());
         container.add(create);
+        create.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                Dialog d = new Dialog();
+                d.setLayout(BoxLayout.xCenter());
+                Button workout = new Button("Create Workout");
+                workout.addActionListener(l -> controller.openCreateFrame());
+                d.addComponent(workout);
+                Button program = new Button("Create Program");
+                program.addActionListener(l -> controller.openCreateProgramFrame());
+                d.addComponent(program);
+                d.showPopupDialog(create);
+            }
+        });
 
         program = new Button();
         program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_VIEW_LIST, program.getUnselectedStyle()));

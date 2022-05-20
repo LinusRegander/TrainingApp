@@ -8,6 +8,7 @@ import com.codename1.io.Log;
 import com.codename1.io.Storage;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Style;
@@ -140,15 +141,27 @@ public class MainFrame {
 
         create = new Button();
         create.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, create.getUnselectedStyle()));
-        create.addActionListener(l -> controller.openCreateFrame());
         container.add(create);
+        create.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                Dialog d = new Dialog();
+                d.setLayout(BoxLayout.xCenter());
+                Button workout = new Button("Create Workout");
+                workout.addActionListener(l -> controller.openCreateFrame());
+                d.addComponent(workout);
+                Button program = new Button("Create Program");
+                program.addActionListener(l -> controller.openCreateProgramFrame());
+                d.addComponent(program);
+                d.showPopupDialog(create);
+            }
+        });
 
-        program = new Button ();
+        program = new Button();
         program.setIcon(FontImage.createMaterial(FontImage.MATERIAL_VIEW_LIST, program.getUnselectedStyle()));
         program.addActionListener(l -> controller.openProgramFrame());
         container.add(program);
 
-        settings = new Button ();
+        settings = new Button();
         settings.setIcon(FontImage.createMaterial(FontImage.MATERIAL_SETTINGS, settings.getUnselectedStyle()));
         settings.addActionListener(l -> controller.openSettingsFrame());
         container.add(settings);

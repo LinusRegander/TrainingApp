@@ -4,6 +4,7 @@ import HelperClasses.*;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.example.trainingapp.Controller.*;
@@ -80,6 +81,7 @@ public class ExerciseSelectFrame {
 
         exerciseSelectForm.add(NORTH, topBar);
     }
+
     public void exerciseSelector(){
         Container bigContainer = new Container(BoxLayout.y());
         exerciseSelectContainer = new Container(BoxLayout.y());
@@ -112,6 +114,7 @@ public class ExerciseSelectFrame {
         bigContainer.add(descriptionContainer);
         exerciseSelectForm.add(CENTER, bigContainer);
     }
+
     public void navBar() {
         navBar = new Container(BoxLayout.xCenter());
         navBar.setUIID("Navbar");
@@ -126,10 +129,22 @@ public class ExerciseSelectFrame {
         achievementButton.addActionListener(l -> controller.openAchievementFrame());
         navBar.add(achievementButton);
 
-        workoutButton = new Button();
-        workoutButton.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, workoutButton.getUnselectedStyle()));
-        workoutButton.addActionListener(l -> controller.openCreateFrame());
-        navBar.add(workoutButton);
+        Button create = new Button();
+        create.setIcon(FontImage.createMaterial(FontImage.MATERIAL_ADD, create.getUnselectedStyle()));
+        navBar.add(create);
+        create.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                Dialog d = new Dialog();
+                d.setLayout(BoxLayout.xCenter());
+                Button workout = new Button("Create Workout");
+                workout.addActionListener(l -> controller.openCreateFrame());
+                d.addComponent(workout);
+                Button program = new Button("Create Program");
+                program.addActionListener(l -> controller.openCreateProgramFrame());
+                d.addComponent(program);
+                d.showPopupDialog(create);
+            }
+        });
 
         programsButton = new Button ();
         programsButton.setIcon(FontImage.createMaterial(FontImage.MATERIAL_LEADERBOARD, programsButton.getUnselectedStyle()));
