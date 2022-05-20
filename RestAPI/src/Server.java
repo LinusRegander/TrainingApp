@@ -392,6 +392,59 @@ public class Server extends Thread{
             dos.writeUTF(temp.toString());
             dos.flush();
         }
+
+        private void getAllAchievements() throws Exception{
+            ArrayList<AchievementsInfo> achievementsInfoList = services.selectAllAchievements();
+            StringBuilder temp = new StringBuilder();
+
+            for (AchievementsInfo achievementsInfo : achievementsInfoList){
+                temp.append(achievementsInfo.getAchievementId()).append("\0")
+                        .append(achievementsInfo.getName()).append("\0")
+                        .append(achievementsInfo.getDescription()).append("\0");
+            }
+
+            dos.writeUTF(temp.toString());
+            dos.flush();
+        }
+
+        public void getCompletedAchievements() throws Exception{
+            String loggedInMail = dis.readUTF();
+            ArrayList<CompletedAchievement> completedAchievementsList = services.selectCompletedAchievements(loggedInMail);
+            StringBuilder temp = new StringBuilder();
+
+            for (CompletedAchievement completedAchievement : completedAchievementsList){
+                temp.append(completedAchievement.getAchievementId()).append("\0")
+                        .append(completedAchievement.getEmail()).append("\0")
+                        .append(completedAchievement.getDate()).append("\0");
+            }
+
+            dos.writeUTF(temp.toString());
+            dos.flush();
+        }
+
+        //this is a command that only the admin accounts can use
+        private void insertNewAchievementsInfo() throws Exception{
+            String temp = dis.readUTF();
+            String[] strings = temp.split("\0");
+
+            String name = strings[0];
+            String description = strings[1];
+
+            services.insertNewAchievementsInfo(name, description);
+        }
+
+        //This is a method for users to execute. It is eecuted when they have completed an achievement
+        private void insertCompleteAchievement() throws Exception{
+            String temp = dis.readUTF();
+            String[] strings = temp.split("\0");
+
+            int achievementId = Integer.parseInt(strings[0]);
+            String loggedInMail = strings[1];
+            Date date = Date.valueOf(strings[2]);
+
+            services.insertCompleteAchievement(achievementId, loggedInMail, date);
+        }
+        
     }
 
     public static void main(String[] args){

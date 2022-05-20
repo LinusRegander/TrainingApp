@@ -718,6 +718,7 @@ public class Services {
 
     public ArrayList<LogProgram> selectLogProgram(String userEmail) throws SQLException{
         ArrayList<LogProgram> logPrograms = new ArrayList<>();
+
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.logprogram where email = ?");
         pstmt.setString(1, userEmail);
@@ -731,11 +732,55 @@ public class Services {
 
             logPrograms.add(new LogProgram(logId, email, programId, date, evaluation));
         }
-        pstmt.close();
         rs.close();
+        pstmt.close();
         con.close();
 
         return logPrograms;
+    }
+
+    public ArrayList<AchievementsInfo> selectAllAchievements() throws SQLException{
+        ArrayList<AchievementsInfo> achievementsInfoList = new ArrayList<>();
+
+        Connection con = this.getDatabaseConnection();
+        String query = "select * from training.achievementsInfo";
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+        while (rs.next()){
+            int achievementId = rs.getInt("achievementid");
+            String name = rs.getString("name");
+            String description = rs.getString("description");
+
+            achievementsInfoList.add(new AchievementsInfo(achievementId, name, description));
+        }
+
+        rs.close();
+        stmt.close();
+        con.close();
+
+        return achievementsInfoList;
+    }
+
+    public ArrayList<CompletedAchievement> selectCompletedAchievements(String loggedInMail) throws SQLException{
+        ArrayList<CompletedAchievement> completedAchievementsList = new ArrayList<>();
+
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("select * from training.completedachievements where email = ?");
+        pstmt.setString(1, loggedInMail);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()){
+            int achievementId = rs.getInt("achievementid");
+            String email = rs.getString("email");
+            Date date = rs.getDate("date");
+
+            completedAchievementsList.add(new CompletedAchievement(achievementId, email, date));
+        }
+
+        rs.close();
+        pstmt.close();
+        con.close();
+
+        return completedAchievementsList;
     }
 
     public String getUsername(String email) throws SQLException{
