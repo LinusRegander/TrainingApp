@@ -224,7 +224,9 @@ public class Server extends Thread{
             Date date = Date.valueOf(strings[2]);
             String evaluation = strings[3];
 
-            services.insertNewLogworkout(email, workoutId, date, evaluation);
+            int id = services.insertNewLogworkout(email, workoutId, date, evaluation);
+            dos.writeInt(id);
+            dos.flush();
         }
 
         private void insertLogProgram() throws Exception{
