@@ -304,16 +304,18 @@ public class Services {
 
     //Ska denna köras automatiskt efter logExerciseSet har exekverats?
 
-    public void insertNewLogworkout(String email, int workoutid, Date date, String evaluation) throws SQLException{
+    public int insertNewLogworkout(String email, int workoutid, Date date, String evaluation) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training.insertNewLogWorkout(?,?,?,?)");
         pstmt.setString(1, email);
         pstmt.setInt(2, workoutid);
         pstmt.setDate(3, date);
         pstmt.setString(4, evaluation);
+
         pstmt.execute();
         pstmt.close();
         con.close();
+        return getLogWorkoutId(email);
     }
 
     public void insertNewLogProgram(String email, int programId, Date date, String evaluation) throws SQLException{
@@ -756,6 +758,21 @@ public class Services {
         int id = 0;
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("select MAX(workoutid) from training.workoutinfo where creatoremail = ?");
+        pstmt.setString(1, email);
+        ResultSet rs = pstmt.executeQuery();
+        while(rs.next()) {
+            id = rs.getInt("max");
+        }
+        rs.close();
+        pstmt.close();
+        con.close();
+        return id;
+    }
+
+    public int getLogWorkoutId(String email) throws SQLException {
+        int id = 0;
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("select MAX(logworkoutid) from training.logworkout where creatoremail = ?");
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
         while(rs.next()) {
