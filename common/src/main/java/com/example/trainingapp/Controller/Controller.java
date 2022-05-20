@@ -357,7 +357,6 @@ public class Controller {
 
             @Override
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream) {
-
             }
         };
     }

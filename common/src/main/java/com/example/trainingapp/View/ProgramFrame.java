@@ -14,6 +14,7 @@ import com.sun.org.apache.xpath.internal.operations.Mult;
 
 import java.lang.invoke.MutableCallSite;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.codename1.ui.FontImage.setMaterialIcon;
 import static com.codename1.ui.layouts.BorderLayout.*;
@@ -112,12 +113,14 @@ public class ProgramFrame{
         b.add(workout);
 
         program = new Button("Program");
+        program.addActionListener(l -> allPrograms());
         b.add(program);
 
         Container c = new Container(BoxLayout.xCenter());
         a.add(c);
 
         community = new Button("Community");
+        community.addActionListener(l -> communityStuff());
         c.add(community);
 
         mine = new Button("Mine");
@@ -127,8 +130,6 @@ public class ProgramFrame{
         d = new Container(BoxLayout.y());
         d.setScrollableY(true);
         mainContainer.add(d);
-
-        allWorkouts();
 
         Container e = new Container(BoxLayout.y());
         mainContainer.add(e);
@@ -198,6 +199,8 @@ public class ProgramFrame{
     }
 
     public void allWorkouts(){
+        d.removeAll();
+
         for (int i = 0; i < workoutInfoList.size(); i++) {
             id = workoutInfoList.get(i).getId();
             name = workoutInfoList.get(i).getName();
@@ -212,10 +215,38 @@ public class ProgramFrame{
             add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
             d.add(add);
         }
+
+        form.repaint();
+        form.revalidate();
     }
 
-    public ArrayList<MultiButton> allPrograms(){
-        ArrayList<MultiButton> multi = new ArrayList<>();
+    public void communityStuff(){
+        d.removeAll();
+
+        for (int i = 0; i < workoutInfoList.size(); i++) {
+            id = workoutInfoList.get(i).getId();
+            name = workoutInfoList.get(i).getName();
+            username = workoutInfoList.get(i).getCreatorUsername();
+            email = workoutInfoList.get(i).getCreatorEmail();
+            description = workoutInfoList.get(i).getDescription();
+            tag1 = workoutInfoList.get(i).getTag1();
+            tag2 = workoutInfoList.get(i).getTag2();
+            tag3 = workoutInfoList.get(i).getTag3();
+
+            if (!workoutInfoList.get(i).getCreatorEmail().equals(controller.getLoggedInEmail())) {
+                add = new MultiButton(name);
+                add.setTextLine2("Click to see more");
+                add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
+                d.add(add);
+            }
+        }
+
+        form.repaint();
+        form.revalidate();
+    }
+
+    public void allPrograms(){
+        d.removeAll();
 
         for (int i = 0; i < programInfoList.size(); i++) {
             id = programInfoList.get(i).getId();
@@ -227,17 +258,18 @@ public class ProgramFrame{
             tag2 = programInfoList.get(i).getTag2();
             tag3 = programInfoList.get(i).getTag3();
             add = new MultiButton(name);
-            multi.add(add);
             add.setTextLine2("Click to see more");
             add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
             d.add(add);
         }
 
-        return multi;
+        form.repaint();
+        form.revalidate();
     }
 
     public void myWorkout(){
-        MultiButton mb = null;
+        d.removeAll();
+
         for (int i = 0; i < workoutInfoList.size(); i++) {
             id = workoutInfoList.get(i).getId();
             name = workoutInfoList.get(i).getName();
@@ -249,13 +281,15 @@ public class ProgramFrame{
             tag3 = workoutInfoList.get(i).getTag3();
 
             if (workoutInfoList.get(i).getCreatorEmail().equals(controller.getLoggedInEmail())) {
-                mb = new MultiButton(name);;
+                add = new MultiButton(name);
                 add.setTextLine2("Click to see more");
                 add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
+                d.add(add);
             }
         }
-        d.removeAll();
-        d.add(mb);
+
+        form.repaint();
+        form.revalidate();
     }
 
     /**

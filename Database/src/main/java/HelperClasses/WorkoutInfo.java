@@ -65,4 +65,7 @@ public class WorkoutInfo {
     public void setCreatorUsername(String creatorUsername) {
         this.creatorUsername = creatorUsername;
     }
+    public String toString(){
+        return name;
+    }
 }

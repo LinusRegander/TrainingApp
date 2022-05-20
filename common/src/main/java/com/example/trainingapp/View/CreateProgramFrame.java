@@ -32,7 +32,6 @@ public class CreateProgramFrame {
 
     public void createForm(){
         form = new Form(new BorderLayout());
-        form.setScrollableY(true);
         topBar();
         programContainer();
         navBar();
@@ -156,10 +155,8 @@ public class CreateProgramFrame {
 
         Button finished = new Button("Finished");
 
+        //TODO: Add program to database
         //finished.addActionListener(l -> controller.addProgramInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
-        //finished.addActionListener(l -> controller.addLogProgram(controller.getLoggedInEmail(), controller.getWorkoutId(), setDate(), null));
-        finished.addActionListener(l -> controller.openMainFrame());
-        finished.addActionListener(l -> controller.newCreateFrame());
         tempA.add(finished);
         tempForm.add(CENTER, tempA);
         tempForm.show();
