@@ -279,13 +279,18 @@ public class Controller{
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
 
                     String temp = email + "\0" + workoutId + "\0" + date + "\0" + evaluation;
                     dos.writeInt(6);
                     dos.writeUTF(temp);
                     dos.flush();
 
-                } catch (IOException e){
+                    int id = dis.readInt();
+                    Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                    logWorkoutList.add(new LogWorkout(id, workoutId, email, date1, evaluation));
+
+                } catch (Exception e){
                     e.printStackTrace();
                 }
 

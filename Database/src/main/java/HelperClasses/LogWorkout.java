@@ -11,10 +11,10 @@ public class LogWorkout {
     private Date date;
     private String evaluation;
 
-    public LogWorkout(int logWorkoutId, int workoutId, String name, Date date, String evaluation){
+    public LogWorkout(int logWorkoutId, int workoutId, String creator, Date date, String evaluation){
         this.logWorkoutId = logWorkoutId;
         this.workoutId = workoutId;
-        this.creator = name;
+        this.creator = creator;
         this.date = date;
         this.evaluation = evaluation;
     }

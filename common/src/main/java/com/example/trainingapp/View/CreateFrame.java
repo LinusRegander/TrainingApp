@@ -384,6 +384,5 @@ public class CreateFrame implements ICallback {
         controller.addLogWorkout(controller.getLoggedInEmail(), id, getDate(), null);
         controller.openMainFrame();
         controller.newCreateFrame();
-
     }
 }
