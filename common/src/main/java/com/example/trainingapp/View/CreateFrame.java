@@ -11,6 +11,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.table.TableLayout;
 import com.example.trainingapp.Controller.Controller;
+import com.example.trainingapp.Controller.ICallback;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +23,7 @@ import java.util.Date;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
-public class CreateFrame{
+public class CreateFrame implements ICallback {
     private Button achievement;
     private Button create;
     private Button home;
@@ -43,6 +44,7 @@ public class CreateFrame{
     public CreateFrame(Controller controller){
         this.controller = controller;
         createForm();
+        controller.setInformee(this);
     }
 
     /**
@@ -341,10 +343,9 @@ public class CreateFrame{
 
         Button finished = new Button("Finished");
 
-        finished.addActionListener(l -> controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo));
-        finished.addActionListener(l -> controller.addLogWorkout(controller.getLoggedInEmail(), controller.getWorkoutId(), setDate(), null));
-        finished.addActionListener(l -> controller.openMainFrame());
-        finished.addActionListener(l -> controller.newCreateFrame());
+        finished.addActionListener(l -> {
+            controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo);
+        });
         tempA.add(finished);
         tempForm.add(CENTER, tempA);
         tempForm.show();
@@ -372,15 +373,17 @@ public class CreateFrame{
      * Sets date to current date
      */
     //TODO: Remove or replace
-    public String setDate(){
+    public String getDate(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
+        return formatter.format(date);
+    }
 
-        try {
-            date = new SimpleDateFormat("yyyy-mm-dd").parse("2022-05-11");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void inform(int id){
+        controller.addLogWorkout(controller.getLoggedInEmail(), id, getDate(), null);
+        controller.openMainFrame();
+        controller.newCreateFrame();
 
-        return "2022-05-12";
     }
 }

@@ -1,5 +1,6 @@
 package com.example.trainingapp.View;
 
+import com.codename1.charts.util.ColorUtil;
 import com.codename1.ui.*;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
@@ -81,6 +82,7 @@ public class LoginFrame{
         incorrectLabel = new Label("The username or password isn't correct!");
         incorrectLabel.setUIID("ErrorLabel");
         iL = incorrectLabel.getStyle();
+        iL.setFgColor(ColorUtil.WHITE);
         loginContainer.add(incorrectLabel);
 
         buttonContainer = new Container(BoxLayout.xCenter());

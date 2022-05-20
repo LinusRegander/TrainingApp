@@ -43,6 +43,7 @@ public class Controller {
     private SettingsFrame settingsFrame;
     private String loggedInEmail;
     private String username;
+    private ICallback informee;
 
     public Controller() {
         setup();
@@ -85,6 +86,7 @@ public class Controller {
     }
 
     public void openCreateFrame() {
+        System.out.println(logWorkoutList);
         if(createFrame == null) {
             createFrame = new CreateFrame(this);
             createFrame.getForm().show();
@@ -114,6 +116,7 @@ public class Controller {
     }
 
     public void openWorkoutLogFrame(){
+        updateLogWorkoutList();
         workoutLogFrame = new WorkoutLogFrame(this);
     }
     public void openExerciseSelectFrame(CreateFrame createFrame){
@@ -227,7 +230,8 @@ public class Controller {
         connect(sc);
     }
 
-    public void addWorkoutInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<ExerciseInfo> exerciseInfos){
+    public int addWorkoutInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<ExerciseInfo> exerciseInfos){
+        final int[] id = new int[1];
         SocketConnection sc = new SocketConnection() {
             @Override
             public void connectionError(int i, String s) {
@@ -253,8 +257,9 @@ public class Controller {
                     dos.writeUTF(temp);
                     dos.flush();
 
-                    int id = dis.readInt();
-                    workoutList.add(new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, username));
+                    id[0] = dis.readInt();
+                    workoutList.add(new WorkoutInfo(id[0], name, creatorEmail, description, tag1, tag2, tag3, username));
+                    informee.inform(id[0]);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -262,6 +267,7 @@ public class Controller {
             }
         };
         connect(sc);
+        return id[0];
     }
 
     public void addLogWorkout(String email, int workoutId, String date, String evaluation){
@@ -730,5 +736,9 @@ public class Controller {
 
     public ArrayList<LogExerciseSet> getLogExerciseSetList() {
         return logExerciseSetList;
+    }
+
+    public void setInformee(ICallback informee){
+        this.informee = informee;
     }
 }

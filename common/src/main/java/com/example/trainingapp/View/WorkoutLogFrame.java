@@ -51,6 +51,8 @@ public class WorkoutLogFrame{
         topBar();
         workoutLog();
         navBar();
+        logForm.repaint();
+        logForm.revalidate();
         logForm.show();
     }
 
