@@ -29,6 +29,8 @@ public class Controller{
     private ArrayList<LogWorkout> logWorkoutList = new ArrayList<>();
     private ArrayList<PlanWorkout> planWorkoutList = new ArrayList<>();
     private ArrayList<LogProgram> logProgramList = new ArrayList<>();
+    private ArrayList<AchievementsInfo> allAchievementsList = new ArrayList<>();
+    private ArrayList<CompletedAchievement> completedAchievements = new ArrayList<>();
     private AchievementFrame achievementFrame;
     private CreateFrame createFrame;
     private CreateProgramFrame createProgramFrame;
@@ -593,6 +595,82 @@ public class Controller{
                         arrayTemp.add(new LogProgram(logProgramId, email, programId, date, evaluation));
                     }
                     logProgramList = arrayTemp;
+                } catch (IOException | ParseException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        connect(sc);
+    }
+
+    public void updateAllAchievementsList(){
+        SocketConnection sc = new SocketConnection(){
+            @Override
+            public void connectionError(int i, String s){
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
+
+                try{
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
+
+                    dos.writeInt(14);
+                    dos.flush();
+
+                    ArrayList<AchievementsInfo> arrayTemp = new ArrayList<>();
+                    String temp = dis.readUTF();
+                    String[] strings = split(temp);
+
+                    for(int i = 0; i < strings.length / 3; i++){
+                        int achievementId = Integer.parseInt(strings[i * 3]);
+                        String name = strings[i * 3 + 1];
+                        String description = strings[i * 3 + 2];
+
+                        arrayTemp.add(new AchievementsInfo(achievementId, name, description));
+                    }
+
+                    allAchievementsList = arrayTemp;
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        connect(sc);
+    }
+
+    public void updateCompletedAchievementsList(){
+        SocketConnection sc = new SocketConnection(){
+            @Override
+            public void connectionError(int i, String s){
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
+
+                try{
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
+
+                    dos.writeInt(15);
+                    dos.writeUTF(loggedInEmail);
+                    dos.flush();
+
+                    ArrayList<CompletedAchievement> arrayTemp = new ArrayList<>();
+                    String temp = dis.readUTF();
+                    String[] strings = split(temp);
+
+                    for(int i = 0; i < strings.length / 3; i++){
+                        int achievementId = Integer.parseInt(strings[i * 3]);
+                        String email = strings[i * 3 + 1];
+                        Date date = new SimpleDateFormat("dd/MM/yyyy").parse(strings[i * 3 + 2]);
+                        arrayTemp.add(new CompletedAchievement(achievementId, email, date));
+                    }
+
+                    completedAchievements = arrayTemp;
                 } catch (IOException | ParseException e){
                     e.printStackTrace();
                 }

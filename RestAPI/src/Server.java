@@ -91,6 +91,9 @@ public class Server extends Thread{
                     case 6 -> insertLogWorkout();
                     case 11 -> insertLogProgram();
 
+                    case 14 -> getAllAchievements();
+                    case 15 -> getCompletedAchievements();
+
                     // TODO: 2022-05-17 Alla över 9 används inte av client just nu
                     // TODO: 2022-05-17 Ändra indexen i server o klient så att de är snygga
                 }
