@@ -1,5 +1,8 @@
 package com.example.trainingapp.View;
 
+import HelperClasses.Achievement;
+import HelperClasses.AchievementsInfo;
+import HelperClasses.CompletedAchievement;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
@@ -7,6 +10,9 @@ import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.*;
 import com.codename1.ui.table.TableLayout;
 import com.example.trainingapp.Controller.Controller;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
@@ -28,9 +34,13 @@ public class AchievementFrame {
     private SpanLabel descriptionText;
     private Label lAchievement;
     private SpanLabel statusText;
+    private ArrayList<AchievementsInfo> allAchievementsList;
+    private ArrayList<CompletedAchievement> completedAchievementsList;
 
-    public AchievementFrame(Controller controller) {
+    public AchievementFrame(Controller controller, ArrayList<AchievementsInfo> allAchievementsList, ArrayList<CompletedAchievement> completedAchievementsList) {
         this.controller = controller;
+        this.allAchievementsList = allAchievementsList;
+        this.completedAchievementsList = completedAchievementsList;
         achievementForm();
     }
 
@@ -41,9 +51,24 @@ public class AchievementFrame {
         navbar();
         form.show();
     }
-    public String[] testAchievments(){
-        String[] testAchievments = new String[]{"1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3","1", "2", "3"};
-        return testAchievments;
+
+    public ArrayList<Achievement> setupAchievements(){
+        ArrayList<Achievement> achievements = new ArrayList<>();
+        ArrayList<Integer> completedAchievementID = new ArrayList<>();
+        if(!completedAchievementsList.isEmpty()) {
+            for (CompletedAchievement completedAchievement : completedAchievementsList) {
+                completedAchievementID.add(completedAchievement.getAchievementId());
+            }
+        }
+        for(AchievementsInfo tempAchieveInfo : allAchievementsList) {
+            Achievement tempAchieve = new Achievement(tempAchieveInfo.getAchievementId(), tempAchieveInfo.getName(), tempAchieveInfo.getDescription(), false);
+            if(completedAchievementID.contains(tempAchieveInfo.getAchievementId())) {
+                tempAchieve.setCompleted(true);
+            }
+            achievements.add(tempAchieve);
+
+        }
+        return achievements;
     }
 
     public void topbar() {
@@ -76,13 +101,12 @@ public class AchievementFrame {
         FlowLayout flowLayout = new FlowLayout();
         flowLayout.setValignByRow(true);
 
-
         Container b = new Container(flowLayout);
         b.setScrollableY(true);
-        String[] achievements = testAchievments();
-        for(int i = 0; i < achievements.length; i++){
+        ArrayList<Achievement> achievements = setupAchievements();
+        for(int i = 0; i < achievements.size(); i++){
             Button achievementButton = new Button();
-            if(Integer.parseInt(achievements[i]) % 2 == 0){
+            if(achievements.get(i).isCompleted()){
                 achievementButton.setIcon(FontImage.createMaterial(FontImage.MATERIAL_STAR_RATE, achievementButton.getUnselectedStyle()));
                 achievementButton.setUIID("CAchievementButton");
             }
@@ -92,8 +116,8 @@ public class AchievementFrame {
             }
             int finalI = i;
             achievementButton.addActionListener(l -> {
-                        descriptionText.setText("Achievement " + achievements[finalI]);
-                        statusText.setText("Status for " + achievements[finalI]);
+                        descriptionText.setText("Achievement " + achievements.get(finalI).getDescription());
+                        statusText.setText("Status for " + achievements.get(finalI).getStatus());
                         form.revalidate();
                     });
             b.add(achievementButton);

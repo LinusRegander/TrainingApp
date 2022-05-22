@@ -81,7 +81,7 @@ public class Controller{
 
     public void openAchievementFrame(){
         if(achievementFrame == null){
-            achievementFrame = new AchievementFrame(this);
+            achievementFrame = new AchievementFrame(this, allAchievementsList, completedAchievements);
         } else{
             achievementFrame.getForm().show();
         }
@@ -216,6 +216,8 @@ public class Controller{
                         updateLogWorkoutList();
                         updateLogExerciseSetList();
                         updateExerciseList();
+                        updateAllAchievementsList();
+                        updateCompletedAchievementsList();
                         openMainFrame();
                     } else{
                         loginFrame.failedLogin();
