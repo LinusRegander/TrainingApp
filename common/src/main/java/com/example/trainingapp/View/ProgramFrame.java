@@ -202,14 +202,14 @@ public class ProgramFrame{
         d.removeAll();
 
         for (int i = 0; i < workoutInfoList.size(); i++) {
-            id = workoutInfoList.get(i).getId();
-            name = workoutInfoList.get(i).getName();
-            username = workoutInfoList.get(i).getCreatorUsername();
-            email = workoutInfoList.get(i).getCreatorEmail();
-            description = workoutInfoList.get(i).getDescription();
-            tag1 = workoutInfoList.get(i).getTag1();
-            tag2 = workoutInfoList.get(i).getTag2();
-            tag3 = workoutInfoList.get(i).getTag3();
+            int id = workoutInfoList.get(i).getId();
+            String name = workoutInfoList.get(i).getName();
+            String username = workoutInfoList.get(i).getCreatorUsername();
+            String email = workoutInfoList.get(i).getCreatorEmail();
+            String description = workoutInfoList.get(i).getDescription();
+            String tag1 = workoutInfoList.get(i).getTag1();
+            String tag2 = workoutInfoList.get(i).getTag2();
+            String tag3 = workoutInfoList.get(i).getTag3();
             add = new MultiButton(name);
             add.setTextLine2("Click to see more");
             add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
@@ -224,14 +224,14 @@ public class ProgramFrame{
         d.removeAll();
 
         for (int i = 0; i < workoutInfoList.size(); i++) {
-            id = workoutInfoList.get(i).getId();
-            name = workoutInfoList.get(i).getName();
-            username = workoutInfoList.get(i).getCreatorUsername();
-            email = workoutInfoList.get(i).getCreatorEmail();
-            description = workoutInfoList.get(i).getDescription();
-            tag1 = workoutInfoList.get(i).getTag1();
-            tag2 = workoutInfoList.get(i).getTag2();
-            tag3 = workoutInfoList.get(i).getTag3();
+            int id = workoutInfoList.get(i).getId();
+            String name = workoutInfoList.get(i).getName();
+            String username = workoutInfoList.get(i).getCreatorUsername();
+            String email = workoutInfoList.get(i).getCreatorEmail();
+            String description = workoutInfoList.get(i).getDescription();
+            String tag1 = workoutInfoList.get(i).getTag1();
+            String tag2 = workoutInfoList.get(i).getTag2();
+            String tag3 = workoutInfoList.get(i).getTag3();
 
             if (!workoutInfoList.get(i).getCreatorEmail().equals(controller.getLoggedInEmail())) {
                 add = new MultiButton(name);
@@ -249,14 +249,14 @@ public class ProgramFrame{
         d.removeAll();
 
         for (int i = 0; i < programInfoList.size(); i++) {
-            id = programInfoList.get(i).getId();
-            name = programInfoList.get(i).getName();
-            username = programInfoList.get(i).getCreatorUsername();
-            email = programInfoList.get(i).getCreatorEmail();
-            description = programInfoList.get(i).getDescription();
-            tag1 = programInfoList.get(i).getTag1();
-            tag2 = programInfoList.get(i).getTag2();
-            tag3 = programInfoList.get(i).getTag3();
+            int id = programInfoList.get(i).getId();
+            String name = programInfoList.get(i).getName();
+            String username = programInfoList.get(i).getCreatorUsername();
+            String email = programInfoList.get(i).getCreatorEmail();
+            String description = programInfoList.get(i).getDescription();
+            String tag1 = programInfoList.get(i).getTag1();
+            String tag2 = programInfoList.get(i).getTag2();
+            String tag3 = programInfoList.get(i).getTag3();
             add = new MultiButton(name);
             add.setTextLine2("Click to see more");
             add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
@@ -271,14 +271,14 @@ public class ProgramFrame{
         d.removeAll();
 
         for (int i = 0; i < workoutInfoList.size(); i++) {
-            id = workoutInfoList.get(i).getId();
-            name = workoutInfoList.get(i).getName();
-            username = workoutInfoList.get(i).getCreatorUsername();
-            email = workoutInfoList.get(i).getCreatorEmail();
-            description = workoutInfoList.get(i).getDescription();
-            tag1 = workoutInfoList.get(i).getTag1();
-            tag2 = workoutInfoList.get(i).getTag2();
-            tag3 = workoutInfoList.get(i).getTag3();
+            int id = workoutInfoList.get(i).getId();
+            String name = workoutInfoList.get(i).getName();
+            String username = workoutInfoList.get(i).getCreatorUsername();
+            String email = workoutInfoList.get(i).getCreatorEmail();
+            String description = workoutInfoList.get(i).getDescription();
+            String tag1 = workoutInfoList.get(i).getTag1();
+            String tag2 = workoutInfoList.get(i).getTag2();
+            String tag3 = workoutInfoList.get(i).getTag3();
 
             if (workoutInfoList.get(i).getCreatorEmail().equals(controller.getLoggedInEmail())) {
                 add = new MultiButton(name);
