@@ -93,25 +93,30 @@ public class ExerciseSelectFrame {
             }
         }
         exercises.addActionListener(l -> {
-            descriptionText.setText(exercises.getSelectedItem().getDescription());
+            /*descriptionText.setText(exercises.getSelectedItem().getDescription());
             descriptionText.revalidate();
             exerciseSelectForm.revalidate();
+            exerciseSelectForm.repaint();*/
+            if(Dialog.show(exercises.getSelectedItem().getName(), exercises.getSelectedItem().getDescription(), "Select", "Cancel")){
+                createFrame.addExercise(exercises.getSelectedItem().getName(), exercises.getSelectedItem().getId());
+                createFrame.getForm().show();
+            }
         });
         exerciseSelectContainer.add(exercises);
         bigContainer.add(exerciseSelectContainer);
-        Container buttonContainer = new Container(BoxLayout.xCenter());
-        Button addButton = new Button("Choose exercise");
-        addButton.addActionListener(l -> {
-            createFrame.addExercise(exercises.getSelectedItem().getName(), exercises.getSelectedItem().getId());
-            createFrame.getForm().show();
-        });
-        buttonContainer.add(addButton);
-        bigContainer.add(buttonContainer);
-        Container descriptionContainer = new Container(BoxLayout.yBottom());
-        Label description = new Label("Description:");
-        descriptionContainer.add(description);
-        descriptionContainer.add(descriptionText);
-        bigContainer.add(descriptionContainer);
+        //Container buttonContainer = new Container(BoxLayout.xCenter());
+        //Button addButton = new Button("Choose exercise");
+        //addButton.addActionListener(l -> {
+          //  createFrame.addExercise(exercises.getSelectedItem().getName(), exercises.getSelectedItem().getId());
+           // createFrame.getForm().show();
+        //});
+        //buttonContainer.add(addButton);
+        //bigContainer.add(buttonContainer);
+        //Container descriptionContainer = new Container(BoxLayout.yBottom());
+        //Label description = new Label("Description:");
+        //descriptionContainer.add(description);
+        //descriptionContainer.add(descriptionText);
+        //bigContainer.add(descriptionContainer);
         exerciseSelectForm.add(CENTER, bigContainer);
     }
 

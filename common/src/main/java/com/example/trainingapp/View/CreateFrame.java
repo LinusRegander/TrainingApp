@@ -332,19 +332,22 @@ public class CreateFrame implements ICallback {
         Label tempTag = new Label("Enter 3 Tags:");
         tempA.add(tempTag);
 
-        TextField tag1 = new TextField();
+        //TextField tag1 = new TextField();
+        ComboBox<String> tag1 = new ComboBox<>("Strength", "Hypertrophy", "Legs", "Chest", "Shoulders", "Biceps", "Triceps", "Arms", "Back", "Glutes");
         tempA.add(tag1);
 
-        TextField tag2 = new TextField();
+        //TextField tag2 = new TextField();
+        ComboBox<String> tag2 = new ComboBox<>("Strength", "Hypertrophy", "Legs", "Chest", "Shoulders", "Biceps", "Triceps", "Arms", "Back", "Glutes");
         tempA.add(tag2);
 
-        TextField tag3 = new TextField();
+        //TextField tag3 = new TextField();
+        ComboBox<String> tag3 = new ComboBox<>("Strength", "Hypertrophy", "Legs", "Chest", "Shoulders", "Biceps", "Triceps", "Arms", "Back", "Glutes");
         tempA.add(tag3);
 
         Button finished = new Button("Finished");
 
         finished.addActionListener(l -> {
-            controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getText(), tag2.getText(), tag3.getText(), exerciseInfo);
+            controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getSelectedItem(), tag2.getSelectedItem(), tag3.getSelectedItem(), exerciseInfo);
         });
         tempA.add(finished);
         tempForm.add(CENTER, tempA);
