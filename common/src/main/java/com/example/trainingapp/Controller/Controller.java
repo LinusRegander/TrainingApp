@@ -261,7 +261,7 @@ public class Controller{
 
                     id[0] = dis.readInt();
                     workoutList.add(new WorkoutInfo(id[0], name, creatorEmail, description, tag1, tag2, tag3, username));
-                    informee.inform(id[0]);
+                    informee.inform(id[0], description);
 
                 } catch (IOException e){
                     e.printStackTrace();
@@ -272,7 +272,7 @@ public class Controller{
         return id[0];
     }
 
-    public void addLogWorkout(String email, int workoutId, String date, String evaluation){
+    public void addLogWorkout(String email, int workoutId, String date, String evaluation, ArrayList<Exercise> exercises){
         SocketConnection sc = new SocketConnection(){
             @Override
             public void connectionError(int i, String s){
@@ -284,9 +284,19 @@ public class Controller{
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    String temp = email + "\0" + workoutId + "\0" + date + "\0" + evaluation;
+
+                    StringBuilder temp = new StringBuilder(email + "\0" + workoutId + "\0" + date + "\0" + evaluation);
+
+                    for(Exercise exercise : exercises){
+                        temp.append("\0").append(exercise.getId());
+                        temp.append("\0").append(exercise.getName());
+                        for(Set set : exercise.getSets()){
+                            temp.append("\0").append(set.getReps());
+                            temp.append("\0").append(set.getWeight());
+                        }
+                    }
                     dos.writeInt(6);
-                    dos.writeUTF(temp);
+                    dos.writeUTF(temp.toString());
                     dos.flush();
 
                     int id = dis.readInt();

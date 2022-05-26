@@ -383,8 +383,8 @@ public class CreateFrame implements ICallback {
     }
 
     @Override
-    public void inform(int id){
-        controller.addLogWorkout(controller.getLoggedInEmail(), id, getDate(), null);
+    public void inform(int id, String evaluation){
+        controller.addLogWorkout(controller.getLoggedInEmail(), id, getDate(), evaluation, exercises);
         controller.openMainFrame();
         controller.newCreateFrame();
     }

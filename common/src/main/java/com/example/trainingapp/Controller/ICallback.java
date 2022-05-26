@@ -1,5 +1,5 @@
 package com.example.trainingapp.Controller;
 
 public interface ICallback {
-    void inform(int id);
+    void inform(int id, String evaluation);
 }
