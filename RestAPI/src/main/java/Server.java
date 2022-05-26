@@ -229,7 +229,7 @@ public class Server extends Thread{
 
             int id = services.insertNewLogworkout(email, workoutId, date, evaluation);
 
-            for(int i = 4; i<strings.length-4; i += 4){
+            for(int i = 4; i<strings.length; i += 4){
                 services.insertLogExerciseSet(Integer.parseInt(strings[i]), Integer.parseInt(strings[i+1]), Integer.parseInt(strings[i+2]), Double.parseDouble(strings[i+3]), email, id);
             }
 

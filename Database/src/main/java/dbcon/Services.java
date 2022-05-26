@@ -289,7 +289,7 @@ public class Services {
     //email == inloggade email
     public void insertLogExerciseSet(int exerciseId, int set, int reps, double weight, String loggedInMail, int logWorkoutId) throws SQLException{
         Connection con = this.getDatabaseConnection();
-        PreparedStatement pstmt = con.prepareStatement("Call training.logExerciseSet(?,?,?,?,?,?)");
+        PreparedStatement pstmt = con.prepareStatement("call training.logexerciseset(?,?,?,?,?,?)");
         pstmt.setInt(1, exerciseId);
         pstmt.setInt(2, set);
         pstmt.setInt(3, reps);
