@@ -58,6 +58,7 @@ public class Controller{
         loginFrame = new LoginFrame(this);
     }
 
+    //192.168.0.3
     public void connect(SocketConnection socketConnection){
         Socket.connect("127.0.0.1", 541, socketConnection);
     }
