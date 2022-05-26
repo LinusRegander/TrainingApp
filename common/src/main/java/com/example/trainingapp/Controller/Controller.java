@@ -286,14 +286,16 @@ public class Controller{
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
 
                     StringBuilder temp = new StringBuilder(email + "\0" + workoutId + "\0" + date + "\0" + evaluation);
-
+                    int i = 1;
                     for(Exercise exercise : exercises){
-                        temp.append("\0").append(exercise.getId());
-                        temp.append("\0").append(exercise.getName());
                         for(Set set : exercise.getSets()){
+                            temp.append("\0").append(exercise.getId());
+                            temp.append("\0").append(i);
                             temp.append("\0").append(set.getReps());
                             temp.append("\0").append(set.getWeight());
+                            i++;
                         }
+                        i = 1;
                     }
                     dos.writeInt(6);
                     dos.writeUTF(temp.toString());
