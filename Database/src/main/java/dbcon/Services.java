@@ -635,7 +635,9 @@ public class Services {
             String tag3 = rs.getString("tag_3");
             String username = rs.getString("username");
 
-            workoutInfos.add(new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, username));
+            WorkoutInfo workoutInfo = new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, username);
+            //PreparedStatement pstmt1 = con.prepareStatement("select * from ")
+            workoutInfos.add(workoutInfo);
         }
         pstmt.close();
         rs.close();

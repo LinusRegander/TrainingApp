@@ -168,7 +168,12 @@ public class Server extends Thread{
             String tag3 = strings[5];
 
             WorkoutInfo workoutInfo = services.insertNewWorkout(workoutName, creatorEmail, description, tag1, tag2, tag3);
+
             int id = workoutInfo.getId();
+
+            for(int i=6; i<strings.length; i++){
+                services.insertExerciseInToWorkout(creatorEmail, Integer.parseInt(strings[i]), id);
+            }
 
             dos.writeInt(id);
             dos.flush();
@@ -232,7 +237,6 @@ public class Server extends Thread{
             for(int i = 4; i<strings.length; i += 4){
                 services.insertLogExerciseSet(Integer.parseInt(strings[i]), Integer.parseInt(strings[i+1]), Integer.parseInt(strings[i+2]), Double.parseDouble(strings[i+3]), email, id);
             }
-
 
             dos.writeInt(id);
             dos.flush();
