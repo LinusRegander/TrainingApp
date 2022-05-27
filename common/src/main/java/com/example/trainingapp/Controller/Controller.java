@@ -251,10 +251,6 @@ public class Controller{
 
                     for(ExerciseInfo exerciseInfo : exerciseInfos){
                         temp.append("\0").append(exerciseInfo.getId());
-                        temp.append("\0").append(exerciseInfo.getName());
-                        temp.append("\0").append(exerciseInfo.getDescription());
-                        temp.append("\0").append(exerciseInfo.getPrimary());
-                        temp.append("\0").append(exerciseInfo.getSecondary());
                     }
                     dos.writeInt(5);
                     dos.writeUTF(temp.toString());
@@ -849,4 +845,6 @@ public class Controller{
     public void setInformee(ICallback informee){
         this.informee = informee;
     }
+
+
 }
