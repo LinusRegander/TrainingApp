@@ -189,6 +189,21 @@ public class Services {
         else {
             return "You do not have access";
         }
+    }
+
+    public void insertExerciseInToWorkout(int exerciseId, int workoutId, int sets) throws SQLException{
+
+        Connection con = this.getDatabaseConnection();
+        PreparedStatement pstmt = con.prepareStatement("insert into training.workout(exerciseid, workoutid, sets) " +
+                "values(?,?,?);");
+
+        pstmt.setInt(1, exerciseId);
+        pstmt.setInt(2, workoutId);
+        pstmt.setInt(3, sets);
+
+        pstmt.execute();
+        pstmt.close();
+        con.close();
 
     }
 
@@ -635,8 +650,19 @@ public class Services {
             String tag3 = rs.getString("tag_3");
             String username = rs.getString("username");
 
-            WorkoutInfo workoutInfo = new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, username);
-            //PreparedStatement pstmt1 = con.prepareStatement("select * from ")
+            ArrayList<ExerciseInfo> exerciseInfos = new ArrayList<>();
+            PreparedStatement pstmt1 = con.prepareStatement("select * from training.workout where workoutid = ?");
+            pstmt1.setInt(1, id);
+            ResultSet rs1 = pstmt.executeQuery();
+            while (rs1.next()){
+                int exerciseId = rs1.getInt("exerciseid");
+                int sets = rs1.getInt("sets");
+                exerciseInfos.add(getExerciseInfo(con, exerciseId, sets));
+            }
+            rs1.close();
+            pstmt1.close();
+
+            WorkoutInfo workoutInfo = new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, username, exerciseInfos);
             workoutInfos.add(workoutInfo);
         }
         pstmt.close();
@@ -844,6 +870,23 @@ public class Services {
         pstmt.close();
         con.close();
         return id;
+    }
+
+    public ExerciseInfo getExerciseInfo(Connection con, int exerciseId, int sets) throws SQLException{
+        ExerciseInfo exerciseInfo = null;
+        PreparedStatement pstmt = con.prepareStatement("Select * from training.exercise where exerciseid = ?");
+        pstmt.setInt(1, exerciseId);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()){
+            String name = rs.getString("name");
+            String description = rs.getString("description");
+            String pri = rs.getString("primarymusclegroup");
+            String sec = rs.getString("secondarymusclegroup");
+            exerciseInfo = new ExerciseInfo(exerciseId, name, description, pri, sec, sets);
+        }
+        rs.close();
+        pstmt.close();
+        return exerciseInfo;
     }
 
     public boolean checkIfCreatorOfWorkout(String email, int workoutId) throws SQLException {

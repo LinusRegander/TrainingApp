@@ -171,8 +171,8 @@ public class Server extends Thread{
 
             int id = workoutInfo.getId();
 
-            for(int i=6; i<strings.length; i++){
-                services.insertExerciseInToWorkout(creatorEmail, Integer.parseInt(strings[i]), id);
+            for(int i=6; i<strings.length; i+=2){
+                services.insertExerciseInToWorkout(Integer.parseInt(strings[i]), id, Integer.parseInt(strings[i+1]));
             }
 
             dos.writeInt(id);
@@ -327,7 +327,17 @@ public class Server extends Thread{
                         .append(workoutInfo.getTag1()).append("\0")
                         .append(workoutInfo.getTag2()).append("\0")
                         .append(workoutInfo.getTag3()).append("\0")
-                        .append(workoutInfo.getCreatorUsername()).append("\0");
+                        .append(workoutInfo.getCreatorUsername()).append("\0")
+                        .append(workoutInfo.getAmountOfExercise()).append("\0");
+                ArrayList<ExerciseInfo> exercises = workoutInfo.getExerciseInfos();
+                for (ExerciseInfo exerciseInfo : exercises){
+                    temp.append(exerciseInfo.getId()).append("\0")
+                            .append(exerciseInfo.getName()).append("\0")
+                            .append(exerciseInfo.getDescription()).append("\0")
+                            .append(exerciseInfo.getPrimary()).append("\0")
+                            .append(exerciseInfo.getSecondary()).append("\0")
+                            .append(exerciseInfo.getSetCount()).append("\0");
+                }
             }
 
             dos.writeUTF(temp.toString());

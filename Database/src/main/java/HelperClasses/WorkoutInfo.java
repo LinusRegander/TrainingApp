@@ -86,6 +86,9 @@ public class WorkoutInfo {
     public void setExerciseInfos(ArrayList<ExerciseInfo> exerciseInfos) {
         this.exerciseInfos = exerciseInfos;
     }
+    public int getAmountOfExercise(){
+        return exerciseInfos.size();
+    }
     public String toString(){
         return name;
     }
