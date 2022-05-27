@@ -80,15 +80,12 @@ public class WorkoutInfo {
     public void setCreatorUsername(String creatorUsername) {
         this.creatorUsername = creatorUsername;
     }
-
     public ArrayList<ExerciseInfo> getExerciseInfos() {
         return exerciseInfos;
     }
-
     public void setExerciseInfos(ArrayList<ExerciseInfo> exerciseInfos) {
         this.exerciseInfos = exerciseInfos;
     }
-
     public String toString(){
         return name;
     }

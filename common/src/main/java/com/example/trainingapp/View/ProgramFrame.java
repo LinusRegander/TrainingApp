@@ -144,7 +144,7 @@ public class ProgramFrame{
     /**
      * Creates a new form where you can input information and create a workout
      */
-    public void openWorkoutInfo(String name, String username, String email, String description, String tag1, String tag2, String tag3){
+    public void openWorkoutInfo(String name, String username, String email, String description, String tag1, String tag2, String tag3, ArrayList<ExerciseInfo> exercises){
         Form tempForm = new Form(BoxLayout.y());
         tempForm.setScrollableY(true);
 
@@ -194,6 +194,13 @@ public class ProgramFrame{
         Label lblTags = new Label("Tags: " + tag1 + " " + tag2 + " " + tag3);
         workoutContainer.add(lblTags);
 
+        Label lblExercises = new Label("Exercises:");
+        workoutContainer.add(lblExercises);
+
+        for(int i = 0; i < exercises.size(); i++){
+            workoutContainer.add(new Label(exercises.get(i).getName()));
+        }
+
         tempForm.add(workoutContainer);
         tempForm.show();
     }
@@ -210,9 +217,10 @@ public class ProgramFrame{
             String tag1 = workoutInfoList.get(i).getTag1();
             String tag2 = workoutInfoList.get(i).getTag2();
             String tag3 = workoutInfoList.get(i).getTag3();
+            ArrayList<ExerciseInfo> exercises = workoutInfoList.get(i).getExerciseInfos();
             add = new MultiButton(name);
             add.setTextLine2("Click to see more");
-            add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
+            add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3, exercises));
             d.add(add);
         }
 
@@ -232,11 +240,12 @@ public class ProgramFrame{
             String tag1 = workoutInfoList.get(i).getTag1();
             String tag2 = workoutInfoList.get(i).getTag2();
             String tag3 = workoutInfoList.get(i).getTag3();
+            ArrayList<ExerciseInfo> exercises = workoutInfoList.get(i).getExerciseInfos();
 
             if (!workoutInfoList.get(i).getCreatorEmail().equals(controller.getLoggedInEmail())) {
                 add = new MultiButton(name);
                 add.setTextLine2("Click to see more");
-                add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
+                add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3, exercises));
                 d.add(add);
             }
         }
@@ -257,9 +266,10 @@ public class ProgramFrame{
             String tag1 = programInfoList.get(i).getTag1();
             String tag2 = programInfoList.get(i).getTag2();
             String tag3 = programInfoList.get(i).getTag3();
+            ArrayList<ExerciseInfo> exercises = workoutInfoList.get(i).getExerciseInfos();
             add = new MultiButton(name);
             add.setTextLine2("Click to see more");
-            add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
+            add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3, exercises));
             d.add(add);
         }
 
@@ -279,11 +289,11 @@ public class ProgramFrame{
             String tag1 = workoutInfoList.get(i).getTag1();
             String tag2 = workoutInfoList.get(i).getTag2();
             String tag3 = workoutInfoList.get(i).getTag3();
-
+            ArrayList<ExerciseInfo> exercises = workoutInfoList.get(i).getExerciseInfos();
             if (workoutInfoList.get(i).getCreatorEmail().equals(controller.getLoggedInEmail())) {
                 add = new MultiButton(name);
                 add.setTextLine2("Click to see more");
-                add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3));
+                add.addActionListener(l -> openWorkoutInfo(name, username, email, description, tag1, tag2, tag3, exercises));
                 d.add(add);
             }
         }
