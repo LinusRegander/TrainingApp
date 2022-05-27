@@ -435,20 +435,37 @@ public class Controller{
                     dos.writeInt(8);
                     dos.flush();
 
+                    int index = 0;
                     ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
                     String[] strings = split(dis.readUTF());
 
-                    for(int i = 0; i < strings.length / 8; i++){
-                        int id = Integer.parseInt(strings[i * 8]);
-                        String name = strings[i * 8 + 1];
-                        String creatorEmail = strings[i * 8 + 2];
-                        String description = strings[i * 8 + 3];
-                        String tag1 = strings[i * 8 + 4];
-                        String tag2 = strings[i * 8 + 5];
-                        String tag3 = strings[i * 8 + 6];
-                        String creatorUsername = strings[i * 8 + 7];
+                    for(int i = 0; i < strings.length; i+=index){
+                        int id = Integer.parseInt(strings[i]);
+                        String name = strings[i + 1];
+                        String creatorEmail = strings[i + 2];
+                        String description = strings[i + 3];
+                        String tag1 = strings[i + 4];
+                        String tag2 = strings[i + 5];
+                        String tag3 = strings[i + 6];
+                        String creatorUsername = strings[i + 7];
 
-                        arrayTemp.add(new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, creatorUsername));
+                        int sets = Integer.parseInt(strings[i + 8]);
+                        index += 9;
+                        ArrayList<ExerciseInfo> exerciseTemp = new ArrayList<>();
+
+                        for(int j = index; j < sets * index; j+=6){
+                            int exId = Integer.parseInt(strings[j]);
+                            String exName = strings[j + 1];
+                            String exDescription = strings[j + 2];
+                            String primary = strings[j + 3];
+                            String secondary = strings[j + 4];
+                            int setCount = Integer.parseInt(strings[j + 5]);
+
+                            exerciseTemp.add(new ExerciseInfo(exId, exName, exDescription, primary, secondary, setCount));
+                        }
+                        index += sets * 6;
+
+                        arrayTemp.add(new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, creatorUsername, exerciseTemp));
                     }
                     workoutList = arrayTemp;
                 } catch (IOException e){
