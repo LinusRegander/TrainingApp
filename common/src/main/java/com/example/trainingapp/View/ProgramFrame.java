@@ -209,7 +209,6 @@ public class ProgramFrame{
         d.removeAll();
 
         for (int i = 0; i < workoutInfoList.size(); i++) {
-            int id = workoutInfoList.get(i).getId();
             String name = workoutInfoList.get(i).getName();
             String username = workoutInfoList.get(i).getCreatorUsername();
             String email = workoutInfoList.get(i).getCreatorEmail();

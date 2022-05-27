@@ -233,7 +233,7 @@ public class Controller{
         connect(sc);
     }
 
-    public int addWorkoutInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<ExerciseInfo> exerciseInfos){
+    public int addWorkoutInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<Exercise> exercises){
         final int[] id = new int[1];
         SocketConnection sc = new SocketConnection(){
             @Override
@@ -249,8 +249,9 @@ public class Controller{
 
                     StringBuilder temp = new StringBuilder(name + "\0" + creatorEmail + "\0" + description + "\0" + tag1 + "\0" + tag2 + "\0" + tag3);
 
-                    for(ExerciseInfo exerciseInfo : exerciseInfos){
-                        temp.append("\0").append(exerciseInfo.getId());
+                    for(Exercise exercise : exercises){
+                        temp.append("\0").append(exercise.getId());
+                        temp.append("\0").append(exercise.getSetSize());
                     }
                     dos.writeInt(5);
                     dos.writeUTF(temp.toString());

@@ -347,7 +347,7 @@ public class CreateFrame implements ICallback {
         Button finished = new Button("Finished");
 
         finished.addActionListener(l -> {
-            controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getSelectedItem(), tag2.getSelectedItem(), tag3.getSelectedItem(), exerciseInfo);
+            controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getSelectedItem(), tag2.getSelectedItem(), tag3.getSelectedItem(), exercises);
         });
         tempA.add(finished);
         tempForm.add(CENTER, tempA);

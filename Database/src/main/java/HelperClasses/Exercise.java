@@ -16,6 +16,9 @@ public class Exercise {
     public ArrayList<Set> getSets() {
         return sets;
     }
+    public int getSetSize(){
+        return sets.size();
+    }
 
     public String getName() {
         return name;
