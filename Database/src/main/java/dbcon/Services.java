@@ -653,7 +653,7 @@ public class Services {
             ArrayList<ExerciseInfo> exerciseInfos = new ArrayList<>();
             PreparedStatement pstmt1 = con.prepareStatement("select * from training.workout where workoutid = ?");
             pstmt1.setInt(1, id);
-            ResultSet rs1 = pstmt.executeQuery();
+            ResultSet rs1 = pstmt1.executeQuery();
             while (rs1.next()){
                 int exerciseId = rs1.getInt("exerciseid");
                 int sets = rs1.getInt("sets");
