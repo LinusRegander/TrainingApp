@@ -1,6 +1,7 @@
 package com.example.trainingapp.Controller;
 
 import HelperClasses.*;
+import HelperClasses.Set;
 import com.codename1.io.BufferedOutputStream;
 import com.codename1.io.BufferedInputStream;
 import com.codename1.l10n.ParseException;
@@ -11,9 +12,7 @@ import com.codename1.io.Socket;
 import com.codename1.io.SocketConnection;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
     @author Linus Regander, Daniel Olsson, William Dock, Yun-Bo Chow, Francis Jonsson
@@ -435,35 +434,34 @@ public class Controller{
                     dos.writeInt(8);
                     dos.flush();
 
-                    int index = 0;
                     ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
                     String[] strings = split(dis.readUTF());
+                    List<String> listTemp = Arrays.asList(strings);
+                    LinkedList<String> linkTemp = new LinkedList<>(listTemp);
 
-                    for(int i = 0; i < strings.length; i+=index){
-                        int id = Integer.parseInt(strings[i]);
-                        String name = strings[i + 1];
-                        String creatorEmail = strings[i + 2];
-                        String description = strings[i + 3];
-                        String tag1 = strings[i + 4];
-                        String tag2 = strings[i + 5];
-                        String tag3 = strings[i + 6];
-                        String creatorUsername = strings[i + 7];
+                    while(!linkTemp.isEmpty()){
+                        int id = Integer.parseInt(linkTemp.remove());
+                        String name = linkTemp.remove();
+                        String creatorEmail = linkTemp.remove();
+                        String description = linkTemp.remove();
+                        String tag1 = linkTemp.remove();
+                        String tag2 = linkTemp.remove();
+                        String tag3 = linkTemp.remove();
+                        String creatorUsername = linkTemp.remove();
+                        int sets = Integer.parseInt(linkTemp.remove());
 
-                        int sets = Integer.parseInt(strings[i + 8]);
-                        index += 9;
                         ArrayList<ExerciseInfo> exerciseTemp = new ArrayList<>();
 
-                        for(int j = index; j < sets * index; j+=6){
-                            int exId = Integer.parseInt(strings[j]);
-                            String exName = strings[j + 1];
-                            String exDescription = strings[j + 2];
-                            String primary = strings[j + 3];
-                            String secondary = strings[j + 4];
-                            int setCount = Integer.parseInt(strings[j + 5]);
+                        for(int i = 0; i < sets; i++){
+                            int exId = Integer.parseInt(linkTemp.remove());
+                            String exName = linkTemp.remove();
+                            String exDescription = linkTemp.remove();
+                            String primary = linkTemp.remove();
+                            String secondary = linkTemp.remove();
+                            int setCount = Integer.parseInt(linkTemp.remove());
 
                             exerciseTemp.add(new ExerciseInfo(exId, exName, exDescription, primary, secondary, setCount));
                         }
-                        index += sets * 6;
 
                         arrayTemp.add(new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, creatorUsername, exerciseTemp));
                     }
@@ -853,6 +851,7 @@ public class Controller{
     }
 
     public ArrayList<WorkoutInfo> getWorkoutInfoList(){
+        System.out.println(workoutList);
         return workoutList;
     }
 
