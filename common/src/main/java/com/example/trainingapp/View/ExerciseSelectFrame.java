@@ -83,10 +83,10 @@ public class ExerciseSelectFrame {
     }
 
     public void exerciseSelector(){
-        Container bigContainer = new Container(BoxLayout.y());
+        //Container bigContainer = new Container(BoxLayout.y());
         exerciseSelectContainer = new Container(BoxLayout.y());
         exerciseSelectContainer.setScrollableY(true);
-        SpanLabel descriptionText = new SpanLabel("");
+        //SpanLabel descriptionText = new SpanLabel("");
         for(ExerciseInfo a : exerciseInfos){
             if(!workoutExercises.contains(a.getName())) {
                 exercises.addItem(a);
@@ -103,7 +103,7 @@ public class ExerciseSelectFrame {
             }
         });
         exerciseSelectContainer.add(exercises);
-        bigContainer.add(exerciseSelectContainer);
+        //bigContainer.add(exerciseSelectContainer);
         //Container buttonContainer = new Container(BoxLayout.xCenter());
         //Button addButton = new Button("Choose exercise");
         //addButton.addActionListener(l -> {
@@ -117,7 +117,7 @@ public class ExerciseSelectFrame {
         //descriptionContainer.add(description);
         //descriptionContainer.add(descriptionText);
         //bigContainer.add(descriptionContainer);
-        exerciseSelectForm.add(CENTER, bigContainer);
+        exerciseSelectForm.add(CENTER, exerciseSelectContainer);
     }
 
     public void navBar() {

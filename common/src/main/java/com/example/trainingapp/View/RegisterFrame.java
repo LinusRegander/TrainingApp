@@ -87,7 +87,7 @@ public class RegisterFrame implements ActionListener{
 
         pLabel = new Label("Choose Password:");
         registerContainer .add(pLabel);
-        pTextField = new TextField();
+        pTextField = new TextField(TextField.PASSWORD);
         registerContainer .add(pTextField);
 
         eLabel = new Label("Choose Email:");
