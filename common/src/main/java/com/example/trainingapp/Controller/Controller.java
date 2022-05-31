@@ -88,10 +88,13 @@ public class Controller{
     }
 
     public void openCreateFrame(){
-        System.out.println(logWorkoutList);
         if(createFrame == null){
             createFrame = new CreateFrame(this);
         }
+        createFrame.getForm().show();
+    }
+    public void openNewCreateFrame(ArrayList<ExerciseInfo> exerciseInfos, int workoutId){
+        createFrame = new CreateFrame(this, exerciseInfos, workoutId);
         createFrame.getForm().show();
     }
 
@@ -851,7 +854,6 @@ public class Controller{
     }
 
     public ArrayList<WorkoutInfo> getWorkoutInfoList(){
-        System.out.println(workoutList);
         return workoutList;
     }
 

@@ -12,6 +12,15 @@ public class Exercise {
         this.name = name;
         this.id = id;
     }
+    public Exercise(String name, int id, int setCount){
+        this.name = name;
+        this.id = id;
+        sets = new ArrayList<>();
+        for(int i = 0; i < setCount; i++){
+            Set set = new Set(0, 0.0);
+            sets.add(set);
+        }
+    }
 
     public ArrayList<Set> getSets() {
         return sets;
@@ -26,5 +35,14 @@ public class Exercise {
 
     public int getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Exercise{" +
+                "sets=" + sets +
+                ", name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

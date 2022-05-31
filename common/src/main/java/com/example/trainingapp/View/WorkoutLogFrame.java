@@ -83,12 +83,9 @@ public class WorkoutLogFrame{
         logContainer.setScrollableY(true);
         for(int i = 0; i < logWorkouts.size(); i++){
             int id = logWorkouts.get(i).getWorkoutId();
-            System.out.println("ö" + id);
             String name = "";
             for(WorkoutInfo workoutInfo : workouts){
-                System.out.println("hej");
                 if(id == workoutInfo.getId()){
-                    System.out.println(workoutInfo.getName());
                     name = workoutInfo.getName();
                 }
             }

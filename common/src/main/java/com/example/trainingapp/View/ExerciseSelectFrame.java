@@ -99,6 +99,7 @@ public class ExerciseSelectFrame {
             exerciseSelectForm.repaint();*/
             if(Dialog.show(exercises.getSelectedItem().getName(), exercises.getSelectedItem().getDescription(), "Select", "Cancel")){
                 createFrame.addExercise(exercises.getSelectedItem().getName(), exercises.getSelectedItem().getId());
+                createFrame.setChange(true);
                 createFrame.getForm().show();
             }
         });

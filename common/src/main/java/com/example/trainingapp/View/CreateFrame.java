@@ -37,6 +37,8 @@ public class CreateFrame implements ICallback {
     private Form form;
     private ArrayList<ExerciseInfo> exerciseInfo = new ArrayList<>();
     private ArrayList<Exercise> exercises = new ArrayList<>();
+    private Boolean change = false;
+    private int workoutId;
 
     /**
      * Constructor
@@ -45,6 +47,13 @@ public class CreateFrame implements ICallback {
         this.controller = controller;
         createForm();
         controller.setInformee(this);
+    }
+    public CreateFrame(Controller controller, ArrayList<ExerciseInfo> exerciseInfos, int workoutId){
+        this.controller = controller;
+        this.workoutId = workoutId;
+        createForm();
+        controller.setInformee(this);
+        populateWorkout(exerciseInfos);
     }
 
     /**
@@ -148,7 +157,10 @@ public class CreateFrame implements ICallback {
 
         Container addExerciseContainer = new Container(BoxLayout.xCenter());
         Button addExerciseButton = new Button("+ Add exercise");
-        addExerciseButton.addActionListener(l -> controller.openExerciseSelectFrame(this));
+        addExerciseButton.addActionListener(l -> {
+            controller.openExerciseSelectFrame(this);
+
+        });
         addExerciseContainer.add(addExerciseButton);
 
         workoutContainer.add(addExerciseContainer);
@@ -188,7 +200,7 @@ public class CreateFrame implements ICallback {
         workoutContainer.revalidate();
     }
 
-    public void addExercise(String name, int id){
+    public Container addExercise(String name, int id){
         Container exerciseContainer = new Container(BoxLayout.y());
         exerciseContainer.setUIID("Container2");
 
@@ -229,11 +241,15 @@ public class CreateFrame implements ICallback {
 
         Button addSetButton = new Button("+ Add set");
         addSetButton.setUIID("AchievementButton");
-        addSetButton.addActionListener(l -> addSet(setsContainer, ++setCount[0], exercise.getSets()));
+        addSetButton.addActionListener(l -> {
+            addSet(setsContainer, ++setCount[0], exercise.getSets());
+            setChange(true);
+        });
         exerciseContainer.add(addSetButton);
 
         exercisesContainer.add(exerciseContainer);
         exercisesContainer.revalidate();
+        return setsContainer;
     }
 
     /**
@@ -318,36 +334,54 @@ public class CreateFrame implements ICallback {
         Container tempA = new Container(BoxLayout.y());
 
         Label name = new Label("Enter Workout Name:");
-        tempA.add(name);
+
 
         TextField tempName = new TextField();
-        tempA.add(tempName);
+
 
         Label description = new Label("Enter a description");
-        tempA.add(description);
+
 
         TextField tempDescription = new TextField();
-        tempA.add(tempDescription);
+
 
         Label tempTag = new Label("Enter 3 Tags:");
-        tempA.add(tempTag);
+
 
         //TextField tag1 = new TextField();
         ComboBox<String> tag1 = new ComboBox<>("Strength", "Hypertrophy", "Legs", "Chest", "Shoulders", "Biceps", "Triceps", "Arms", "Back", "Glutes");
-        tempA.add(tag1);
+
 
         //TextField tag2 = new TextField();
         ComboBox<String> tag2 = new ComboBox<>("Strength", "Hypertrophy", "Legs", "Chest", "Shoulders", "Biceps", "Triceps", "Arms", "Back", "Glutes");
-        tempA.add(tag2);
+
 
         //TextField tag3 = new TextField();
         ComboBox<String> tag3 = new ComboBox<>("Strength", "Hypertrophy", "Legs", "Chest", "Shoulders", "Biceps", "Triceps", "Arms", "Back", "Glutes");
-        tempA.add(tag3);
+
+        if(change) {
+            tempA.add(name);
+            tempA.add(tempName);
+            tempA.add(description);
+            tempA.add(tempDescription);
+            tempA.add(tempTag);
+            tempA.add(tag1);
+            tempA.add(tag2);
+            tempA.add(tag3);
+        } else {
+            description.setText("Evaluation");
+            tempA.add(description);
+            tempA.add(tempDescription);
+        }
 
         Button finished = new Button("Finished");
 
         finished.addActionListener(l -> {
-            controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getSelectedItem(), tag2.getSelectedItem(), tag3.getSelectedItem(), exercises);
+            if(change) {
+                controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getSelectedItem(), tag2.getSelectedItem(), tag3.getSelectedItem(), exercises);
+            } else {
+                inform(workoutId, tempDescription.getText());
+            }
         });
         tempA.add(finished);
         tempForm.add(CENTER, tempA);
@@ -387,5 +421,25 @@ public class CreateFrame implements ICallback {
         controller.addLogWorkout(controller.getLoggedInEmail(), id, getDate(), evaluation, exercises);
         controller.openMainFrame();
         controller.newCreateFrame();
+    }
+    public void populateWorkout(ArrayList<ExerciseInfo> exerciseInfos){
+        ArrayList<Exercise> workout= new ArrayList<>();
+
+        for (ExerciseInfo info : exerciseInfos) {
+            Exercise tempExercise = new Exercise(info.getName(), info.getId(), info.getSetCount());
+            workout.add(tempExercise);
+        }
+        for(Exercise exercise : workout){
+            Container setsContainer = addExercise(exercise.getName(), exercise.getId());
+            int setCount = exercise.getSetSize() - 1;
+
+            for(int i = 0; i < setCount; i++){
+                addSet(setsContainer, i + 2, exercise.getSets());
+            }
+        }
+    }
+
+    public void setChange(Boolean change) {
+        this.change = change;
     }
 }
