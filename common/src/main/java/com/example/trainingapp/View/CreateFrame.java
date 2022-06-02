@@ -1,7 +1,8 @@
 package com.example.trainingapp.View;
 
-import HelperClasses.*;
-import com.codename1.l10n.ParseException;
+import HelperClasses.Exercise;
+import HelperClasses.ExerciseInfo;
+import HelperClasses.Set;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.*;
 import com.codename1.ui.events.ActionEvent;
@@ -15,11 +16,6 @@ import com.example.trainingapp.Controller.ICallback;
 
 import java.util.ArrayList;
 import java.util.Date;
-
-/**
- * The CreateFrame class for the Create page where you create workouts.
- @author Linus Regander, Daniel Olsson, Yun-Bo Chow, William Dock
- */
 
 import static com.codename1.ui.layouts.BorderLayout.*;
 
@@ -45,12 +41,15 @@ public class CreateFrame implements ICallback {
      */
     public CreateFrame(Controller controller){
         this.controller = controller;
+
         createForm();
         controller.setInformee(this);
     }
+
     public CreateFrame(Controller controller, ArrayList<ExerciseInfo> exerciseInfos, int workoutId){
         this.controller = controller;
         this.workoutId = workoutId;
+
         createForm();
         controller.setInformee(this);
         populateWorkout(exerciseInfos);
@@ -109,50 +108,6 @@ public class CreateFrame implements ICallback {
         workoutContainer.setUIID("WorkoutContainer");
 
         exercisesContainer = new Container(BoxLayout.y());
-        /*Container testExerciseContainer = new Container(BoxLayout.y());
-        testExerciseContainer.setUIID("a");
-
-        Exercise exercise = new Exercise("Deadlift", 1);
-        exercises.add(exercise);
-        Label exerciseName = new Label(exercise.getName());
-        testExerciseContainer.add(exerciseName);
-
-        Container setsContainer = new Container(BoxLayout.y());
-        TableLayout layout = new TableLayout(1, 3);
-        Container setContainer = new Container(layout);
-        Set set = new Set(0, 0.0);
-        exercise.getSets().add(set);
-        int[] setCount = new int[]{1};
-        Button setButton = new Button(Integer.toString(setCount[0]));
-        setButton.setUIID("AchievementButton");
-        setContainer.add(layout.createConstraint().widthPercentage(10), setButton);
-
-        TextField weightTextField = new TextField("","Weight");
-        weightTextField.addDataChangedListener(new DataChangedListener() {
-            @Override
-            public void dataChanged(int i, int i1) {
-                set.setWeight(Double.parseDouble(weightTextField.getText()));
-            }
-        });
-        setContainer.add(layout.createConstraint().widthPercentage(45), weightTextField);
-        TextField repTextField = new TextField("", "Reps");
-        repTextField.addDataChangedListener(new DataChangedListener() {
-            @Override
-            public void dataChanged(int i, int i1) {
-                set.setReps(Integer.parseInt(repTextField.getText()));
-            }
-        });
-        setContainer.add(layout.createConstraint().widthPercentage(45), repTextField);
-
-        setsContainer.add(setContainer);
-        testExerciseContainer.add(setsContainer);
-
-        Button addSetButton = new Button("+ Add set");
-        addSetButton.setUIID("AchievementButton");
-        addSetButton.addActionListener(l -> addSet(setsContainer, ++setCount[0], exercise.getSets()));
-        testExerciseContainer.add(addSetButton);
-        exercisesContainer.add(testExerciseContainer);
-        */
         workoutContainer.add(exercisesContainer);
 
         Container addExerciseContainer = new Container(BoxLayout.xCenter());
@@ -165,7 +120,6 @@ public class CreateFrame implements ICallback {
 
         workoutContainer.add(addExerciseContainer);
 
-
         form.add(CENTER, workoutContainer);
     }
 
@@ -175,7 +129,6 @@ public class CreateFrame implements ICallback {
         Button setButton = new Button(Integer.toString(setCount));
         setButton.setUIID("AchievementButton");
         setContainer.add(layout.createConstraint().widthPercentage(10), setButton);
-
 
         Set set = new Set(0, 0.0);
         sets.add(set);
@@ -334,29 +287,15 @@ public class CreateFrame implements ICallback {
         Container tempA = new Container(BoxLayout.y());
 
         Label name = new Label("Enter Workout Name:");
-
-
         TextField tempName = new TextField();
 
-
         Label description = new Label("Enter a description");
-
-
         TextField tempDescription = new TextField();
-
 
         Label tempTag = new Label("Enter 3 Tags:");
 
-
-        //TextField tag1 = new TextField();
         ComboBox<String> tag1 = new ComboBox<>("Strength", "Hypertrophy", "Legs", "Chest", "Shoulders", "Biceps", "Triceps", "Arms", "Back", "Glutes");
-
-
-        //TextField tag2 = new TextField();
         ComboBox<String> tag2 = new ComboBox<>("Strength", "Hypertrophy", "Legs", "Chest", "Shoulders", "Biceps", "Triceps", "Arms", "Back", "Glutes");
-
-
-        //TextField tag3 = new TextField();
         ComboBox<String> tag3 = new ComboBox<>("Strength", "Hypertrophy", "Legs", "Chest", "Shoulders", "Biceps", "Triceps", "Arms", "Back", "Glutes");
 
         if(change) {
@@ -378,7 +317,9 @@ public class CreateFrame implements ICallback {
 
         finished.addActionListener(l -> {
             if(change) {
-                controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(), tempDescription.getText(), tag1.getSelectedItem(), tag2.getSelectedItem(), tag3.getSelectedItem(), exercises);
+                controller.addWorkoutInfo(tempName.getText(), controller.getLoggedInEmail(),
+                        tempDescription.getText(), tag1.getSelectedItem(),
+                        tag2.getSelectedItem(), tag3.getSelectedItem(), exercises);
             } else {
                 inform(workoutId, tempDescription.getText());
             }
@@ -409,7 +350,6 @@ public class CreateFrame implements ICallback {
     /**
      * Sets date to current date
      */
-    //TODO: Remove or replace
     public String getDate(){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
@@ -422,6 +362,7 @@ public class CreateFrame implements ICallback {
         controller.openMainFrame();
         controller.newCreateFrame();
     }
+
     public void populateWorkout(ArrayList<ExerciseInfo> exerciseInfos){
         ArrayList<Exercise> workout= new ArrayList<>();
 
@@ -432,7 +373,6 @@ public class CreateFrame implements ICallback {
         for(Exercise exercise : workout){
             Container setsContainer = addExercise(exercise.getName(), exercise.getId());
             int setCount = exercise.getSetSize() - 1;
-
             for(int i = 0; i < setCount; i++){
                 addSet(setsContainer, i + 2, exercise.getSets());
             }
