@@ -1,40 +1,16 @@
 package dbcon;
 
 import HelperClasses.*;
-import com.codename1.db.Database;
-import com.codename1.io.ConnectionRequest;
-import com.codename1.io.JSONParser;
-import com.codename1.io.NetworkManager;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Map;
+//import java.util.Map;
 
 /**
  @author William Dock, Yun-Bo Chow
  */
 
 public class Services {
-
-    public ConnectionRequest getDatabaseConnectionTest() {
-        String url = "jdbc:postgresql://pgserver.mau.se:5432/am2578";
-        String user = "am2578";
-        String password = "29zptibk";
-        ConnectionRequest con = null;
-
-        try{
-            con = new ConnectionRequest(url);
-            System.out.println("Connection Established");
-            return con;
-        } catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     public Connection getDatabaseConnection(){
         String url = "jdbc:postgresql://pgserver.mau.se:5432/am2578";
@@ -125,8 +101,7 @@ public class Services {
         return isAdmin;
     }
 
-
-//nedan är alla inserts
+    //Under are all inserts
     public void insertNewUser(String email, String username, String password) throws SQLException {
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("call training.insertNewUser(?,?,?)");
@@ -150,7 +125,6 @@ public class Services {
         pstmt.execute();
         pstmt.close();
         con.close();
-
     }
 
     //TODO: lägg till en privat metod som checkar om exerciseId samt workoutId redan finns. genom select XX where YY + if() sats
@@ -170,7 +144,6 @@ public class Services {
         else {
             return "You do not have access";
         }
-
     }
 
     public String insertExerciseInToWorkout(String loggedInMail, int exerciseId, int workoutId) throws SQLException{
@@ -192,7 +165,6 @@ public class Services {
     }
 
     public void insertExerciseInToWorkout(int exerciseId, int workoutId, int sets) throws SQLException{
-
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("insert into training.workout(exerciseid, workoutid, sets) " +
                 "values(?,?,?);");
@@ -204,10 +176,9 @@ public class Services {
         pstmt.execute();
         pstmt.close();
         con.close();
-
     }
 
-    //creatorEmail == email som man är inloggad på
+    //creatorEmail == email that the user is signed in as
     public WorkoutInfo insertNewWorkout(String name, String creatorEmail, String description, String tag1, String tag2, String tag3) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training.insertNewWorkout(?,?,?,?,?,?)");
@@ -221,11 +192,12 @@ public class Services {
         pstmt.execute();
         pstmt.close();
         con.close();
+
         int id = getWorkoutId(creatorEmail);
         return new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, getUsername(creatorEmail));
     }
 
-    //creatorEmail == email som man är inloggad på
+    //creatorEmail == email that the user is signed in as
     public ProgramInfo insertNewProgram(String name, String creatorEmail, String description, String tag1, String tag2, String tag3) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training.insertNewProgram(?,?,?,?,?,?,?)");
@@ -239,10 +211,12 @@ public class Services {
         pstmt.execute();
         pstmt.close();
         con.close();
+
         int id = getProgramId(creatorEmail);
         return  new ProgramInfo(id, name, creatorEmail, description, tag1, tag2, tag3, getUsername(creatorEmail));
     }
 
+    //inserts methods
     public String insertWorkoutInToProgram(String loggedInMail,ProgramInfo programInfo, WorkoutInfo workoutInfo) throws SQLException{
         if(programInfo.getCreatorEmail().equals(loggedInMail)){
             Connection con = this.getDatabaseConnection();
@@ -253,6 +227,7 @@ public class Services {
             pstmt.execute();
             pstmt.close();
             con.close();
+
             return "Workout has been added to " + programInfo.getName();
         } else {
             return "You do not have access";
@@ -269,6 +244,7 @@ public class Services {
             pstmt.execute();
             pstmt.close();
             con.close();
+
             return "Successful";
         } else {
             return "You do not have access";
@@ -301,7 +277,7 @@ public class Services {
         con.close();
     }
 
-    //email == inloggade email
+    //email == signed in email
     public void insertLogExerciseSet(int exerciseId, int set, int reps, double weight, String loggedInMail, int logWorkoutId) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("call training.logexerciseset(?,?,?,?,?,?)");
@@ -317,8 +293,7 @@ public class Services {
         con.close();
     }
 
-    //Ska denna köras automatiskt efter logExerciseSet har exekverats?
-
+    //should this run automatically after logExerciseSet has been executed?
     public int insertNewLogworkout(String email, int workoutid, Date date, String evaluation) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training.insertNewLogWorkout(?,?,?,?)");
@@ -330,6 +305,7 @@ public class Services {
         pstmt.execute();
         pstmt.close();
         con.close();
+
         return getLogWorkoutId(email);
     }
 
@@ -369,12 +345,12 @@ public class Services {
         con.close();
     }
 
-// ovanför är alla inserts, sedan remove sedan update
-
+    //remove methods
     public void removeLoggedExerciseSet(String logExerciseId) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Delete from training.logexerciseset where logexerciseid = ?");
         pstmt.setString(1, logExerciseId);
+
         pstmt.execute();
         pstmt.close();
         con.close();
@@ -384,6 +360,7 @@ public class Services {
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Delete from training.logworkout where logworkoutid = ?");
         pstmt.setString(1, logWorkoutId);
+
         pstmt.execute();
         pstmt.close();
         con.close();
@@ -393,6 +370,7 @@ public class Services {
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Delete from training.logprogram where logprogramid = ?");
         pstmt.setString(1, logProgramId);
+
         pstmt.execute();
         pstmt.close();
         con.close();
@@ -402,29 +380,29 @@ public class Services {
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Delete from training.users where email = ?");
         pstmt.setString(1, userId);
+
         pstmt.execute();
         pstmt.close();
         con.close();
     }
 
-
-// ovanför är alla removes, sedan update
-
-    //loggedInMail är mail från GUI/Controller? som den ska ha fått efter anrop till login metoden. Det är så vi kan se om de är inloggade eller ej
-    //denna metoden kan endast köras när man är inloggad, det är inte en forget password metod. Utan det är en när man är inloggad så kan man byta.
+    //loggedInMail is mail from GUI/Controller? that has been received after the call to the login method.
+    //It is so we can see if the user is logged in or not
+    //this method can only be run when you are logged in, it is not a forgot password method. Instead, you can change your information when logged in.
+    //update methods
     public String updateLogin(String loggedInMail, String email, String username, String password, int choice) throws SQLException{
         Connection con = this.getDatabaseConnection();
-
         switch (choice){
             case 1:
                 if(!this.checkIfEmailExists(email)){
                     PreparedStatement updateEmail = con.prepareStatement("update training.users set email = ? where email = ?");
                     updateEmail.setString(1, email);
                     updateEmail.setString(2, loggedInMail);
-                    updateEmail.executeUpdate();
 
+                    updateEmail.executeUpdate();
                     updateEmail.close();
                     con.close();
+
                     return "email has been changed";
                 } else {
                     return "invalid mail";
@@ -435,10 +413,11 @@ public class Services {
                     PreparedStatement updateName = con.prepareStatement("update training.users set name = ? where email = ?");
                     updateName.setString(1, username);
                     updateName.setString(2, loggedInMail);
-                    updateName.executeUpdate();
 
+                    updateName.executeUpdate();
                     updateName.close();
                     con.close();
+
                     return "username has been changed";
                 } else {
                     return "invalid username";
@@ -448,22 +427,21 @@ public class Services {
                 PreparedStatement updatePassword = con.prepareStatement("update training.users set password = ? where email = ?");
                 updatePassword.setString(1, Encrypter.encrypt(password));
                 updatePassword.setString(2, loggedInMail);
-                updatePassword.executeUpdate();
 
+                updatePassword.executeUpdate();
                 updatePassword.close();
                 con.close();
+
                 return "password has been changed";
             default:
                 con.close();
                 return "choice is out of bounds";
-
         }
     }
 
     //Antingen så ska man kunna se alla sina saker genom select statements innan metoden anropas eller längst upp i metoden
     //TODO: Ändra så att det blir med objekt istället...
     public String updateExercise(int exerciseId, String loggedInMail, String name, String description, String primaryMuscleGroup, String secondaryMuscleGroup, int choice) throws SQLException{
-
         if(this.checkIfLoggedInMailIsAdmin(loggedInMail)){
             Connection con = this.getDatabaseConnection();
             switch (choice){
@@ -471,8 +449,8 @@ public class Services {
                     PreparedStatement updateName = con.prepareStatement("update training.exercise set name = ? where exerciseid = ?");
                     updateName.setString(1, name);
                     updateName.setInt(2, exerciseId);
-                    updateName.executeUpdate();
 
+                    updateName.executeUpdate();
                     updateName.close();
                     con.close();
                     return "Exercise name has been changed";
@@ -480,28 +458,31 @@ public class Services {
                     PreparedStatement updateDescription = con.prepareStatement("update training.exercise set description = ? where exerciseid = ?");
                     updateDescription.setString(1, description);
                     updateDescription.setInt(2, exerciseId);
-                    updateDescription.executeUpdate();
 
+                    updateDescription.executeUpdate();
                     updateDescription.close();
                     con.close();
+
                     return "Exercise description has been changed";
                 case 3:
                     PreparedStatement updatePrimary = con.prepareStatement("update training.exercise set primarymusclegroup = ? where exerciseid = ?");
                     updatePrimary.setString(1, primaryMuscleGroup);
                     updatePrimary.setInt(2, exerciseId);
-                    updatePrimary.executeUpdate();
 
+                    updatePrimary.executeUpdate();
                     updatePrimary.close();
                     con.close();
+
                     return "Exercise primaryMuscleGroup has been changed";
                 case 4:
                     PreparedStatement updateSecondary = con.prepareStatement("update training.exercise set secondarymusclegroup = ? where exerciseid = ?");
                     updateSecondary.setString(1, secondaryMuscleGroup);
                     updateSecondary.setInt(2, exerciseId);
-                    updateSecondary.executeUpdate();
 
+                    updateSecondary.executeUpdate();
                     updateSecondary.close();
                     con.close();
+
                     return "Exercise secondaryMuscleGroup has been changed";
                 default:
                     return "choice is out of bounds";
@@ -510,7 +491,6 @@ public class Services {
             return "You do not have access";
         }
     }
-
 
     public String updateWorkout(String loggedInMail, WorkoutInfo workoutInfo) throws SQLException{
         if(workoutInfo.getCreatorEmail().equals(loggedInMail)){
@@ -522,9 +502,11 @@ public class Services {
             pstmt.setString(4, workoutInfo.getTag2());
             pstmt.setString(5, workoutInfo.getTag3());
             pstmt.setInt(6, workoutInfo.getId());
+
             pstmt.executeUpdate();
             pstmt.close();
             con.close();
+
             return "WorkoutInfo has been changed";
         } else {
             return "You do not have access";
@@ -541,18 +523,17 @@ public class Services {
             pstmt.setString(4, programInfo.getTag2());
             pstmt.setString(5, programInfo.getTag3());
             pstmt.setInt(6, programInfo.getId());
-            pstmt.executeUpdate();
 
+            pstmt.executeUpdate();
             pstmt.close();
             con.close();
+
             return "ProgramInfo has been changed";
         } else {
             return "You do not have access";
         }
-
     }
 
-    //behöver man kunna ändra logworkoutid?
     public String updateLogExerciseSet(String loggedInMail, LogExerciseSet logExerciseSet) throws SQLException{
         if(logExerciseSet.getEmail().equals(loggedInMail)){
             Connection con = this.getDatabaseConnection();
@@ -562,30 +543,29 @@ public class Services {
             pstmt.setDouble(3, logExerciseSet.getWeight());
             pstmt.setInt(4, logExerciseSet.getLogWorkoutId());
             pstmt.setInt(5, logExerciseSet.getLogWorkoutId());
-            pstmt.executeUpdate();
 
+            pstmt.executeUpdate();
             pstmt.close();
             con.close();
+
             return "LogExerciseSet has been changed";
         } else {
             return "You do not have access";
         }
-
     }
 
-    //todo: Fixa date
     //SKA MAN ENDAST KUNNA ÄNDRA DATE OCH EVALUATION? ISÅFALL HADE VI KUNNAT TA BORT GETTERS OCH SETTERS I KLASSERNA
     public String updateLogWorkout(String loggedInMail, LogWorkout logWorkout) throws SQLException{
         if(logWorkout.getCreator().equals(loggedInMail)){
             Connection con = this.getDatabaseConnection();
             PreparedStatement pstmt = con.prepareStatement("update training.logworkout set date = ?, evaluation = ? where logworkoutid = ?");
-            //pstmt.setDate(1, logWorkout.getDate());
             pstmt.setString(2, logWorkout.getEvaluation());
             pstmt.setInt(3, logWorkout.getLogWorkoutId());
-            pstmt.executeUpdate();
 
+            pstmt.executeUpdate();
             pstmt.close();
             con.close();
+
             return "LogWorkout has been changed";
         } else {
             return "You do not have access";
@@ -599,24 +579,24 @@ public class Services {
             pstmt.setDate(1, (Date) logProgram.getDate());
             pstmt.setString(2, logProgram.getEvaluation());
             pstmt.setInt(3, logProgram.getLogProgramId());
-            pstmt.executeUpdate();
 
+            pstmt.executeUpdate();
             pstmt.close();
             con.close();
+
             return "logProgram has been changed";
         } else {
             return "You do not have access";
         }
     }
 
-
-// nedan är alla select statements
-
+    //select statements
     public ArrayList<ExerciseInfo> selectExercises() throws SQLException {
         ArrayList<ExerciseInfo> exercises = new ArrayList<>();
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.exercise");
         ResultSet rs = pstmt.executeQuery();
+
         while(rs.next()){
             int id = rs.getInt("exerciseid");
             String name = rs.getString("name");
@@ -626,6 +606,7 @@ public class Services {
 
             exercises.add(new ExerciseInfo(id, name, des, pri, sec));
         }
+
         pstmt.close();
         rs.close();
         con.close();
@@ -640,6 +621,7 @@ public class Services {
                 "username from training.workoutinfo " +
                 "join training.users on workoutinfo.creatoremail = users.email");
         ResultSet rs = pstmt.executeQuery();
+
         while(rs.next()){
             int id = rs.getInt("workoutid");
             String name = rs.getString("name");
@@ -654,17 +636,20 @@ public class Services {
             PreparedStatement pstmt1 = con.prepareStatement("select * from training.workout where workoutid = ?");
             pstmt1.setInt(1, id);
             ResultSet rs1 = pstmt1.executeQuery();
+
             while (rs1.next()){
                 int exerciseId = rs1.getInt("exerciseid");
                 int sets = rs1.getInt("sets");
                 exerciseInfos.add(getExerciseInfo(con, exerciseId, sets));
             }
+
             rs1.close();
             pstmt1.close();
 
             WorkoutInfo workoutInfo = new WorkoutInfo(id, name, creatorEmail, description, tag1, tag2, tag3, username, exerciseInfos);
             workoutInfos.add(workoutInfo);
         }
+
         pstmt.close();
         rs.close();
         con.close();
@@ -679,6 +664,7 @@ public class Services {
                 "username from training.programinfo " +
                 "join training.users on programinfo.creatoremail = users.email");
         ResultSet rs = pstmt.executeQuery();
+
         while(rs.next()){
             int id = rs.getInt("programid");
             String name = rs.getString("name");
@@ -691,6 +677,7 @@ public class Services {
 
             programInfos.add(new ProgramInfo(id, name, creator, description, tag1, tag2, tag3, username));
         }
+
         pstmt.close();
         rs.close();
         con.close();
@@ -704,6 +691,7 @@ public class Services {
         PreparedStatement pstmt = con.prepareStatement("Select * from training.logexerciseset where email = ?");
         pstmt.setString(1, userEmail);
         ResultSet rs = pstmt.executeQuery();
+
         while(rs.next()){
             int setId = rs.getInt("exercisesetid");
             int exerciseId = rs.getInt("exerciseid");
@@ -715,6 +703,7 @@ public class Services {
 
             logExerciseSets.add(new LogExerciseSet(setId, exerciseId,  set, rep, weight, email, workoutId));
         }
+
         pstmt.close();
         rs.close();
         con.close();
@@ -728,6 +717,7 @@ public class Services {
         PreparedStatement pstmt = con.prepareStatement("Select * from training.logworkout where email = ?");
         pstmt.setString(1, userEmail);
         ResultSet rs = pstmt.executeQuery();
+
         while(rs.next()){
             int logId = rs.getInt("logworkoutid");
             int workoutId = rs.getInt("workoutid");
@@ -737,6 +727,7 @@ public class Services {
 
             logWorkouts.add(new LogWorkout(logId, workoutId, email, date, evaluation));
         }
+
         pstmt.close();
         rs.close();
         con.close();
@@ -746,11 +737,11 @@ public class Services {
 
     public ArrayList<LogProgram> selectLogProgram(String userEmail) throws SQLException{
         ArrayList<LogProgram> logPrograms = new ArrayList<>();
-
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.logprogram where email = ?");
         pstmt.setString(1, userEmail);
         ResultSet rs = pstmt.executeQuery();
+
         while(rs.next()){
             int logId = rs.getInt("logprogramid");
             String email = rs.getString("email");
@@ -760,6 +751,7 @@ public class Services {
 
             logPrograms.add(new LogProgram(logId, email, programId, date, evaluation));
         }
+
         rs.close();
         pstmt.close();
         con.close();
@@ -769,11 +761,11 @@ public class Services {
 
     public ArrayList<AchievementsInfo> selectAllAchievements() throws SQLException{
         ArrayList<AchievementsInfo> achievementsInfoList = new ArrayList<>();
-
         Connection con = this.getDatabaseConnection();
         String query = "select * from training.achievementsInfo";
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(query);
+
         while (rs.next()){
             int achievementId = rs.getInt("achievementid");
             String name = rs.getString("name");
@@ -791,11 +783,11 @@ public class Services {
 
     public ArrayList<CompletedAchievement> selectCompletedAchievements(String loggedInMail) throws SQLException{
         ArrayList<CompletedAchievement> completedAchievementsList = new ArrayList<>();
-
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("select * from training.completedachievements where email = ?");
         pstmt.setString(1, loggedInMail);
         ResultSet rs = pstmt.executeQuery();
+
         while (rs.next()){
             int achievementId = rs.getInt("achievementid");
             String email = rs.getString("email");
@@ -817,6 +809,7 @@ public class Services {
         PreparedStatement pstmt = con.prepareStatement("select username from training.users where email = ?");
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
+
         while(rs.next()){
             username = rs.getString("username");
         }
@@ -824,6 +817,7 @@ public class Services {
         rs.close();
         pstmt.close();
         con.close();
+
         return username;
     }
 
@@ -833,12 +827,15 @@ public class Services {
         PreparedStatement pstmt = con.prepareStatement("select MAX(workoutid) from training.workoutinfo where creatoremail = ?");
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
+
         while(rs.next()) {
             id = rs.getInt("max");
         }
+
         rs.close();
         pstmt.close();
         con.close();
+
         return id;
     }
 
@@ -848,12 +845,15 @@ public class Services {
         PreparedStatement pstmt = con.prepareStatement("select MAX(logworkoutid) from training.logworkout where email = ?");
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
+
         while(rs.next()) {
             id = rs.getInt("max");
         }
+
         rs.close();
         pstmt.close();
         con.close();
+
         return id;
     }
 
@@ -863,12 +863,15 @@ public class Services {
         PreparedStatement pstmt = con.prepareStatement("select MAX(programid) from training.programinfo where email = ?");
         pstmt.setString(1, email);
         ResultSet rs = pstmt.executeQuery();
+
         while(rs.next()) {
             id = rs.getInt("programid");
         }
+
         rs.close();
         pstmt.close();
         con.close();
+
         return id;
     }
 
@@ -877,6 +880,7 @@ public class Services {
         PreparedStatement pstmt = con.prepareStatement("Select * from training.exercise where exerciseid = ?");
         pstmt.setInt(1, exerciseId);
         ResultSet rs = pstmt.executeQuery();
+
         while (rs.next()){
             String name = rs.getString("name");
             String description = rs.getString("description");
@@ -884,23 +888,25 @@ public class Services {
             String sec = rs.getString("secondarymusclegroup");
             exerciseInfo = new ExerciseInfo(exerciseId, name, description, pri, sec, sets);
         }
+
         rs.close();
         pstmt.close();
+
         return exerciseInfo;
     }
 
     public boolean checkIfCreatorOfWorkout(String email, int workoutId) throws SQLException {
         String temp = null;
-
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("select * from training.workoutinfo where creatoremail = ? and workoutid = ?");
         pstmt.setString(1, email);
         pstmt.setInt(2, workoutId);
-
         ResultSet rs = pstmt.executeQuery();
+
         while (rs.next()){
             temp = rs.getString("name");
         }
+
         rs.close();
         pstmt.close();
         con.close();
@@ -910,16 +916,16 @@ public class Services {
 
     public boolean checkIfCreatorOfProgram(String email, int programId) throws SQLException{
         String temp = null;
-
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Select * from training.programinfo where creatoremail = ? and programid = ?");
         pstmt.setString(1, email);
         pstmt.setInt(2, programId);
-
         ResultSet rs = pstmt.executeQuery();
+
         while (rs.next()){
             temp = rs.getString("name");
         }
+
         rs.close();
         pstmt.close();
         con.close();
@@ -929,7 +935,6 @@ public class Services {
 
     public void terminateIdle() throws SQLException{
         Connection con = this.getDatabaseConnection();
-
         String selectPids = "SELECT pid from pg_stat_activity where state = 'idle'";
         Statement getPids = con.createStatement();
         ResultSet rs = getPids.executeQuery(selectPids);
@@ -939,9 +944,9 @@ public class Services {
             pstmt.setInt(1, rs.getInt("pid"));
             pstmt.execute();
         }
+
         rs.close();
         getPids.close();
         con.close();
     }
-
 }
