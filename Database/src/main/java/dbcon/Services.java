@@ -4,7 +4,6 @@ import HelperClasses.*;
 
 import java.sql.*;
 import java.util.ArrayList;
-//import java.util.Map;
 
 /**
  @author William Dock, Yun-Bo Chow
