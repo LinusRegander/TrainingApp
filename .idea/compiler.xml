@@ -9,13 +9,13 @@
         <module name="training-javase" />
         <module name="training-common" />
         <module name="JDBC" />
-        <module name="RestAPI" />
+        <module name="API" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name=".mvn" target="1.5" />
+      <module name="API" target="17" />
       <module name="JDBC" target="1.8" />
-      <module name="RestAPI" target="17" />
       <module name="training" target="1.8" />
       <module name="training-common" target="1.8" />
       <module name="training-javase" target="1.8" />
