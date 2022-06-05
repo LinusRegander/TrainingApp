@@ -1,4 +1,5 @@
 FitHub (Group 15) - README:
+https://github.com/LinusRegander/TrainingApp.git
 
 IMPORTANT Information:
 Framework Structure:
