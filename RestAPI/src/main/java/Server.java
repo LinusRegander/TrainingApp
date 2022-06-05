@@ -48,7 +48,6 @@ public class Server extends Thread{
     }
 
     private class ClientHandler extends Thread{
-        //User eller email variable
         private Socket socket;
         private DataOutputStream dos;
         private DataInputStream dis;
@@ -65,6 +64,10 @@ public class Server extends Thread{
             start();
         }
 
+        /**
+         * runs when start is called.
+         * The selected case is determined by which number that is received from the client.
+         */
         @Override
         public void run(){
             System.out.println(socket.getInetAddress().getHostName() + "Connected to server");
@@ -76,26 +79,19 @@ public class Server extends Thread{
                     case 0 -> login();
                     case 1 -> register();
                     case 2 -> insertLogExerciseSet();
-                    case 3 -> getLogWorkoutList();
-                    case 4 -> getLogProgramList();
-
-                    case 7 -> getExerciseList();
-                    case 8 -> getWorkoutList();
-                    case 9 -> getProgramList();
-
-                    case 5 -> insertNewWorkoutInfo();
-                    case 13 -> insertExerciseIntoWorkout();
-                    case 12 -> insertWorkoutIntoProgram();
-
-                    case 10 -> getLogExerciseSetList();
-                    case 6 -> insertLogWorkout();
-                    case 11 -> insertLogProgram();
-
+                    case 3 -> insertNewWorkoutInfo();
+                    case 4 -> insertLogWorkout();
+                    case 5 -> insertLogProgram();
+                    case 6 -> insertWorkoutIntoProgram();
+                    case 7 -> insertExerciseIntoWorkout();
+                    case 8 -> getLogWorkoutList();
+                    case 9 -> getLogProgramList();
+                    case 10 -> getExerciseList();
+                    case 11 -> getWorkoutList();
+                    case 12 -> getProgramList();
+                    case 13 -> getLogExerciseSetList();
                     case 14 -> getAllAchievements();
                     case 15 -> getCompletedAchievements();
-
-                    // TODO: 2022-05-17 Alla över 9 används inte av client just nu
-                    // TODO: 2022-05-17 Ändra indexen i server o klient så att de är snygga
                 }
 
                 services.terminateIdle();
@@ -105,8 +101,11 @@ public class Server extends Thread{
 
         }
 
-        //services.login() returns "" if login is unsuccessful
-        //If you successfully log in, return a String that is the email of the log in attempt
+        /**
+         * services.login() returns "" if login is unsuccessful
+         * If you successfully log in, return a String that is the email of the log in attempt
+         * @throws Exception
+         */
         private void login() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
@@ -121,6 +120,10 @@ public class Server extends Thread{
             dos.flush();
         }
 
+        /**
+         * checks if email or username is already in the database, gives an error if it exists.
+         * @throws Exception
+         */
         private void register() throws Exception{
             String[] strings;
 
@@ -155,6 +158,10 @@ public class Server extends Thread{
 
         }
 
+        /**
+         * Inserts a new workout into the database
+         * @throws Exception
+         */
         private void insertNewWorkoutInfo() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
@@ -179,6 +186,10 @@ public class Server extends Thread{
             dos.flush();
         }
 
+        /**
+         * Inserts a new exercise into a workout to the database
+         * @throws Exception
+         */
         private void insertExerciseIntoWorkout() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
@@ -194,6 +205,10 @@ public class Server extends Thread{
             dos.flush();
         }
 
+        /**
+         * Inserts a workout into program
+         * @throws Exception
+         */
         private void insertWorkoutIntoProgram() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
@@ -208,6 +223,10 @@ public class Server extends Thread{
             dos.flush();
         }
 
+        /**
+         * Inserts a LogExerciseSet to the database
+         * @throws Exception
+         */
         private void insertLogExerciseSet() throws Exception{
             String[] strings;
             String temp = dis.readUTF();
@@ -223,6 +242,10 @@ public class Server extends Thread{
             services.insertLogExerciseSet(exerciseId, set, reps, weight, loggedInMail, logWorkoutId);
         }
 
+        /**
+         * Inserts a logWorkout to the database
+         * @throws Exception
+         */
         private void insertLogWorkout() throws Exception{
             String temp = dis.readUTF();
             String[] strings = temp.split("\0");
@@ -242,6 +265,10 @@ public class Server extends Thread{
             dos.flush();
         }
 
+        /**
+         * Inserts a logProgram to the database
+         * @throws Exception
+         */
         private void insertLogProgram() throws Exception{
             String temp = dis.readUTF();
             String[] strings = temp.split("\0");
@@ -254,7 +281,6 @@ public class Server extends Thread{
             services.insertNewLogProgram(loggedInMail, programId, date, evaluation);
         }
 
-        // TODO: 2022-05-08 Uppdatera indexen för att matcha outputen från controller
         private void insertPlanWorkout() throws Exception{
             String temp = dis.readUTF();
             String[] strings = temp.split("\0");
@@ -266,7 +292,6 @@ public class Server extends Thread{
             services.insertNewPLanWorkout(email, workoutId, date);
         }
 
-        // TODO: 2022-05-08 Uppdatera indexen för att matcha output från controller.
         private void insertPlanExerciseSet() throws Exception{
             String temp = dis.readUTF();
             String[] strings = temp.split("\0");
@@ -297,8 +322,6 @@ public class Server extends Thread{
             services.insertNewProgram(name, creatorEmail, description, tag1, tag2, tag3);
         }
 
-        // TODO: 2022-05-08 Kolla upp om sista "\0" ska vara med eller inte, funderar på om man ska ha en vanlig
-        //  for loop så att på sista index inte inkludera "\0".
         private void getExerciseList() throws Exception{
             ArrayList<ExerciseInfo> exerciseInfoList = services.selectExercises();
             StringBuilder temp = new StringBuilder();
@@ -445,7 +468,6 @@ public class Server extends Thread{
             dos.flush();
         }
 
-        //this is a command that only the admin accounts can use
         private void insertNewAchievementsInfo() throws Exception{
             String temp = dis.readUTF();
             String[] strings = temp.split("\0");
@@ -456,7 +478,6 @@ public class Server extends Thread{
             services.insertNewAchievementsInfo(name, description);
         }
 
-        //This is a method for users to execute. It is eecuted when they have completed an achievement
         private void insertCompleteAchievement() throws Exception{
             String temp = dis.readUTF();
             String[] strings = temp.split("\0");
@@ -467,7 +488,7 @@ public class Server extends Thread{
 
             services.insertCompleteAchievement(achievementId, loggedInMail, date);
         }
-        
+
     }
 
     public static void main(String[] args){

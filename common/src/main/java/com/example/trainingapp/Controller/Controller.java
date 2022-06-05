@@ -15,7 +15,7 @@ import java.io.*;
 import java.util.*;
 
 /**
-    @author Linus Regander, Daniel Olsson, William Dock, Yun-Bo Chow, Francis Jonsson
+ @author Linus Regander, Daniel Olsson, William Dock, Yun-Bo Chow, Francis Jonsson
  */
 
 public class Controller{
@@ -46,27 +46,39 @@ public class Controller{
     private String username;
     private ICallback informee;
 
+    /**
+     * Constructor of Controller
+     */
     public Controller(){
         setup();
     }
 
-    //Setup constructor
+    /**
+     * Setup Constructor
+     */
     public void setup(){
-        //createProgramFrame = new CreateProgramFrame(this);
         mainFrame = new MainFrame(this); //MainFrame is the main GUI frame.
         loginFrame = new LoginFrame(this);
     }
 
-    //192.168.0.3
+    /**
+     * Connect method for connecting to Socket
+     * @param socketConnection for connection to Socket
+     */
     public void connect(SocketConnection socketConnection){
         Socket.connect("127.0.0.1", 541, socketConnection);
     }
 
-    //The code below creates all the GUI frames part of the application:
+    /**
+     * Opens LoginFrame
+     */
     public void openLoginFrame(){
         loginFrame = new LoginFrame(this);
     }
 
+    /**
+     * Opens MainFrame
+     */
     public void openMainFrame(){
         if(mainFrame == null){
             mainFrame = new MainFrame(this);
@@ -75,10 +87,16 @@ public class Controller{
         }
     }
 
+    /**
+     * Opens RegisterFrame
+     */
     public void openRegFrame(){
         registerFrame = new RegisterFrame(this);
     }
 
+    /**
+     * Opens AchievementFrame
+     */
     public void openAchievementFrame(){
         if(achievementFrame == null){
             achievementFrame = new AchievementFrame(this, allAchievementsList, completedAchievements);
@@ -87,21 +105,36 @@ public class Controller{
         }
     }
 
+    /**
+     * Opens CreateFrame
+     */
     public void openCreateFrame(){
         if(createFrame == null){
             createFrame = new CreateFrame(this);
         }
         createFrame.getForm().show();
     }
+
+    /**
+     * Opens a new CreateFrame
+     * @param exerciseInfos gets an ArrayList of ExerciseInfo objects
+     * @param workoutId gets a workoutId
+     */
     public void openNewCreateFrame(ArrayList<ExerciseInfo> exerciseInfos, int workoutId){
         createFrame = new CreateFrame(this, exerciseInfos, workoutId);
         createFrame.getForm().show();
     }
 
+    /**
+     * Opens ProgramFrame
+     */
     public void openProgramFrame(){
         programFrame = new ProgramFrame(this);
     }
 
+    /**
+     * Opens SettingsFrame
+     */
     public void openSettingsFrame(){
         if(settingsFrame == null){
             settingsFrame = new SettingsFrame(this);
@@ -110,6 +143,9 @@ public class Controller{
         }
     }
 
+    /**
+     * Opens ProfileFrame
+     */
     public void openProfileFrame(){
         if(profileFrame == null){
             profileFrame = new ProfileFrame(this);
@@ -118,33 +154,103 @@ public class Controller{
         }
     }
 
+    /**
+     * Opens WorkoutLogFrame
+     */
     public void openWorkoutLogFrame(){
         updateLogWorkoutList();
         workoutLogFrame = new WorkoutLogFrame(this);
     }
+
+    /**
+     * Opens ExerciseSelectFrame
+     * @param createFrame Gets an instance of the CreateFrame
+     */
     public void openExerciseSelectFrame(CreateFrame createFrame){
         ArrayList<ExerciseInfo> temp = getExerciseList();
         exerciseSelectFrame = new ExerciseSelectFrame(this, temp, createFrame);
     }
 
+    /**
+     * Opens WorkoutSelectFrame
+     * @param createProgramFrame Gets an instance of the CreateProgramFrame
+     */
     public void openWorkoutSelectFrame(CreateProgramFrame createProgramFrame){
         ArrayList<WorkoutInfo> temp = getWorkoutInfoList();
         workoutSelectFrame = new WorkoutSelectFrame(this, temp, createProgramFrame);
     }
 
+    /**
+     * Gets a new CreateFrame object
+     */
     public void newCreateFrame(){
         createFrame = new CreateFrame(this);
     }
 
+    /**
+     * Opens CreateProgramFrame
+     */
     public void openCreateProgramFrame(){
         createProgramFrame = new CreateProgramFrame(this);
     }
 
-    public Form getMainForm(){
-        return mainFrame.getMainForm();
+    /**
+     * Login method for logging in.
+     * Sends data to the server through a OutputStream with writeInt and writeUTF.
+     * @param email Gets a String of email
+     * @param password Gets a String of password
+     */
+    public void login(String email, String password){
+        SocketConnection sc = new SocketConnection(){
+            @Override
+            public void connectionError(int i, String s){
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
+                try{
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
+
+                    String temp = email + "\0" + password;
+                    dos.writeInt(0);
+                    dos.writeUTF(temp);
+                    dos.flush();
+
+                    String response = dis.readUTF();
+                    if(!response.isEmpty()){
+                        String[] loggedIn = split(response);
+                        loggedInEmail = loggedIn[0];
+                        username = loggedIn[1];
+                        updateWorkoutList();
+                        updateLogWorkoutList();
+                        updateLogExerciseSetList();
+                        updateExerciseList();
+                        updateAllAchievementsList();
+                        updateCompletedAchievementsList();
+                        openMainFrame();
+                    } else{
+                        loginFrame.failedLogin();
+                    }
+
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        connect(sc);
     }
 
-    //todo: Everything below will be used later:
+    /**
+     * Register method for registration to the Server.
+     * Sends data to the server through a OutputStream with writeInt and writeUTF.
+     * @param username Gets a String of the username
+     * @param email Gets a String of email
+     * @param password Gets a String of password
+     * @return boolean If the registration is successfull or not
+     */
     public boolean register(String username, String email, String password){
         SocketConnection sc = new SocketConnection(){
             @Override
@@ -190,51 +296,17 @@ public class Controller{
         return false;
     }
 
-    //write int tells the server about what method it is calling
-    //writeUTF is the data that gets sent to the server which also handles it server-sided.
-    public void login(String email, String password){
-        SocketConnection sc = new SocketConnection(){
-            @Override
-            public void connectionError(int i, String s){
-
-            }
-
-            @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
-                try{
-                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
-                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-
-                    String temp = email + "\0" + password;
-                    dos.writeInt(0);
-                    dos.writeUTF(temp);
-                    dos.flush();
-
-                    String response = dis.readUTF();
-                    if(!response.isEmpty()){
-                        String[] loggedIn = split(response);
-                        loggedInEmail = loggedIn[0];
-                        username = loggedIn[1];
-                        updateWorkoutList();
-                        updateLogWorkoutList();
-                        updateLogExerciseSetList();
-                        updateExerciseList();
-                        updateAllAchievementsList();
-                        updateCompletedAchievementsList();
-                        openMainFrame();
-                    } else{
-                        loginFrame.failedLogin();
-                    }
-
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-
-            }
-        };
-        connect(sc);
-    }
-
+    /**
+     * Adds info to a Workout.
+     * Sends data to the server through a OutputStream with writeInt and writeUTF.
+     * @param name Gets a String of the username
+     * @param creatorEmail Gets a String of email
+     * @param description Gets a String of description
+     * @param exercises Gets a ArrayList of exercises
+     * @param tag1 Gets a String of tag1
+     * @param tag2 Gets a String of tag2
+     * @param tag3 Gets a String of tag3
+     */
     public int addWorkoutInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<Exercise> exercises){
         final int[] id = new int[1];
         SocketConnection sc = new SocketConnection(){
@@ -255,7 +327,7 @@ public class Controller{
                         temp.append("\0").append(exercise.getId());
                         temp.append("\0").append(exercise.getSetSize());
                     }
-                    dos.writeInt(5);
+                    dos.writeInt(3);
                     dos.writeUTF(temp.toString());
                     dos.flush();
 
@@ -272,6 +344,15 @@ public class Controller{
         return id[0];
     }
 
+    /**
+     * Adds info of a Workout to the Log
+     * Sends data to the server through a OutputStream with writeInt and writeUTF.
+     * @param email Gets a String of email
+     * @param workoutId Gets a workoutId
+     * @param evaluation Gets a String of evaluation
+     * @param date Gets a String of date
+     * @param exercises Gets a ArrayList of exercises
+     */
     public void addLogWorkout(String email, int workoutId, String date, String evaluation, ArrayList<Exercise> exercises){
         SocketConnection sc = new SocketConnection(){
             @Override
@@ -297,7 +378,7 @@ public class Controller{
                         }
                         i = 1;
                     }
-                    dos.writeInt(6);
+                    dos.writeInt(4);
                     dos.writeUTF(temp.toString());
                     dos.flush();
 
@@ -314,8 +395,8 @@ public class Controller{
         connect(sc);
     }
 
-    // TODO: 2022-05-08 PlanWorkoutId finns inte förens efter den har insertats till databasen
-    public void addPlanWorkout(int planWorkoutId, int workoutId, String creator, Date date){
+    public int addProgramInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<WorkoutInfo> workoutInfos){
+        final int[] id = new int[1];
         SocketConnection sc = new SocketConnection(){
             @Override
             public void connectionError(int i, String s){
@@ -324,12 +405,43 @@ public class Controller{
 
             @Override
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
+                try{
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
 
+                    StringBuilder temp = new StringBuilder(name + "\0" + creatorEmail + "\0" + description + "\0" + tag1 + "\0" + tag2 + "\0" + tag3);
+
+                    dos.writeInt(5);
+                    dos.writeUTF(temp.toString());
+                    dos.flush();
+
+                    id[0] = dis.readInt();
+                    programList.add(new ProgramInfo(id[0], name, creatorEmail, description, tag1, tag2, tag3, username));
+                    informee.inform(id[0], description);
+
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        connect(sc);
+        return id[0];
+    }
+
+    public void addExercise(int workoutId, int exerciseId, int sets, int reps, double weight){
+        SocketConnection sc = new SocketConnection(){
+            @Override
+            public void connectionError(int i, String s){
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
-                    String temp = planWorkoutId + "\0" + workoutId + "\0" + creator + "\0" + date;
-                    dos.writeInt(22);
+                    String temp = workoutId + "\0" + exerciseId + "\0" + sets + "\0" + reps + "\0" + weight + "\0";
+                    dos.writeInt(7);
                     dos.writeUTF(temp);
                     dos.flush();
 
@@ -342,8 +454,11 @@ public class Controller{
         connect(sc);
     }
 
-    // TODO: 2022-05-08 planExerciseId does not exist until the first data gets added into the database.
-    public void addPlanExerciseSet(int planExerciseId, int exerciseId, int set, int reps, double weight, String email, int planWorkoutId){
+    /**
+     * Gets a list of logged workouts.
+     * Sends data to the server through a OutputStream with writeInt and writeUTF.
+     */
+    public void updateLogWorkoutList(){
         SocketConnection sc = new SocketConnection(){
             @Override
             public void connectionError(int i, String s){
@@ -354,36 +469,39 @@ public class Controller{
             public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
-
-                    String temp = planExerciseId + "\0" + exerciseId + "\0" + set + "\0" + reps + "\0" + weight + "\0" + email + "\0" + planWorkoutId;
-                    dos.writeInt(69);
-                    dos.writeUTF(temp);
+                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
+                    dos.writeInt(8);
+                    dos.flush();
+                    dos.writeUTF(loggedInEmail);
                     dos.flush();
 
-                } catch (IOException e){
+                    ArrayList<LogWorkout> arrayTemp = new ArrayList<>();
+                    String[] strings;
+                    String temp = dis.readUTF();
+                    strings = split(temp);
+
+                    for(int i = 0; i < strings.length / 5; i++){
+                        int logWorkoutId = Integer.parseInt(strings[i * 5]);
+                        int workoutId = Integer.parseInt(strings[i * 5 + 1]);
+                        String creatorEmail = strings[i * 5 + 2];
+                        Date date = new SimpleDateFormat("yyyy-mm-dd").parse(strings[i * 5 + 3]);
+                        String evaluation = strings[i * 5 + 4];
+
+                        arrayTemp.add(new LogWorkout(logWorkoutId, workoutId, creatorEmail, date, evaluation));
+                    }
+                    logWorkoutList = arrayTemp;
+                } catch (Exception e){
                     e.printStackTrace();
                 }
-
             }
         };
         connect(sc);
     }
 
-    public void addProgramInfo(String name, String creatorEmail, String description, String tag1, String tag2, String tag3, ArrayList<WorkoutInfo> workoutInfos){
-        SocketConnection sc = new SocketConnection(){
-            @Override
-            public void connectionError(int i, String s){
-
-            }
-
-            @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
-
-            }
-        };
-    }
-
-    //todo: refresh button in GUI that updates specific lists
+    /**
+     * Gets a list of exercises.
+     * Sends data to the server through a OutputStream with writeInt and writeUTF.
+     */
     public void updateExerciseList(){
         SocketConnection sc = new SocketConnection(){
             @Override
@@ -396,7 +514,7 @@ public class Controller{
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(7);
+                    dos.writeInt(10);
                     dos.flush();
 
                     ArrayList<ExerciseInfo> arrayTemp = new ArrayList<>();
@@ -422,6 +540,10 @@ public class Controller{
         connect(sc);
     }
 
+    /**
+     * Gets a list of workouts.
+     * Sends data to the server through a OutputStream with writeInt and writeUTF.
+     */
     public void updateWorkoutList(){
         SocketConnection sc = new SocketConnection(){
             @Override
@@ -434,7 +556,7 @@ public class Controller{
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(8);
+                    dos.writeInt(11);
                     dos.flush();
 
                     ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
@@ -489,7 +611,7 @@ public class Controller{
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(9);
+                    dos.writeInt(12);
                     dos.flush();
 
                     ArrayList<ProgramInfo> arrayTemp = new ArrayList<>();
@@ -517,6 +639,11 @@ public class Controller{
         };
         connect(sc);
     }
+
+    /**
+     * Gets a list of logged exercises.
+     * Sends data to the server through a OutputStream with writeInt and writeUTF.
+     */
     public void updateLogExerciseSetList(){
         SocketConnection sc = new SocketConnection(){
             @Override
@@ -529,7 +656,7 @@ public class Controller{
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(10);
+                    dos.writeInt(13);
                     dos.flush();
 
                     ArrayList<LogExerciseSet> arrayTemp = new ArrayList<>();
@@ -556,45 +683,7 @@ public class Controller{
         };
         connect(sc);
     }
-    public void updateLogWorkoutList(){
-        SocketConnection sc = new SocketConnection(){
-            @Override
-            public void connectionError(int i, String s){
 
-            }
-
-            @Override
-            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
-                try{
-                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
-                    DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(3);
-                    dos.flush();
-                    dos.writeUTF(loggedInEmail);
-                    dos.flush();
-
-                    ArrayList<LogWorkout> arrayTemp = new ArrayList<>();
-                    String[] strings;
-                    String temp = dis.readUTF();
-                    strings = split(temp);
-
-                    for(int i = 0; i < strings.length / 5; i++){
-                        int logWorkoutId = Integer.parseInt(strings[i * 5]);
-                        int workoutId = Integer.parseInt(strings[i * 5 + 1]);
-                        String creatorEmail = strings[i * 5 + 2];
-                        Date date = new SimpleDateFormat("yyyy-mm-dd").parse(strings[i * 5 + 3]);
-                        String evaluation = strings[i * 5 + 4];
-
-                        arrayTemp.add(new LogWorkout(logWorkoutId, workoutId, creatorEmail, date, evaluation));
-                    }
-                    logWorkoutList = arrayTemp;
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        };
-        connect(sc);
-    }
     public void updateLogProgramList(){
         SocketConnection sc = new SocketConnection(){
             @Override
@@ -633,6 +722,10 @@ public class Controller{
         connect(sc);
     }
 
+    /**
+     * Gets a list of achievements.
+     * Sends data to the server through a OutputStream with writeInt and writeUTF.
+     */
     public void updateAllAchievementsList(){
         SocketConnection sc = new SocketConnection(){
             @Override
@@ -671,6 +764,10 @@ public class Controller{
         connect(sc);
     }
 
+    /**
+     * Gets a list of completed achievements.
+     * Sends data to the server through a OutputStream with writeInt and writeUTF.
+     */
     public void updateCompletedAchievementsList(){
         SocketConnection sc = new SocketConnection(){
             @Override
@@ -709,15 +806,31 @@ public class Controller{
         connect(sc);
     }
 
-    public String[] split(String str){
-        ArrayList<String> splitArray = new ArrayList<>();
-        StringTokenizer arr = new StringTokenizer(str, "\0");//split by commas
-        while(arr.hasMoreTokens())
-            splitArray.add(arr.nextToken());
-        return splitArray.toArray(new String[splitArray.size()]);
-    }
-    public ArrayList<ExerciseInfo> getExerciseList(){
-        return exerciseList;
+    public void addPlanWorkout(int planWorkoutId, int workoutId, String creator, Date date){
+        SocketConnection sc = new SocketConnection(){
+            @Override
+            public void connectionError(int i, String s){
+
+            }
+
+            @Override
+            public void connectionEstablished(InputStream inputStream, OutputStream outputStream){
+
+                try{
+                    DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
+
+                    String temp = planWorkoutId + "\0" + workoutId + "\0" + creator + "\0" + date;
+                    dos.writeInt(22);
+                    dos.writeUTF(temp);
+                    dos.flush();
+
+                } catch (IOException e){
+                    e.printStackTrace();
+                }
+
+            }
+        };
+        connect(sc);
     }
 
     public void updatePlanExercise(){
@@ -732,7 +845,7 @@ public class Controller{
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
                     DataInputStream dis = new DataInputStream(new BufferedInputStream(inputStream));
-                    dos.writeInt(8);
+                    dos.writeInt(23);
                     dos.flush();
 
                     ArrayList<WorkoutInfo> arrayTemp = new ArrayList<>();
@@ -760,7 +873,7 @@ public class Controller{
         connect(sc);
     }
 
-    public void addExercise(int workoutId, int exerciseId, int sets, int reps, double weight){
+    public void addPlanExerciseSet(int planExerciseId, int exerciseId, int set, int reps, double weight, String email, int planWorkoutId){
         SocketConnection sc = new SocketConnection(){
             @Override
             public void connectionError(int i, String s){
@@ -772,8 +885,8 @@ public class Controller{
                 try{
                     DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(outputStream));
 
-                    String temp = workoutId + "\0" + exerciseId + "\0" + sets + "\0" + reps + "\0" + weight + "\0";
-                    dos.writeInt(13);
+                    String temp = planExerciseId + "\0" + exerciseId + "\0" + set + "\0" + reps + "\0" + weight + "\0" + email + "\0" + planWorkoutId;
+                    dos.writeInt(24);
                     dos.writeUTF(temp);
                     dos.flush();
 
@@ -786,6 +899,30 @@ public class Controller{
         connect(sc);
     }
 
+    /**
+     * Splits string with a StringTokenizer.
+     * @return a String array.
+     */
+    public String[] split(String str){
+        ArrayList<String> splitArray = new ArrayList<>();
+        StringTokenizer arr = new StringTokenizer(str, "\0");//split by commas
+        while(arr.hasMoreTokens())
+            splitArray.add(arr.nextToken());
+        return splitArray.toArray(new String[splitArray.size()]);
+    }
+
+    /**
+     * Gets a list of logged workouts.
+     * @return a ExerciseInfo ArrayList.
+     */
+    public ArrayList<ExerciseInfo> getExerciseList(){
+        return exerciseList;
+    }
+
+    /**
+     * Gets the number of Workouts created by the user.
+     * @return Number of created workouts.
+     */
     public int workoutCount(){
         updateWorkoutList();
         int count = 0;
@@ -799,6 +936,10 @@ public class Controller{
         return count;
     }
 
+    /**
+     * Gets the number of sets in the log.
+     * @return The amount of sets.
+     */
     public int setCount(){
         int count = 0;
 
@@ -810,6 +951,10 @@ public class Controller{
         return count;
     }
 
+    /**
+     * Gets the number of reps in the log.
+     * @return The amount of reps.
+     */
     public int repCount(){
         int count = 0;
 
@@ -831,6 +976,10 @@ public class Controller{
         return id;
     }
 
+    /**
+     * Gets the number of completed achievements.
+     * @return The amount of completed achievements.
+     */
     public int getCAchievements(){
         int count = 0;
 
@@ -841,18 +990,42 @@ public class Controller{
         return count;
     }
 
+    /**
+     * Gets a String value of the logged-in email.
+     * @return The logged-in email.
+     */
     public String getLoggedInEmail(){
         return loggedInEmail;
     }
 
+    /**
+     * Gets a String value of the username.
+     * @return The username.
+     */
     public String getUsername(){
         return username;
     }
 
+    /**
+     * Gets the MainForm of the MainFrame class.
+     * @return The form.
+     */
+    public Form getMainForm(){
+        return mainFrame.getMainForm();
+    }
+
+    /**
+     * Gets a list of logged workouts.
+     * @return The list of logged workouts.
+     */
     public ArrayList<LogWorkout> getLogWorkoutList(){
         return logWorkoutList;
     }
 
+    /**
+     * Gets a list of information about workouts.
+     * @return The list of information.
+     */
     public ArrayList<WorkoutInfo> getWorkoutInfoList(){
         return workoutList;
     }
@@ -861,9 +1034,10 @@ public class Controller{
         return logExerciseSetList;
     }
 
+    /**
+     * Creates a informee callback reference to the server.
+     */
     public void setInformee(ICallback informee){
         this.informee = informee;
     }
-
-
 }

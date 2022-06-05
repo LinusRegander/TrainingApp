@@ -82,7 +82,6 @@ public class Services {
         return exists;
     }
 
-    //todo: lägg till så att isAdmin är en column på databas tabellen users istället för username admin
     public boolean checkIfLoggedInMailIsAdmin(String loggedInEmail) throws SQLException{
         boolean isAdmin = false;
         Connection con = this.getDatabaseConnection();
@@ -100,7 +99,7 @@ public class Services {
         return isAdmin;
     }
 
-    //Under are all inserts
+    //Under are all insert methods
     public void insertNewUser(String email, String username, String password) throws SQLException {
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("call training.insertNewUser(?,?,?)");
@@ -126,7 +125,6 @@ public class Services {
         con.close();
     }
 
-    //TODO: lägg till en privat metod som checkar om exerciseId samt workoutId redan finns. genom select XX where YY + if() sats
     public String insertExerciseInToWorkout(String loggedInMail, ExerciseInfo exercise, WorkoutInfo workout) throws SQLException{
         if(workout.getCreatorEmail().equals(loggedInMail)) {
             Connection con = this.getDatabaseConnection();
@@ -215,7 +213,6 @@ public class Services {
         return  new ProgramInfo(id, name, creatorEmail, description, tag1, tag2, tag3, getUsername(creatorEmail));
     }
 
-    //inserts methods
     public String insertWorkoutInToProgram(String loggedInMail,ProgramInfo programInfo, WorkoutInfo workoutInfo) throws SQLException{
         if(programInfo.getCreatorEmail().equals(loggedInMail)){
             Connection con = this.getDatabaseConnection();
@@ -292,7 +289,6 @@ public class Services {
         con.close();
     }
 
-    //should this run automatically after logExerciseSet has been executed?
     public int insertNewLogworkout(String email, int workoutid, Date date, String evaluation) throws SQLException{
         Connection con = this.getDatabaseConnection();
         PreparedStatement pstmt = con.prepareStatement("Call training.insertNewLogWorkout(?,?,?,?)");
@@ -385,8 +381,6 @@ public class Services {
         con.close();
     }
 
-    //loggedInMail is mail from GUI/Controller? that has been received after the call to the login method.
-    //It is so we can see if the user is logged in or not
     //this method can only be run when you are logged in, it is not a forgot password method. Instead, you can change your information when logged in.
     //update methods
     public String updateLogin(String loggedInMail, String email, String username, String password, int choice) throws SQLException{
@@ -438,8 +432,6 @@ public class Services {
         }
     }
 
-    //Antingen så ska man kunna se alla sina saker genom select statements innan metoden anropas eller längst upp i metoden
-    //TODO: Ändra så att det blir med objekt istället...
     public String updateExercise(int exerciseId, String loggedInMail, String name, String description, String primaryMuscleGroup, String secondaryMuscleGroup, int choice) throws SQLException{
         if(this.checkIfLoggedInMailIsAdmin(loggedInMail)){
             Connection con = this.getDatabaseConnection();
@@ -553,7 +545,6 @@ public class Services {
         }
     }
 
-    //SKA MAN ENDAST KUNNA ÄNDRA DATE OCH EVALUATION? ISÅFALL HADE VI KUNNAT TA BORT GETTERS OCH SETTERS I KLASSERNA
     public String updateLogWorkout(String loggedInMail, LogWorkout logWorkout) throws SQLException{
         if(logWorkout.getCreator().equals(loggedInMail)){
             Connection con = this.getDatabaseConnection();
@@ -932,6 +923,10 @@ public class Services {
         return temp != null;
     }
 
+    /**
+     * terminates database connections
+     * @throws SQLException
+     */
     public void terminateIdle() throws SQLException{
         Connection con = this.getDatabaseConnection();
         String selectPids = "SELECT pid from pg_stat_activity where state = 'idle'";
